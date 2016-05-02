@@ -1,3 +1,8 @@
+@import url("simple-sidebar.css");
+
+body {
+    background: url("../img/temp_bg.png");
+}
 #search-bar {
     position: absolute;
     left: 2em;

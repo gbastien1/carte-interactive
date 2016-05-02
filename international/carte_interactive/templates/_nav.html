@@ -1,14 +1,17 @@
-<div id="search-bar" class="col-lg-4">
+<div id="search-bar" class="col-lg-4 col-md-5 col-sm-6 col-xs-10">
     <div class="input-group">
+      <span class="input-group-btn">
+            <button id="menu-toggler" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+      </span>
       <input type="text" class="form-control" placeholder="Rechercher..." aria-label="search">
       <div class="input-group-btn">
-        <button type="button" class="btn btn-primary">Rechercher</button>
-
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-cog"></span>
-          </button>
-
-          <ul class="dropdown-menu">
+         </button>
+         <ul class="dropdown-menu">
               {% if user.is_authenticated %}
                 <li><a href="#">Déconnexion</a></li>
               {% else %}
@@ -16,8 +19,7 @@
               {% endif %}
             <li role="separator" class="divider"></li>
             <li><a href="#">Paramètres</a></li>
-          </ul>
-
+         </ul>
       </div>
     </div>
 </div>
