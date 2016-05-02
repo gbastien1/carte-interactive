@@ -2,18 +2,18 @@
 
 <!DOCTYPE html>
 <html>
-	<title>TravelExpress</title>
+	<title>Carte interactive</title>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'public/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'public/lib/bootstrap-3.3.6/css/bootstrap-theme.min.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'public/css/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
 </html>
 <body>
-	<!--{% include '_nav.html' %}-->
+	{% include '_nav.html' %}
+    {% include '_sidebar.html' %}
 
 	{% block content %}{% endblock %}
 
-	<script type="text/javascript" src="{% static 'public/lib/jquery/jquery-1.12.3.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'public/lib/bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-1.12.3.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/lib/bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
 </body>
 </html>
