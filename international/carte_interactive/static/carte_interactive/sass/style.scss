@@ -1,10 +1,15 @@
 @import url("simple-sidebar.css");
 
-body {
-    background: url("../img/temp_bg.png");
-}
+/** style for Google Map */
+html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+#map { height: 100%; width: 100% }
+
 #search-bar {
     position: absolute;
     left: 2em;
-    top: 2em;
+    top: 3.5em;
+}
+
+#menu-toggler {
+    z-index: 8;
 }

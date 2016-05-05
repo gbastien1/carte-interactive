@@ -1,9 +1,12 @@
+
+$sidebar-width: 320px;
+
 #sidebar-wrapper {
     z-index: 10;
     position: fixed;
     top: 0;
-    left: -320px;
-    width: 320px;
+    left: -$sidebar-width;
+    width: $sidebar-width;
     height: 100%;
     overflow-y: auto;
     background: #fff;
@@ -28,7 +31,7 @@
 .sidebar-nav {
     position: absolute;
     top: 0;
-    width: 320px;
+    width: $sidebar-width;
     margin: 0;
     padding: 0;
     list-style: none;

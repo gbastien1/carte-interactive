@@ -12,10 +12,9 @@ $("#close-menu-btn").click(function(e) {
 $(document).click(function (e){
     if(!($(e.target).is(':button') || $(e.target).is(".glyphicon-menu-hamburger"))) {
         if($("#sidebar-wrapper.toggled").length > 0 & !$(e.target).is('#sidebar-wrapper *')) {
-            console.log("removing toggled class");
             $('#sidebar-wrapper').removeClass("toggled");
         }
     }
-
 });
+
 
