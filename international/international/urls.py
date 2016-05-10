@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
-	url(r'^carte/', include('carte_interactive.urls')),
+	url(r'^', include('carte_interactive.urls')),
 ]

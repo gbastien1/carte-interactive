@@ -1,9 +1,12 @@
 {% extends '_layout.html' %}
+{% load staticfiles %}
 
 {% block content %}
     <div id="map"></div>
+    <!--<script type=text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>-->
     <script>
-      function initMap() {
+        var markers = [];
+        function initMap() {
         var mapDiv = document.getElementById('map');
         var map = new google.maps.Map(mapDiv, {
           center: {lat: 47.081012, lng: 2.3522219},
@@ -87,16 +90,37 @@
                     {
                         "visibility": "on"
                     }
-                ]
+                    ]
+                }
+            ]);
+        $.ajax({
+            url: "../../static/carte_interactive/json/data.json",
+            success: function (data) {
+                //var marker_icon = "../../static/carte_interactive/img/marker.png"
+                var marker_icon = "../../static/carte_interactive/img/marker_EC.png"
+                var ecole_data = JSON.parse(data);
+                ecole_data.forEach(function(ecole) {
+                    var myLatLng = new google.maps.LatLng(ecole.fields.latitude,ecole.fields.longitude);
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        animation: google.maps.Animation.DROP,
+                        map: map,
+                        icon: marker_icon,
+                        title: ecole.fields.nom,
+                        type: ecole.fields.type_ecole,
+                        codes: ecole.fields.programmes
+                      });
+                    marker.setMap(map);
+                    markers.push(marker);
+                });
             }
-        ]);
-      }
-
+        });
+        }
     </script>
 {% endblock %}
 
 {% block mapscript %}
-    <script async defer
+    <script async
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6I1N0Pdzsubd3d2EJQkKUTyglIBrwloQ&callback=initMap">
     </script>
 {% endblock %}
