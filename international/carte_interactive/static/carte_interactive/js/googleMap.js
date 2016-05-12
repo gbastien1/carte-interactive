@@ -59,7 +59,7 @@ function showResultsList(results) {
     $("#results-container h1").html("Résultats...");
     if(results.length > 0) {
         results.forEach(function(r) {
-            $("#results-list").append("<li>" + r.nom + "</li>");
+            $("#results-list").append("<li class=\"list-group-item\">" + r.nom + "</li>");
         });
     }
     else {
