@@ -1,4 +1,5 @@
-@import url("simple-sidebar.css");
+@import "simple-sidebar.scss";
+@import "search_results.scss";
 
 /** style for Google Map */
 html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
@@ -13,3 +14,4 @@ html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
 #menu-toggler {
     z-index: 8;
 }
+

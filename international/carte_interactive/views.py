@@ -29,7 +29,7 @@ class CardView(TemplateView):
 	try:
 		for row in ecoles:
 			# create Ecole objects with content of Excel file
-			Ecole.objects.create(
+			Ecole.objects.update_or_create(
 				nom=row[Attr['ecole']].value,
 				type_ecole=row[Attr['type_ecole']].value,
 				ville=row[Attr['ville']].value,
@@ -37,12 +37,20 @@ class CardView(TemplateView):
 				latitude=float(row[Attr['latitude']].value),
 				longitude=float(row[Attr['longitude']].value))
 
-			# fill json file with Ecole data, for use with Google Javascript API
-			json_data = serializers.serialize('json', Ecole.objects.all())
-			json_data_url = static('carte_interactive/json/data.json')
-			json_data_file = open(app_name + json_data_url, 'w', -1, 'utf-8')
-			json_data_file.write(json_data)
-			json_data_file.close()
+		print("nbr d'écoles dans BD:" + str(Ecole.objects.all().count()))
+
+		# fill json file with Ecole data, for use with Google Javascript API
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w', -1, 'utf-8')
+		json_data_file.write(json_data)
+		json_data_file.close()
 	except OperationalError:
 		pass
 
+
+class SearchResultsView(TemplateView):
+	template_name = "carte_interactive/search_results.html"
+	# get search input
+	# get Ecole objects corresponding to input
+	# display list of Ecoles with link to detailView

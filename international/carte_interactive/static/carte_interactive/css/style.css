@@ -1,4 +1,86 @@
-@import url("simple-sidebar.css");
+#sidebar-wrapper {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 320px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fff;
+  transition: all 0.5s ease;
+  color: #555555;
+  border-right: 1px solid #BBBBBB; }
+
+#sidebar-wrapper.toggled {
+  left: 0; }
+
+#close-menu-btn {
+  position: absolute;
+  top: 1em;
+  right: 1em; }
+
+/* Sidebar Styles */
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 320px;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 30px; }
+
+.sidebar-nav > .sidebar-brand {
+  height: 50px;
+  font-size: 18px;
+  line-height: 40px;
+  color: #353535; }
+
+.sidebar-nav fieldset {
+  margin-bottom: 20px; }
+
+.sidebar-nav legend {
+  margin-bottom: 10px;
+  color: #676767 !important;
+  background-color: #F4F4F4;
+  border-top: 1px solid #E4E4E4; }
+
+.sidebar-nav form input[type="submit"] {
+  margin-left: 20px; }
+
+/*fix bootstrap*/
+input[type="checkbox"] {
+  position: static !important; }
+
+.checkbox-inline + .checkbox-inline, .radio-inline + .radio-inline {
+  margin-left: 0 !important; }
+
+.checkbox {
+  font-weight: 400;
+  display: block; }
+
+#schoolTypes label {
+  margin-left: 20px; }
+
+#results-container {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 30%;
+  z-index: 7;
+  padding: 1em;
+  background-color: #fff;
+  border: 1px solid #BBBBBB;
+  display: none; }
+
+#close-results-btn {
+  position: absolute;
+  top: 1em;
+  right: 1em; }
+
 /** style for Google Map */
 html, body {
   height: 100%;

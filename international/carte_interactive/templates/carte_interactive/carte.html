@@ -1,7 +1,17 @@
 {% extends '_layout.html' %}
 {% load staticfiles %}
 
+{% block search_results %}{% endblock %}
+
 {% block content %}
+    <!-- search results div -->
+    <div id="results-container">
+        <button id="close-results-btn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+        <h1></h1>
+        <ul id="results-list">
+        </ul>
+    </div>
+
     <div id="map"></div>
     <!--<script type=text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>-->
     <script>
@@ -96,10 +106,9 @@
         $.ajax({
             url: "../../static/carte_interactive/json/data.json",
             success: function (data) {
-                //var marker_icon = "../../static/carte_interactive/img/marker.png"
-                var marker_icon = "../../static/carte_interactive/img/marker_EC.png"
                 var ecole_data = JSON.parse(data);
                 ecole_data.forEach(function(ecole) {
+                    var marker_icon = "../../static/carte_interactive/img/marker_" + ecole.fields.type_ecole + ".png";
                     var myLatLng = new google.maps.LatLng(ecole.fields.latitude,ecole.fields.longitude);
                     var marker = new google.maps.Marker({
                         position: myLatLng,

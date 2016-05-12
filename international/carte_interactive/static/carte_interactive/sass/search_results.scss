@@ -1,0 +1,17 @@
+#results-container {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30%;
+    z-index: 7;
+    padding: 1em;
+    background-color: #fff;
+    border: 1px solid #BBBBBB;
+    display: none;
+}
+
+#close-results-btn {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
