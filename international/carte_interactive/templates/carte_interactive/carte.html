@@ -12,8 +12,10 @@
         </ul>
     </div>
 
+    <div class="info-div"></div>
+
     <div id="map"></div>
-    <!--<script type=text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>-->
+
     <script>
         var markers = [];
         function initMap() {
@@ -22,6 +24,9 @@
           center: {lat: 47.081012, lng: 2.3522219},
           zoom: 6
         });
+        var infowindow = new google.maps.InfoWindow({
+            content: ""
+          });
         map.set('styles',
         [
             {
@@ -103,6 +108,7 @@
                     ]
                 }
             ]);
+        $(".info-div").hide();
         $.ajax({
             url: "../../static/carte_interactive/json/data.json",
             success: function (data) {
@@ -116,11 +122,29 @@
                         map: map,
                         icon: marker_icon,
                         title: ecole.fields.nom,
+                        ville: ecole.fields.ville,
                         type: ecole.fields.type_ecole,
                         codes: ecole.fields.programmes
                       });
                     marker.setMap(map);
                     markers.push(marker);
+                    var wasClicked = false;
+                    google.maps.event.addListener(marker, 'mouseover', function(e) {
+                        var div = $(".info-div");
+                        div.empty();
+                        div.append("<h4>" + marker.title + " (" + marker.ville + ")</h4>");
+                        div.append("<p>Programmes: " + marker.codes + "</p>");
+                        infowindow.setContent(div.html());
+                        infowindow.open(map,marker);
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function(e) {
+                        wasClicked = true;
+                    });
+                    google.maps.event.addListener(marker, 'mouseout', function(e) {
+                        if(!wasClicked)
+                            infowindow.close(map,marker);
+                    });
                 });
             }
         });

@@ -6,7 +6,7 @@
   z-index: 7;
   padding: 1em;
   background-color: #fff;
-  border: 1px solid #BBBBBB;
+  border-left: 1px solid #BBBBBB;
   display: none; }
 
 #close-results-btn {

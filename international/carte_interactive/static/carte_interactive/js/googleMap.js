@@ -11,16 +11,22 @@ function filterMarkers() {
 	type_checkboxes.each(function() {
 		if ($(this).is(":checked")) types.push($(this).val());
 	});
-
-	markers.forEach(function(m) {
-		m.setVisible(false);
-		codes.forEach(function(c) {
-			if (m.codes.indexOf(c) != -1) m.setVisible(true);
-		});
-		types.forEach(function(t) {
-			if (m.type == t) m.setVisible(true);
-		});
-	});
+	if (codes.length > 0 || types.length > 0) {
+        markers.forEach(function(m) {
+            m.setVisible(false);
+            codes.forEach(function(c) {
+                if (m.codes.indexOf(c) != -1) m.setVisible(true);
+            });
+            types.forEach(function(t) {
+                if (m.type == t) m.setVisible(true);
+            });
+        });
+	}
+	else {
+	    markers.forEach(function(m) {
+            m.setVisible(true);
+        });
+	}
 }
 
 function search() {
@@ -54,7 +60,7 @@ function search() {
 }
 
 function showResultsList(results) {
-    $("#results-container").show(1000);
+    $("#results-container").show("slide", { direction: "right" }, 500);
     $("ul#results-list").empty();
     $("#results-container h1").html("Résultats...");
     if(results.length > 0) {
