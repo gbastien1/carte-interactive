@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.db.utils import OperationalError
 from django.views.generic import TemplateView
 from django.contrib.staticfiles.templatetags.staticfiles import static
