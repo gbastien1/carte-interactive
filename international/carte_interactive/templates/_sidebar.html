@@ -1,3 +1,4 @@
+
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
@@ -6,47 +7,30 @@
             <button id="close-menu-btn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
         </li>
         <hr />
-        <li>
-            <h2>Filtrer par...</h2>
+
+        <ul id="sidebar-nav-pills" class="nav nav-tabs">
+          <li id="nav-pill-filtrer" role="presentation" class="active"><a href="#">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
+          <li id="nav-pill-ajouter" role="presentation"><a href="#">Ajouter<span class="glyphicon glyphicon-plus"></span></a></li>
+          <li id="nav-pill-editer" role="presentation" class="disabled"><a href="#">Éditer<span class="glyphicon glyphicon-pencil"></span></a></li>
+        </ul>
+
+        <!-- filter content -->
+        <li id="sidebar-content-filtrer" class="sidebar-content">
+            {% include 'carte_interactive/filtrer_ecoles.html' %}
         </li>
-        <li>
-            <form action="javascript:filterMarkers()" class="form">
-              <fieldset id="codePrograms">
-                  <legend>Code de programme:</legend>
-                  <label class="checkbox-inline">
-                      <input class="filtre code_filtre" type="checkbox" value="1709"> 1709
-                    </label>
-                    <label class="checkbox-inline">
-                      <input class="filtre code_filtre" type="checkbox" value="3037"> 3037
-                    </label>
-                    <label class="checkbox-inline">
-                      <input class="filtre code_filtre" type="checkbox" value="3754"> 3754
-                    </label>
-                    <label class="checkbox-inline">
-                      <input class="filtre code_filtre" type="checkbox" value="6908"> 6908
-                    </label>
-                    <label class="checkbox-inline">
-                      <input class="filtre code_filtre" type="checkbox" value="7764"> 7764
-                    </label>
-              </fieldset>
-              <fieldset id="schoolTypes">
-                  <legend>Type d'école:</legend>
-                    <label class="checkbox">
-                      <input class="filtre type_filtre" type="checkbox" value="U"> Université
-                    </label>
-                    <label class="checkbox">
-                      <input class="filtre type_filtre" type="checkbox" value="IUT"> Institut universitaire de technologique
-                    </label>
-                    <label class="checkbox">
-                      <input class="filtre type_filtre" type="checkbox" value="EI"> École d'ingénieurs
-                    </label>
-                    <label class="checkbox">
-                      <input class="filtre type_filtre" type="checkbox" value="EC"> École de commerce
-                    </label>
-              </fieldset>
-              <input type="submit" class="btn btn-info" value="Filtrer">
-            </form>
+
+
+        <!-- create Ecole content -->
+        <li id="sidebar-content-ajouter" class="sidebar-content">
+          {% include 'carte_interactive/ajouter_ecole.html' %}
         </li>
+        
+
+        <!-- edit Ecole content -->
+        <li id="sidebar-content-editer" class="sidebar-content">
+            {% include 'carte_interactive/editer_ecole.html' %}
+        </li>
+
 
     </ul>
 </div>

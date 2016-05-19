@@ -1,8 +1,6 @@
 {% extends '_layout.html' %}
 {% load staticfiles %}
 
-{% block search_results %}{% endblock %}
-
 {% block content %}
     <!-- search results div -->
     <div id="results-container">
@@ -13,18 +11,27 @@
     </div>
 
     <div class="info-div"></div>
-
     <div id="map"></div>
+    <div id="legend"></div>
 
     <script>
+        var map;
+        var infowindow;
         var markers = [];
+        var iconBase = '../../static/carte_interactive/img/marker_';
+        var icons = {
+          U:    { icon: iconBase + 'U.png' },
+          IUT:  { icon: iconBase + 'IUT.png' },
+          EI:   { icon: iconBase + 'EI.png' },
+          EC:   { icon: iconBase + 'EC.png' }
+        };
         function initMap() {
         var mapDiv = document.getElementById('map');
-        var map = new google.maps.Map(mapDiv, {
+        map = new google.maps.Map(mapDiv, {
           center: {lat: 47.081012, lng: 2.3522219},
           zoom: 6
         });
-        var infowindow = new google.maps.InfoWindow({
+        infowindow = new google.maps.InfoWindow({
             content: ""
           });
         map.set('styles',
@@ -108,47 +115,92 @@
                     ]
                 }
             ]);
+
         $(".info-div").hide();
         $.ajax({
             url: "../../static/carte_interactive/json/data.json",
             success: function (data) {
                 var ecole_data = JSON.parse(data);
-                ecole_data.forEach(function(ecole) {
-                    var marker_icon = "../../static/carte_interactive/img/marker_" + ecole.fields.type_ecole + ".png";
-                    var myLatLng = new google.maps.LatLng(ecole.fields.latitude,ecole.fields.longitude);
-                    var marker = new google.maps.Marker({
-                        position: myLatLng,
-                        animation: google.maps.Animation.DROP,
-                        map: map,
-                        icon: marker_icon,
-                        title: ecole.fields.nom,
-                        ville: ecole.fields.ville,
-                        type: ecole.fields.type_ecole,
-                        codes: ecole.fields.programmes
-                      });
-                    marker.setMap(map);
-                    markers.push(marker);
-                    var wasClicked = false;
-                    google.maps.event.addListener(marker, 'mouseover', function(e) {
-                        var div = $(".info-div");
-                        div.empty();
-                        div.append("<h4>" + marker.title + " (" + marker.ville + ")</h4>");
-                        div.append("<p>Programmes: " + marker.codes + "</p>");
-                        infowindow.setContent(div.html());
-                        infowindow.open(map,marker);
-                    });
 
-                    google.maps.event.addListener(marker, 'click', function(e) {
-                        wasClicked = true;
-                    });
-                    google.maps.event.addListener(marker, 'mouseout', function(e) {
-                        if(!wasClicked)
-                            infowindow.close(map,marker);
-                    });
+                ecole_data.forEach(function(ecole) {
+                    createMarker(ecole.fields);
                 });
+
+                /**
+                *  Légende
+                */
+                var legend = $("#legend");
+                for (var type in icons) {
+                    var type = type;
+                    var icon = icons[type].icon;
+                    var div = document.createElement('div');
+                    div.innerHTML = '<img src="' + icon + '" style="width: 24px; height: 24px;"> ' + type;
+                    legend.append(div);
+                }
             }
         });
+
         }
+
+        function createMarker(ecole_data) {
+            if(ecole_data.type.indexOf('(') == -1)
+                var marker_icon = icons[ecole_data.type].icon;
+            else
+                var marker_icon = icons[get_substring(ecole_data.type, '(', ')')].icon;
+            var myLatLng = new google.maps.LatLng(ecole_data.latitude, ecole_data.longitude);
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                animation: google.maps.Animation.DROP,
+                icon: marker_icon,
+                title: ecole_data.nom,
+                ville: ecole_data.ville,
+                type: ecole_data.type,
+                codes: ecole_data.programmes
+            });
+            marker.setMap(map);
+            markers.push(marker);
+            var wasClicked = false;
+
+            google.maps.event.addListener(marker, 'mouseover', function(e) {
+                var div = createInfoDiv(marker, ecole_data);
+                infowindow.setContent(div.html());
+                infowindow.open(map,marker);
+            });
+
+            google.maps.event.addListener(marker, 'click', function(e) {
+                wasClicked = true;
+            });
+            google.maps.event.addListener(marker, 'mouseout', function(e) {
+                if(!wasClicked)
+                    infowindow.close(map,marker);
+            });
+        }
+
+        function createMarkerFromFormData() {
+            var ecole_data = {};
+            var inputs = $('#ajouter_form').serializeArray();
+            $.each(inputs, function (i, input) {
+                ecole_data[input.name] = input.value;
+            });
+            createMarker(ecole_data);
+        }
+
+        function createInfoDiv(marker, ecole) {
+            var div = $(".info-div");
+            div.empty();
+            div.append("<h4 id=\"info-title\">" + marker.title + " (" + marker.ville + ")</h4>");
+            div.append('<button id="edit-btn" type="button" class="info-btn btn btn-xs btn-warning"><span class="glyphicon glyphicon glyphicon-pencil info-icon"></span></button>');
+            div.append("<p>Programmes: " + marker.codes + "</p>");
+            if(ecole.particularites)
+                div.append("<p><span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
+                            ecole.particularites + "</p>");
+            return div;
+        }
+
+        function get_substring(str, start, end) {
+            return str.substring(str.lastIndexOf(start)+1,str.lastIndexOf(end));
+        }
+
     </script>
 {% endblock %}
 

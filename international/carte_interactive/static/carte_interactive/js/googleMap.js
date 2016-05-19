@@ -1,4 +1,5 @@
 
+
 function filterMarkers() {
 	var code_checkboxes = $(".code_filtre");
 	var type_checkboxes = $(".type_filtre");
@@ -36,7 +37,7 @@ function search() {
         var ecole_data = [];
         $.getJSON(json_url, function(ecoles) {
             ecoles.forEach(function(e) {
-                var string_data = e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type_ecole + ',' + e.fields.ville;
+                var string_data = e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
                 ecole_data.push(string_data);
             });

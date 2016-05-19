@@ -18,3 +18,33 @@ html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
 #menu-toggler {
     z-index: 8;
 }
+
+#legend {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    background: #fff;
+    padding: 1em;
+    border-top: 1px solid #BBBBBB;
+    border-left: 1px solid #BBBBBB;
+}
+
+.info-icon {
+    width: 16px;
+    height: 16px;
+}
+.info-btn, .btn-xs {
+    padding: 0 !important;
+    width: 20px;
+    height: 20px;
+}
+#info-title {
+    float: left;
+}
+#edit-btn {
+    float: left;
+    margin-top: 8px;
+    margin-left: 6px;
+}
+

@@ -2,8 +2,8 @@
   z-index: 10;
   position: fixed;
   top: 0;
-  left: -320px;
-  width: 320px;
+  left: -400px;
+  width: 400px;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -24,7 +24,7 @@
 .sidebar-nav {
   position: absolute;
   top: 0;
-  width: 320px;
+  width: 400px;
   margin: 0;
   padding: 0;
   list-style: none; }
@@ -40,7 +40,7 @@
   color: #353535; }
 
 .sidebar-nav fieldset {
-  margin-bottom: 20px; }
+  margin: 20px 0; }
 
 .sidebar-nav legend {
   margin-bottom: 10px;
@@ -64,5 +64,11 @@ input[type="checkbox"] {
 
 #schoolTypes label {
   margin-left: 20px; }
+
+.nav-tabs li {
+  text-indent: 0 !important; }
+
+.nav-tabs .glyphicon {
+  margin-left: 6px; }
 
 /*# sourceMappingURL=simple-sidebar.css.map */

@@ -1,5 +1,5 @@
 
-$sidebar-width: 320px;
+$sidebar-width: 400px;
 
 #sidebar-wrapper {
     z-index: 10;
@@ -52,7 +52,7 @@ $sidebar-width: 320px;
 
 
 .sidebar-nav fieldset {
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .sidebar-nav legend {
@@ -81,3 +81,11 @@ input[type="checkbox"] {
 #schoolTypes label {
     margin-left: 20px;
 }
+.nav-tabs li {
+    text-indent: 0 !important;
+}
+
+.nav-tabs .glyphicon {
+    margin-left: 6px;
+}
+

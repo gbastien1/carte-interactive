@@ -1,0 +1,77 @@
+
+{% load bootstrap3 %}
+
+<form action="" method="post" class="form form-horizontal" id="ajouter_form">
+    {% csrf_token %}
+
+            <div class="form-title-row">
+                <h4>Ajouter une école</h4>
+            </div>
+
+            <!-- nom -->
+            <div class="form-group">
+			    <label for="c_nom" class="col-sm-3 control-label">Nom</label>
+			    <div class="col-sm-8">
+			      <input type="text" class="form-control" id="c_nom" name="nom">
+			    </div>
+			</div>
+
+            <!-- ville -->
+            <div class="form-group">
+			    <label for="c_ville" class="col-sm-3 control-label">Ville</label>
+			    <div class="col-sm-8">
+			      <input type="text" class="form-control" id="c_ville" name="ville">
+			    </div>
+			</div>
+
+            <!-- type -->
+            <div class="form-group">
+			    <label for="c_type" class="col-sm-3 control-label">Type</label>
+			    <div class="col-sm-8">
+			      <select class="form-control" id="c_type" name="type">
+                        <option>Université (U)</option>
+                        <option>IUT</option>
+                        <option>École d'ingénieurs (EI)</option>
+                        <option>École de commerce (EC)</option>
+                    </select>
+			    </div>
+			</div>
+
+            <!-- programmes -->
+            <div class="form-group">
+			    <label for="c_programmes" class="col-sm-3 control-label">Programmes</label>
+			    <div class="col-sm-8">
+			      <input type="text" class="form-control" id="c_programmes" name="programmes" placeholder="xxxx,xxxx,...">
+			    </div>
+			</div>
+
+            <!-- particularites -->
+            <div class="form-group">
+			    <label for="c_particularites" class="col-sm-3 control-label" style="margin-right: 5px !important">Particularités </label>
+			    <div class="col-sm-8">
+			      <textarea id="c_particularites" class="form-control" name="particularites" rows="3"></textarea>
+			    </div>
+			</div>
+
+            <!-- latitude -->
+            <div class="form-group">
+			    <label for="c_latitude" class="col-sm-3 control-label">Latitude</label>
+			    <div class="col-sm-8">
+			      <input type="text" class="form-control" id="c_latitude" name="latitude">
+			    </div>
+			</div>
+
+            <!-- longitude -->
+            <div class="form-group">
+			    <label for="c_longitude" class="col-sm-3 control-label">Longitude</label>
+			    <div class="col-sm-8">
+			      <input type="text" class="form-control" id="c_longitude" name="longitude">
+			    </div>
+			</div>
+
+            <div class="form-row">
+                <button type="submit" class="btn btn-info" onclick="javascript:createMarkerFromFormData()">Créer</button>
+            </div>
+</form>
+
+
