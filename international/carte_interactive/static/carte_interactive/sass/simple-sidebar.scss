@@ -89,3 +89,6 @@ input[type="checkbox"] {
     margin-left: 6px;
 }
 
+.nav-tabs>li.disabled>a:hover {
+    border: 1px solid transparent;
+}

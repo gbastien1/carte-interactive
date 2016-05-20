@@ -34,6 +34,7 @@
         infowindow = new google.maps.InfoWindow({
             content: ""
           });
+
         map.set('styles',
         [
             {
@@ -121,9 +122,8 @@
             url: "../../static/carte_interactive/json/data.json",
             success: function (data) {
                 var ecole_data = JSON.parse(data);
-
                 ecole_data.forEach(function(ecole) {
-                    createMarker(ecole.fields);
+                    createMarker(ecole.fields, ecole.pk);
                 });
 
                 /**
@@ -142,7 +142,7 @@
 
         }
 
-        function createMarker(ecole_data) {
+        function createMarker(ecole_data, pk) {
             if(ecole_data.type.indexOf('(') == -1)
                 var marker_icon = icons[ecole_data.type].icon;
             else
@@ -155,7 +155,8 @@
                 title: ecole_data.nom,
                 ville: ecole_data.ville,
                 type: ecole_data.type,
-                codes: ecole_data.programmes
+                codes: ecole_data.programmes,
+                pk: pk
             });
             marker.setMap(map);
             markers.push(marker);
@@ -189,8 +190,9 @@
             var div = $(".info-div");
             div.empty();
             div.append("<h4 id=\"info-title\">" + marker.title + " (" + marker.ville + ")</h4>");
-            div.append('<button id="edit-btn" type="button" class="info-btn btn btn-xs btn-warning"><span class="glyphicon glyphicon glyphicon-pencil info-icon"></span></button>');
+            div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
             div.append("<p>Programmes: " + marker.codes + "</p>");
+            div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
             if(ecole.particularites)
                 div.append("<p><span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
                             ecole.particularites + "</p>");
@@ -200,7 +202,6 @@
         function get_substring(str, start, end) {
             return str.substring(str.lastIndexOf(start)+1,str.lastIndexOf(end));
         }
-
     </script>
 {% endblock %}
 

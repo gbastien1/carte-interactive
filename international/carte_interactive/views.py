@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-
 import json
 
-from django.core.urlresolvers import reverse_lazy
 from django.db.utils import OperationalError
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
@@ -83,6 +81,12 @@ def AjouterEcole(request):
 		_latitude = data["latitude"]
 		_longitude = data["longitude"]
 
+		if not _nom or not _ville or not _programmes:
+			return HttpResponse(
+				"incomplete data",
+				content_type="application/json"
+			)
+
 		ecole, created = Ecole.objects.get_or_create(
 			nom=_nom,
 			ville=_ville,
@@ -93,10 +97,22 @@ def AjouterEcole(request):
 			longitude=_longitude
 		)
 		if created:
-			print("created!")
 			response_data = json.dumps(serializers.serialize('json', [ecole, ]))
+			app_name = 'carte_interactive'
+			data_url = static('carte_interactive/data/data.xlsx')
+			ecole_wb = openpyxl.load_workbook(app_name + data_url)
+			sheet = ecole_wb.get_sheet_by_name('data')
+			row_count = len(sheet.rows)
+			row = row_count + 1
+			sheet.cell(row=row, column=1).value = _nom
+			sheet.cell(row=row, column=2).value = get_type(_type)
+			sheet.cell(row=row, column=3).value = _ville
+			sheet.cell(row=row, column=4).value = _programmes
+			sheet.cell(row=row, column=5).value = _latitude
+			sheet.cell(row=row, column=6).value = _longitude
+			ecole_wb.save(app_name + data_url)
 		else:
-			response_data = "already created";
+			response_data = "already created"
 
 		return HttpResponse(
 			response_data,
@@ -104,3 +120,53 @@ def AjouterEcole(request):
 	)
 
 
+def EditerEcole(request):
+
+	if request.method == 'POST':
+		data = json.loads(request.POST.get('content'))
+		_pk = data["pk"]
+		_nom = data["nom"]
+		_ville = data["ville"]
+		_type = data["type"]
+		_programmes = data["programmes"]
+		_particularites = data["particularites"]
+
+		if not _pk and not _nom and not _ville and not _programmes and not _particularites:
+			return HttpResponse(
+				"incomplete data",
+				content_type="application/json"
+			)
+
+		ecole = Ecole.objects.get(pk=_pk)
+		print(ecole.nom)
+		ecole.nom = _nom
+		print(ecole.nom)
+		ecole.ville = _ville
+		ecole.type = _type
+		ecole.programmes = _programmes
+		if _particularites: ecole.particularites = particularites
+		ecole.save()
+
+		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
+		"""
+		if created:
+			response_data = json.dumps(serializers.serialize('json', [ecole, ]))
+			app_name = 'carte_interactive'
+			data_url = static('carte_interactive/data/data.xlsx')
+			ecole_wb = openpyxl.load_workbook(app_name + data_url)
+			sheet = ecole_wb.get_sheet_by_name('data')
+			
+			sheet.cell(row=row, column=1).value = _nom
+			sheet.cell(row=row, column=2).value = get_type(_type)
+			sheet.cell(row=row, column=3).value = _ville
+			sheet.cell(row=row, column=4).value = _programmes
+			sheet.cell(row=row, column=5).value = _latitude
+			sheet.cell(row=row, column=6).value = _longitude
+			ecole_wb.save(app_name + data_url)
+		else:
+			response_data = "already created"
+		"""
+		return HttpResponse(
+			response_data,
+			content_type="application/json"
+	)

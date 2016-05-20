@@ -71,4 +71,7 @@ input[type="checkbox"] {
 .nav-tabs .glyphicon {
   margin-left: 6px; }
 
+.nav-tabs > li.disabled > a:hover {
+  border: 1px solid transparent; }
+
 /*# sourceMappingURL=simple-sidebar.css.map */

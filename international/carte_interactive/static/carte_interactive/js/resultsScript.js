@@ -17,5 +17,3 @@ $("#search_input").keyup(function (e) {
         search();
     }
 });
-
-$("")
