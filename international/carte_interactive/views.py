@@ -1,9 +1,12 @@
 # -*- coding: UTF-8 -*-
 import json
-
+from django.contrib.auth import login, logout, authenticate
 from django.db.utils import OperationalError
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, FormView, RedirectView
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.urlresolvers import reverse_lazy
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
@@ -11,11 +14,25 @@ from .models import Ecole
 import openpyxl
 
 
-class IndexView(TemplateView):
+class LoginView(FormView):
 	template_name = "carte_interactive/index.html"
+	form_class = AuthenticationForm
+	success_url = reverse_lazy('carte_interactive:carte')
+
+	def form_valid(self, form):
+		login(self.request, form.get_user())
+		return super(LoginView, self).form_valid(form)
 
 
-class CardView(TemplateView):
+class LogoutView(RedirectView):
+	url = reverse_lazy('carte_interactive:login')
+
+	def get(self, request, *args, **kwargs):
+		logout(request)
+		return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+class CardView(LoginRequiredMixin, TemplateView):
 	template_name = "carte_interactive/carte.html"
 	Attr = {
 		'ecole': 0,
@@ -69,6 +86,7 @@ def get_type(type_string):
 		return type_string
 
 
+# url: ajout/
 def AjouterEcole(request):
 
 	if request.method == 'POST':
@@ -87,6 +105,18 @@ def AjouterEcole(request):
 				content_type="application/json"
 			)
 
+		
+		ecole = Ecole(
+			nom=_nom,
+			ville=_ville,
+			type=get_type(_type),
+			programmes=_programmes,
+			particularites=_particularites,
+			latitude=_latitude,
+			longitude=_longitude
+		)
+		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
+		"""
 		ecole, created = Ecole.objects.get_or_create(
 			nom=_nom,
 			ville=_ville,
@@ -113,13 +143,14 @@ def AjouterEcole(request):
 			ecole_wb.save(app_name + data_url)
 		else:
 			response_data = "already created"
-
+		"""
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
 	)
 
 
+# url: edit/
 def EditerEcole(request):
 
 	if request.method == 'POST':
@@ -144,7 +175,7 @@ def EditerEcole(request):
 		ecole.ville = _ville
 		ecole.type = _type
 		ecole.programmes = _programmes
-		if _particularites: ecole.particularites = particularites
+		if _particularites: ecole.particularites = _particularites
 		ecole.save()
 
 		response_data = json.dumps(serializers.serialize('json', [ecole, ]))

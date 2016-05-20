@@ -14,11 +14,7 @@
             <span class="glyphicon glyphicon-cog"></span>
          </button>
          <ul class="dropdown-menu">
-              {% if user.is_authenticated %}
-                <li><a href="#">Déconnexion</a></li>
-              {% else %}
-                <li><a href="#">Connexion</a></li>
-              {% endif %}
+                <li><a href="{% url 'carte_interactive:logout' %}">Déconnexion</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Paramètres</a></li>
          </ul>

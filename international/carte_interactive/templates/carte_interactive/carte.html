@@ -18,6 +18,7 @@
         var map;
         var infowindow;
         var markers = [];
+        var geocoder;
         var iconBase = '../../static/carte_interactive/img/marker_';
         var icons = {
           U:    { icon: iconBase + 'U.png' },
@@ -26,6 +27,7 @@
           EC:   { icon: iconBase + 'EC.png' }
         };
         function initMap() {
+        geocoder = new google.maps.Geocoder();
         var mapDiv = document.getElementById('map');
         map = new google.maps.Map(mapDiv, {
           center: {lat: 47.081012, lng: 2.3522219},
@@ -193,9 +195,10 @@
             div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
             div.append("<p>Programmes: " + marker.codes + "</p>");
             div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
-            if(ecole.particularites)
+            if(ecole.particularites) {
                 div.append("<p><span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
                             ecole.particularites + "</p>");
+            }
             return div;
         }
 

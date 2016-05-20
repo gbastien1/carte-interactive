@@ -1,5 +1,29 @@
-{% extends '_layout.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html>
+	<title>Carte interactive</title>
 
-{% block content %}
-    <h1>Page de login</h1>
-{% endblock %}
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/signin.css' %}" />
+</html>
+<body>
+    	
+	  <form action="{% url 'carte_interactive:login' %}" method="post" class="form form-signin">
+	  <h2>Connexion</h2>
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		{% buttons %}
+			<button type="submit" class="btn btn-primary btn-block">
+				{% bootstrap_icon 'ok' %} Login
+			</button>
+		{% endbuttons %}
+	</form>
+
+	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-1.12.3.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-ui.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/lib/bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

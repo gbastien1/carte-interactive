@@ -13,12 +13,24 @@ $("#menu-toggler").click(function(e) {
 
 $("#close-menu-btn").click(function(e) {
     e.preventDefault();
+    if($('#nav-pill-editer').hasClass("active")) {
+        $('#nav-pill-filtrer').addClass("active");
+        $('#nav-pill-editer').removeClass("active").addClass("disabled");
+        $('#sidebar-content-editer').hide();
+        $('#sidebar-content-filtrer').show();
+    }
     $("#sidebar-wrapper").removeClass("toggled");
 });
 
 $(document).click(function (e){
     if(!($(e.target).is(':button') || $(e.target).is(".glyphicon-menu-hamburger"))) {
         if($("#sidebar-wrapper.toggled").length > 0 & !$(e.target).is('#sidebar-wrapper *')) {
+            if($('#nav-pill-editer').hasClass("active")) {
+                $('#nav-pill-filtrer').addClass("active");
+                $('#nav-pill-editer').removeClass("active").addClass("disabled");
+                $('#sidebar-content-editer').hide();
+                $('#sidebar-content-filtrer').show();
+            }
             $('#sidebar-wrapper').removeClass("toggled");
         }
     }
@@ -47,7 +59,7 @@ function openEditTab() {
     $('.sidebar-content').hide();
     $('#sidebar-content-editer').show();
     var pk = $('#pk-data').attr("data-pk");
-    $('#c_pk').val(pk).prop('disabled', true);;
+    $('#c_pk').val(pk).prop('disabled', true);
 }
 
 // Submit ajouter_form
@@ -64,13 +76,26 @@ $('#editer_form').on('submit', function(event){
     this.reset();
 });
 
-// AJAX for posting
+// AJAX for adding an Ecole
 function ajouter_ecole(form) {
     var data = {};
     $.each(form.elements, function(index, el){
         var input = $(el);
         data[input.attr("name")] = input.val();
         delete data["undefined"];
+    });
+    //get latitude and longitude of Ecole
+    var adresse = data["nom"] + ', ' + data["_ville"] + ', France';
+    geocoder.geocode({'address': adresse}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var latLng = results.geometry.location;
+            console.log("latitude: " + latLng.latitude + " longitude: " + latLng.longitude);
+            data["latitude"] = latLng.latitude;
+            data["longitude"] = latLng.longitude;
+            $("#c_latitude").val(latLng.latitude);
+            $("#c_longitude").val(latLng.longitude);
+        }
+        else console.log("could not finc coordinates");
     });
 
     $.ajax({
@@ -81,8 +106,8 @@ function ajouter_ecole(form) {
         // handle a successful response
         success : function(json) {
             ecole_data = JSON.parse(json);
-            if(ecole_data !== "already created" || ecole_data != "incomplete data")
-                createMarker(ecole_data.fields);
+            //if(ecole_data !== "already created" || ecole_data != "incomplete data")
+                //createMarker(ecole_data.fields);
         },
 
         // handle a non-successful response
@@ -94,7 +119,7 @@ function ajouter_ecole(form) {
     });
 };
 
-// AJAX for posting
+// AJAX for editing an Ecole
 function editer_ecole(form) {
     var data = {};
     $.each(form.elements, function(index, el){
