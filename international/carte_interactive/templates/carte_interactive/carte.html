@@ -154,10 +154,11 @@
                 position: myLatLng,
                 animation: google.maps.Animation.DROP,
                 icon: marker_icon,
-                title: ecole_data.nom,
+                nom: ecole_data.nom,
                 ville: ecole_data.ville,
                 type: ecole_data.type,
-                codes: ecole_data.programmes,
+                programmes: ecole_data.programmes,
+                particularites: ecole_data.particularites,
                 pk: pk
             });
             marker.setMap(map);
@@ -191,9 +192,9 @@
         function createInfoDiv(marker, ecole) {
             var div = $(".info-div");
             div.empty();
-            div.append("<h4 id=\"info-title\">" + marker.title + " (" + marker.ville + ")</h4>");
+            div.append("<h4 id=\"info-title\">" + marker.nom + " (" + marker.ville + ")</h4>");
             div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
-            div.append("<p>Programmes: " + marker.codes + "</p>");
+            div.append("<p>Programmes: " + marker.programmes + "</p>");
             div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
             if(ecole.particularites) {
                 div.append("<p><span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +

@@ -13,7 +13,7 @@ from django.core import serializers
 from .models import Ecole
 import openpyxl
 
-
+# url: /
 class LoginView(FormView):
 	template_name = "carte_interactive/index.html"
 	form_class = AuthenticationForm
@@ -23,7 +23,7 @@ class LoginView(FormView):
 		login(self.request, form.get_user())
 		return super(LoginView, self).form_valid(form)
 
-
+# url: logout/
 class LogoutView(RedirectView):
 	url = reverse_lazy('carte_interactive:login')
 
@@ -31,16 +31,17 @@ class LogoutView(RedirectView):
 		logout(request)
 		return super(LogoutView, self).get(request, *args, **kwargs)
 
-
+#url: carte/
 class CardView(LoginRequiredMixin, TemplateView):
 	template_name = "carte_interactive/carte.html"
 	Attr = {
-		'ecole': 0,
-		'type': 1,
-		'ville': 2,
-		'programmes': 3,
-		'latitude': 4,
-		'longitude': 5
+		'pk': 0,
+		'ecole': 1,
+		'type': 2,
+		'ville': 3,
+		'programmes': 4,
+		'latitude': 5,
+		'longitude': 6
 	}
 	app_name = 'carte_interactive'
 	data_url = static('carte_interactive/data/data.xlsx')
@@ -51,6 +52,7 @@ class CardView(LoginRequiredMixin, TemplateView):
 		for row in ecoles:
 			# create Ecole objects with content of Excel file
 			Ecole.objects.update_or_create(
+				pk=row[Attr['pk']].value,
 				nom=row[Attr['ecole']].value,
 				type=row[Attr['type']].value,
 				ville=row[Attr['ville']].value,
@@ -67,7 +69,7 @@ class CardView(LoginRequiredMixin, TemplateView):
 	except OperationalError:
 		pass
 
-
+# todo: not used yet
 class SearchResultsView(TemplateView):
 	template_name = "carte_interactive/search_results.html"
 # get search input
@@ -75,10 +77,11 @@ class SearchResultsView(TemplateView):
 # display list of Ecoles with link to detailView
 
 
+# get string inbetween two characters in other string
 def get_substring(str, start, end):
 	return str[str.find(start) + len(start):str.rfind(end)]
 
-
+# get what's inbetween ( and ) in string
 def get_type(type_string):
 	if '(' in type_string:
 		return get_substring(type_string, '(', ')')
@@ -169,9 +172,7 @@ def EditerEcole(request):
 			)
 
 		ecole = Ecole.objects.get(pk=_pk)
-		print(ecole.nom)
 		ecole.nom = _nom
-		print(ecole.nom)
 		ecole.ville = _ville
 		ecole.type = _type
 		ecole.programmes = _programmes

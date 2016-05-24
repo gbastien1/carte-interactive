@@ -51,15 +51,31 @@ $("#sidebar-nav-pills li").click(function(e) {
 
 // Click on edit button of info div
 function openEditTab() {
-    console.log("clicked");
+    // open tab, enable nav-pill...
     $('#sidebar-wrapper').addClass("toggled");
     $('#sidebar-wrapper').show("slide", { direction: "right" }, 500);
     $('.sidebar-tab').removeClass("active");
     $('#nav-pill-editer').addClass("active").removeClass("disabled");
     $('.sidebar-content').hide();
     $('#sidebar-content-editer').show();
+
+    // put pk value in disabled text input (debug)
     var pk = $('#pk-data').attr("data-pk");
     $('#c_pk').val(pk).prop('disabled', true);
+
+    // Prefill form with Ecole info
+    var marker = markers[pk - 1];
+    /*$('#c_nom').attr('value', marker.nom); //val(marker.nom);
+    $('#c_ville').attr('value', marker.ville); //val(marker.ville);  
+    $('#c_type').attr('value', marker.type); //val(marker.type);  
+    $('#c_programmes').attr('value', marker.programmes); //val(marker.programmes);  
+    $('#c_particularites').attr('value', marker.particularites); //val(marker.particularites);*/
+
+    $('#editer_form #c_nom').val(marker.nom);
+    $('#editer_form #c_ville').val(marker.ville);  
+    $('#editer_form #c_type option[value=' + marker.type + ']').attr('selected','selected');
+    $('#editer_form #c_programmes').val(marker.programmes);  
+    $('#editer_form #c_particularites').val(marker.particularites);        
 }
 
 // Submit ajouter_form
@@ -111,7 +127,7 @@ function ajouter_ecole(form) {
         },
 
         // handle a non-successful response
-        error : function(xhr,errmsg,err) {
+        error : function(xhr, errmsg, err) {
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
@@ -135,14 +151,19 @@ function editer_ecole(form) {
 
         // handle a successful response
         success : function(json) {
+            // disable edit tab
             $('#nav-pill-filtrer').addClass("active");
             $('#nav-pill-editer').removeClass("active").addClass("disabled");
             $('#sidebar-content-editer').hide();
             $('#sidebar-content-filtrer').show();
+
+            // update marker infowindow
+            var marker = markers[data["pk"] - 1];
+            console.log(marker);
         },
 
         // handle a non-successful response
-        error : function(xhr,errmsg,err) {
+        error : function(xhr, errmsg, err) {
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
