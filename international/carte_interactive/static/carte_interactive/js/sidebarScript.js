@@ -49,7 +49,7 @@ $("#sidebar-nav-pills li").click(function(e) {
     }
 });
 
-// Click on edit button of info div
+// Callback for click on edit button of info div
 function openEditTab() {
     // open tab, enable nav-pill...
     $('#sidebar-wrapper').addClass("toggled");
@@ -65,12 +65,6 @@ function openEditTab() {
 
     // Prefill form with Ecole info
     var marker = markers[pk - 1];
-    /*$('#c_nom').attr('value', marker.nom); //val(marker.nom);
-    $('#c_ville').attr('value', marker.ville); //val(marker.ville);  
-    $('#c_type').attr('value', marker.type); //val(marker.type);  
-    $('#c_programmes').attr('value', marker.programmes); //val(marker.programmes);  
-    $('#c_particularites').attr('value', marker.particularites); //val(marker.particularites);*/
-
     $('#editer_form #c_nom').val(marker.nom);
     $('#editer_form #c_ville').val(marker.ville);  
     $('#editer_form #c_type option[value=' + marker.type + ']').attr('selected','selected');
@@ -147,7 +141,7 @@ function editer_ecole(form) {
     $.ajax({
         url : "edit/", // the endpoint
         type : "POST", // http method
-        data : {content: JSON.stringify(data) },
+        data : {content: JSON.stringify(data)},
 
         // handle a successful response
         success : function(json) {
@@ -159,7 +153,17 @@ function editer_ecole(form) {
 
             // update marker infowindow
             var marker = markers[data["pk"] - 1];
-            console.log(marker);
+            marker.nom = data["nom"];
+            marker.ville = data["ville"];
+            marker.type = data["type"];
+            marker.programmes = data["programmes"];
+            marker.particularites = data["particularites"];
+
+            //create new updated info-div
+            infowindow.close();
+            var div = createInfoDiv(marker);
+            infowindow.setContent(div.html());
+            infowindow.open(map,marker);
         },
 
         // handle a non-successful response

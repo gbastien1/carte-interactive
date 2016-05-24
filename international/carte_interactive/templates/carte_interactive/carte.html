@@ -1,7 +1,9 @@
+
 {% extends '_layout.html' %}
 {% load staticfiles %}
 
 {% block content %}
+    
     <!-- search results div -->
     <div id="results-container">
         <button id="close-results-btn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
@@ -166,7 +168,7 @@
             var wasClicked = false;
 
             google.maps.event.addListener(marker, 'mouseover', function(e) {
-                var div = createInfoDiv(marker, ecole_data);
+                var div = createInfoDiv(marker);
                 infowindow.setContent(div.html());
                 infowindow.open(map,marker);
             });
@@ -189,16 +191,16 @@
             createMarker(ecole_data);
         }
 
-        function createInfoDiv(marker, ecole) {
+        function createInfoDiv(marker) {
             var div = $(".info-div");
             div.empty();
             div.append("<h4 id=\"info-title\">" + marker.nom + " (" + marker.ville + ")</h4>");
             div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
-            div.append("<p>Programmes: " + marker.programmes + "</p>");
+            div.append("<p id=\"info_programmes\">Programmes: " + marker.programmes + "</p>");
             div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
-            if(ecole.particularites) {
-                div.append("<p><span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
-                            ecole.particularites + "</p>");
+            if(marker.particularites) {
+                div.append("<span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span><p id=\"info_particularites\">" +
+                            marker.particularites + "</p>");
             }
             return div;
         }
@@ -207,6 +209,7 @@
             return str.substring(str.lastIndexOf(start)+1,str.lastIndexOf(end));
         }
     </script>
+
 {% endblock %}
 
 {% block mapscript %}
