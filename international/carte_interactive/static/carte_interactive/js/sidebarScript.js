@@ -69,7 +69,9 @@ function openEditTab() {
     $('#editer_form #c_ville').val(marker.ville);  
     $('#editer_form #c_type option[value=' + marker.type + ']').attr('selected','selected');
     $('#editer_form #c_programmes').val(marker.programmes);  
-    $('#editer_form #c_particularites').val(marker.particularites);        
+    $('#editer_form #c_particularites').val(marker.particularites);   
+    $('#editer_form #c_latitude').val(marker.position.lat());  
+    $('#editer_form #c_longitude').val(marker.position.lng());       
 }
 
 // Submit ajouter_form

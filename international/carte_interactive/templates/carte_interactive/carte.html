@@ -151,6 +151,7 @@
                 var marker_icon = icons[ecole_data.type].icon;
             else
                 var marker_icon = icons[get_substring(ecole_data.type, '(', ')')].icon;
+
             var myLatLng = new google.maps.LatLng(ecole_data.latitude, ecole_data.longitude);
             var marker = new google.maps.Marker({
                 position: myLatLng,
@@ -178,7 +179,7 @@
             });
             google.maps.event.addListener(marker, 'mouseout', function(e) {
                 if(!wasClicked)
-                    infowindow.close(map,marker);
+                    infowindow.close();
             });
         }
 

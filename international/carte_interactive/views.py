@@ -53,12 +53,15 @@ class CardView(LoginRequiredMixin, TemplateView):
 			# create Ecole objects with content of Excel file
 			Ecole.objects.update_or_create(
 				pk=row[Attr['pk']].value,
-				nom=row[Attr['ecole']].value,
-				type=row[Attr['type']].value,
-				ville=row[Attr['ville']].value,
-				programmes=row[Attr['programmes']].value,
-				latitude=float(row[Attr['latitude']].value),
-				longitude=float(row[Attr['longitude']].value))
+				defaults= {
+					'nom': row[Attr['ecole']].value,
+					'type': row[Attr['type']].value,
+					'ville': row[Attr['ville']].value,
+					'programmes': row[Attr['programmes']].value,
+					'latitude': float(row[Attr['latitude']].value),
+					'longitude': float(row[Attr['longitude']].value)
+				}
+			)
 
 		# fill json file with Ecole data, for use with Google Javascript API
 		json_data = serializers.serialize('json', Ecole.objects.all())
@@ -94,6 +97,7 @@ def AjouterEcole(request):
 
 	if request.method == 'POST':
 		data = json.loads(request.POST.get('content'))
+		_pk = data["pk"]
 		_nom = data["nom"]
 		_ville = data["ville"]
 		_type = data["type"]
@@ -107,20 +111,9 @@ def AjouterEcole(request):
 				"incomplete data",
 				content_type="application/json"
 			)
-
-		
-		ecole = Ecole(
-			nom=_nom,
-			ville=_ville,
-			type=get_type(_type),
-			programmes=_programmes,
-			particularites=_particularites,
-			latitude=_latitude,
-			longitude=_longitude
-		)
-		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
-		"""
+	
 		ecole, created = Ecole.objects.get_or_create(
+			pk=_pk,
 			nom=_nom,
 			ville=_ville,
 			type=get_type(_type),
@@ -146,7 +139,7 @@ def AjouterEcole(request):
 			ecole_wb.save(app_name + data_url)
 		else:
 			response_data = "already created"
-		"""
+		
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
@@ -164,6 +157,8 @@ def EditerEcole(request):
 		_type = data["type"]
 		_programmes = data["programmes"]
 		_particularites = data["particularites"]
+		_latitude = data["latitude"]
+		_longitude = data["longitude"]
 
 		if not _pk and not _nom and not _ville and not _programmes and not _particularites:
 			return HttpResponse(
@@ -171,6 +166,7 @@ def EditerEcole(request):
 				content_type="application/json"
 			)
 
+		
 		ecole = Ecole.objects.get(pk=_pk)
 		ecole.nom = _nom
 		ecole.ville = _ville
@@ -180,24 +176,20 @@ def EditerEcole(request):
 		ecole.save()
 
 		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
-		"""
-		if created:
-			response_data = json.dumps(serializers.serialize('json', [ecole, ]))
-			app_name = 'carte_interactive'
-			data_url = static('carte_interactive/data/data.xlsx')
-			ecole_wb = openpyxl.load_workbook(app_name + data_url)
-			sheet = ecole_wb.get_sheet_by_name('data')
-			
-			sheet.cell(row=row, column=1).value = _nom
-			sheet.cell(row=row, column=2).value = get_type(_type)
-			sheet.cell(row=row, column=3).value = _ville
-			sheet.cell(row=row, column=4).value = _programmes
-			sheet.cell(row=row, column=5).value = _latitude
-			sheet.cell(row=row, column=6).value = _longitude
-			ecole_wb.save(app_name + data_url)
-		else:
-			response_data = "already created"
-		"""
+		app_name = 'carte_interactive'
+		data_url = static('carte_interactive/data/data.xlsx')
+		ecole_wb = openpyxl.load_workbook(app_name + data_url)
+		sheet = ecole_wb.get_sheet_by_name('data')
+		
+		row = int(_pk)
+		sheet.cell(row=row, column=2).value = _nom
+		sheet.cell(row=row, column=3).value = get_type(_type)
+		sheet.cell(row=row, column=4).value = _ville
+		sheet.cell(row=row, column=5).value = _programmes
+		sheet.cell(row=row, column=6).value = _latitude
+		sheet.cell(row=row, column=7).value = _longitude
+		ecole_wb.save(app_name + data_url)
+		
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
