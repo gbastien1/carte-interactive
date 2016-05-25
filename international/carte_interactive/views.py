@@ -107,6 +107,7 @@ def AjouterEcole(request):
 			sheet = ecole_wb.get_sheet_by_name('data')
 			row_count = len(sheet.rows)
 			row = row_count + 1
+			sheet.cell(row=row, column=1).value = _pk
 			sheet.cell(row=row, column=2).value = _nom
 			sheet.cell(row=row, column=3).value = get_type(_type)
 			sheet.cell(row=row, column=4).value = _ville
