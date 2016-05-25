@@ -37,7 +37,7 @@ $(document).click(function (e){
 });
 
 $("#sidebar-nav-pills li").click(function(e) {
-    if(!$(this).hasClass("disabled")) { //TODO ADD THIS CONDITION
+    if(!$(this).hasClass("disabled")) {
     	e.preventDefault();
     	$("#sidebar-nav-pills li").removeClass("active");
     	$(".sidebar-content").hide();
@@ -64,14 +64,13 @@ function openEditTab() {
     $('#c_pk').val(pk).prop('disabled', true);
 
     // Prefill form with Ecole info
-    var marker = markers[pk - 1];
-    $('#editer_form #c_nom').val(marker.nom);
-    $('#editer_form #c_ville').val(marker.ville);  
-    $('#editer_form #c_type option[value=' + marker.type + ']').attr('selected','selected');
-    $('#editer_form #c_programmes').val(marker.programmes);  
-    $('#editer_form #c_particularites').val(marker.particularites);   
-    $('#editer_form #c_latitude').val(marker.position.lat());  
-    $('#editer_form #c_longitude').val(marker.position.lng());       
+    var ecole_to_edit = json_db_data[pk - 1].fields;
+    $('#editer_form #c_nom').val(ecole_to_edit.nom);
+    $('#editer_form #c_ville').val(ecole_to_edit.ville); 
+    $('#editer_form #c_adresse').val(ecole_to_edit.adresse); 
+    $('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').attr('selected','selected');
+    $('#editer_form #c_programmes').val(ecole_to_edit.programmes);  
+    $('#editer_form #c_particularites').val(ecole_to_edit.particularites);      
 }
 
 // Submit ajouter_form
@@ -93,41 +92,44 @@ function ajouter_ecole(form) {
     var data = {};
     $.each(form.elements, function(index, el){
         var input = $(el);
-        data[input.attr("name")] = input.val();
+        if (input.attr("name") === "type") {
+            data["type"] = input.find(":selected").text();
+        }
+        else
+            data[input.attr("name")] = input.val();
         delete data["undefined"];
     });
+
+    data["pk"] = json_db_data.length + 1;
+
     //get latitude and longitude of Ecole
-    var adresse = data["nom"] + ', ' + data["_ville"] + ', France';
+    var adresse = data["adresse"];
     geocoder.geocode({'address': adresse}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            var latLng = results.geometry.location;
-            console.log("latitude: " + latLng.latitude + " longitude: " + latLng.longitude);
-            data["latitude"] = latLng.latitude;
-            data["longitude"] = latLng.longitude;
-            $("#c_latitude").val(latLng.latitude);
-            $("#c_longitude").val(latLng.longitude);
+            var latLng = results[0].geometry.location;
+
+            $.ajax({
+                url : "ajout/", // the endpoint
+                type : "POST", // http method
+                data : {content: JSON.stringify(data) },
+
+                // handle a successful response
+                success : function(json) {
+                    ecole_data = JSON.parse(json);
+                    if(ecole_data[0] !== "already created" || ecole_data[0] != "incomplete data") {
+                        createMarker(ecole_data[0].fields, data["pk"]);
+                    }
+                },
+
+                // handle a non-successful response
+                error : function(xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
         }
-        else console.log("could not finc coordinates");
-    });
-
-    $.ajax({
-        url : "ajout/", // the endpoint
-        type : "POST", // http method
-        data : {content: JSON.stringify(data) },
-
-        // handle a successful response
-        success : function(json) {
-            ecole_data = JSON.parse(json);
-            //if(ecole_data !== "already created" || ecole_data != "incomplete data")
-                //createMarker(ecole_data.fields);
-        },
-
-        // handle a non-successful response
-        error : function(xhr, errmsg, err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
+        else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");
     });
 };
 
@@ -153,10 +155,19 @@ function editer_ecole(form) {
             $('#sidebar-content-editer').hide();
             $('#sidebar-content-filtrer').show();
 
+            var adresse = data["adresse"];
+            geocoder.geocode({'address': adresse}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latLng = results[0].geometry.location;
+                    marker.position = latLng;
+                }
+            });
+
             // update marker infowindow
             var marker = markers[data["pk"] - 1];
             marker.nom = data["nom"];
             marker.ville = data["ville"];
+            marker.adresse = data["adresse"];
             marker.type = data["type"];
             marker.programmes = data["programmes"];
             marker.particularites = data["particularites"];

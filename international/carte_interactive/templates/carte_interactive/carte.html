@@ -19,6 +19,7 @@
     <script>
         var map;
         var infowindow;
+        var json_db_data;
         var markers = [];
         var geocoder;
         var iconBase = '../../static/carte_interactive/img/marker_';
@@ -125,26 +126,28 @@
         $.ajax({
             url: "../../static/carte_interactive/json/data.json",
             success: function (data) {
-                var ecole_data = JSON.parse(data);
-                ecole_data.forEach(function(ecole) {
+                json_db_data = JSON.parse(data);
+                json_db_data.forEach(function(ecole) {
                     createMarker(ecole.fields, ecole.pk);
                 });
-
-                /**
-                *  Légende
-                */
-                var legend = $("#legend");
-                for (var type in icons) {
-                    var type = type;
-                    var icon = icons[type].icon;
-                    var div = document.createElement('div');
-                    div.innerHTML = '<img src="' + icon + '" style="width: 24px; height: 24px;"> ' + type;
-                    legend.append(div);
-                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log("Could not read json file");
             }
         });
-
+    
+        /**
+        *  Légende
+        */
+        var legend = $("#legend");
+        for (var type in icons) {
+            var type = type;
+            var icon = icons[type].icon;
+            var div = document.createElement('div');
+            div.innerHTML = '<img src="' + icon + '" style="width: 24px; height: 24px;"> ' + type;
+            legend.append(div);
         }
+    }
 
         function createMarker(ecole_data, pk) {
             if(ecole_data.type.indexOf('(') == -1)
@@ -152,44 +155,42 @@
             else
                 var marker_icon = icons[get_substring(ecole_data.type, '(', ')')].icon;
 
-            var myLatLng = new google.maps.LatLng(ecole_data.latitude, ecole_data.longitude);
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                animation: google.maps.Animation.DROP,
-                icon: marker_icon,
-                nom: ecole_data.nom,
-                ville: ecole_data.ville,
-                type: ecole_data.type,
-                programmes: ecole_data.programmes,
-                particularites: ecole_data.particularites,
-                pk: pk
-            });
-            marker.setMap(map);
-            markers.push(marker);
-            var wasClicked = false;
+            var adresse = ecole_data.adresse;
+            geocoder.geocode({'address': adresse}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latLng = results[0].geometry.location;
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        animation: google.maps.Animation.DROP,
+                        icon: marker_icon,
+                        nom: ecole_data.nom,
+                        ville: ecole_data.ville,
+                        adresse: ecole_data.adresse,
+                        type: ecole_data.type,
+                        programmes: ecole_data.programmes,
+                        particularites: ecole_data.particularites,
+                        pk: pk
+                    });
+                    marker.setMap(map);
+                    markers.push(marker);
+                    var wasClicked = false;
 
-            google.maps.event.addListener(marker, 'mouseover', function(e) {
-                var div = createInfoDiv(marker);
-                infowindow.setContent(div.html());
-                infowindow.open(map,marker);
-            });
+                    google.maps.event.addListener(marker, 'mouseover', function(e) {
+                        var div = createInfoDiv(marker);
+                        infowindow.setContent(div.html());
+                        infowindow.open(map,marker);
+                    });
 
-            google.maps.event.addListener(marker, 'click', function(e) {
-                wasClicked = true;
+                    google.maps.event.addListener(marker, 'click', function(e) {
+                        wasClicked = true;
+                    });
+                    google.maps.event.addListener(marker, 'mouseout', function(e) {
+                        if(!wasClicked)
+                            infowindow.close();
+                    });
+                }
+                else alert("Impossible de trouver la position de l'école " + ecole_data.nom);
             });
-            google.maps.event.addListener(marker, 'mouseout', function(e) {
-                if(!wasClicked)
-                    infowindow.close();
-            });
-        }
-
-        function createMarkerFromFormData() {
-            var ecole_data = {};
-            var inputs = $('#ajouter_form').serializeArray();
-            $.each(inputs, function (i, input) {
-                ecole_data[input.name] = input.value;
-            });
-            createMarker(ecole_data);
         }
 
         function createInfoDiv(marker) {
@@ -200,7 +201,7 @@
             div.append("<p id=\"info_programmes\">Programmes: " + marker.programmes + "</p>");
             div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
             if(marker.particularites) {
-                div.append("<span style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span><p id=\"info_particularites\">" +
+                div.append("<p id=\"info_particularites\"><span id=\"star-icon\" style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
                             marker.particularites + "</p>");
             }
             return div;
@@ -215,6 +216,6 @@
 
 {% block mapscript %}
     <script async
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6I1N0Pdzsubd3d2EJQkKUTyglIBrwloQ&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6I1N0Pdzsubd3d2EJQkKUTyglIBrwloQ">
     </script>
 {% endblock %}

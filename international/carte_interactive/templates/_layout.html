@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
 </html>
-<body>
+<body onload="javascript:initMap()">
 
 	{% include '_nav.html' %}
     {% include '_sidebar.html' %}
