@@ -13,6 +13,7 @@ from django.core import serializers
 from .models import Ecole
 import openpyxl
 
+app_name = 'carte_interactive'
 
 # url: /
 class LoginView(FormView):
@@ -91,8 +92,7 @@ def AjouterEcole(request):
 			particularites=_particularites
 		)
 		if created:
-			# append new Ecole object to data.json
-			app_name = 'carte_interactive'
+			# add new Ecole object to data.json
 			json_data_url = static('carte_interactive/json/data.json')
 			json_data = serializers.serialize('json', Ecole.objects.all())
 			json_data_url = static('carte_interactive/json/data.json')
@@ -101,7 +101,6 @@ def AjouterEcole(request):
 			json_data_file.close()
 			
 			response_data = json.dumps(serializers.serialize('json', [ecole, ]))
-			app_name = 'carte_interactive'
 			data_url = static('carte_interactive/data/data.xlsx')
 			ecole_wb = openpyxl.load_workbook(app_name + data_url)
 			sheet = ecole_wb.get_sheet_by_name('data')
@@ -152,8 +151,16 @@ def EditerEcole(request):
 		if _particularites: ecole.particularites = _particularites
 		ecole.save()
 
+		# update Ecole object in data.json
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+
+		# update Ecole object in data.xlsx
 		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
-		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
 		ecole_wb = openpyxl.load_workbook(app_name + data_url)
 		sheet = ecole_wb.get_sheet_by_name('data')
