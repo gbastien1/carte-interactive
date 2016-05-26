@@ -1,19 +1,15 @@
 #sidebar-wrapper {
   z-index: 10;
-  position: fixed;
+  position: absolute;
+  left: 0;
   top: 0;
-  left: -400px;
-  width: 400px;
+  display: none;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   background: #fff;
-  transition: all 0.5s ease;
   color: #555555;
   border-right: 1px solid #BBBBBB; }
-
-#sidebar-wrapper.toggled {
-  left: 0; }
 
 #close-menu-btn {
   position: absolute;
@@ -24,7 +20,6 @@
 .sidebar-nav {
   position: absolute;
   top: 0;
-  width: 400px;
   margin: 0;
   padding: 0;
   list-style: none; }
@@ -71,7 +66,20 @@ input[type="checkbox"] {
 .nav-tabs .glyphicon {
   margin-left: 6px; }
 
-.nav-tabs > li.disabled > a:hover {
+.nav-tabs > .disabled > a:hover {
   border: 1px solid transparent; }
+
+/* make things responsive */
+@media screen and (min-width: 600px) and (max-width: 900px) {
+  #sidebar-wrapper {
+    width: 50%; } }
+
+@media screen and (min-width: 400px) and (max-width: 600px) {
+  #sidebar-wrapper {
+    width: 75%; } }
+
+@media screen and (min-width: 320px) and (max-width: 400px) {
+  #sidebar-wrapper {
+    width: 100%; } }
 
 /*# sourceMappingURL=simple-sidebar.css.map */

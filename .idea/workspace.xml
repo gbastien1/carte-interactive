@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b319b482-ae30-42e7-8849-c0431a2a00a8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/resultsScript.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/data/data.xlsx" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/data/data.xlsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/db.sqlite3" afterPath="$PROJECT_DIR$/international/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/googleMap.js" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/googleMap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/json/data.json" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/json/data.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/_layout.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/_layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/views.py" afterPath="$PROJECT_DIR$/international/carte_interactive/views.py" />
-    </list>
+    <list default="true" id="b319b482-ae30-42e7-8849-c0431a2a00a8" name="Default" comment="" />
     <ignored path="carte-interactive.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,8 +24,8 @@
       <file leaf-file-name="apps.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/international/carte_interactive/apps.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+            <state relative-caret-position="457">
+              <caret line="44" column="34" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="34" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -436,10 +425,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19196428" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19196428" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -789,8 +778,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/international/carte_interactive/apps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+        <state relative-caret-position="457">
+          <caret line="44" column="34" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="34" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

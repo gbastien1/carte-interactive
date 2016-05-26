@@ -34,6 +34,7 @@ $('#editer_form').on('submit', function(event){
 $("#menu-toggler").click(function(e) {
 	e.preventDefault();
 	$("#sidebar-wrapper").addClass("toggled");
+	$("#sidebar-wrapper").show("slide", { direction: "left" }, 500);
 	$("#sidebar-content-ajouter").hide();
 	$("#sidebar-content-editer").hide();
 });
@@ -52,6 +53,7 @@ $("#close-menu-btn").click(function(e) {
 	}
 	// actually close the sidebar
 	$("#sidebar-wrapper").removeClass("toggled");
+	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
 });
 
 /**
@@ -72,6 +74,7 @@ $(document).click(function (e){
 			}
 			// actually close the sidebar
 			$('#sidebar-wrapper').removeClass("toggled");
+			$('#sidebar-wrapper').hide("slide", { direction: "left" }, 500);
 		}
 	}
 	// when not clicking on the results sidebar nor the search bar
