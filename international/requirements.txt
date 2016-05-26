@@ -1,2 +1,3 @@
+django==1.9.x
 openpyxl
 django-bootstrap3==7.0.1
