@@ -93,7 +93,6 @@ def AjouterEcole(request):
 		)
 		if created:
 			# add new Ecole object to data.json
-			json_data_url = static('carte_interactive/json/data.json')
 			json_data = serializers.serialize('json', Ecole.objects.all())
 			json_data_url = static('carte_interactive/json/data.json')
 			json_data_file = open(app_name + json_data_url, 'w')

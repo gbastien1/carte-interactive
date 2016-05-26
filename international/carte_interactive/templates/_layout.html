@@ -6,6 +6,8 @@
 
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
+	<!-- this script contains initMap which needs to be loaded at first -->
+	<script type="text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>
 </html>
 <body onload="javascript:initMap()">
 
@@ -17,10 +19,11 @@
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-1.12.3.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-ui.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'carte_interactive/js/sidebarScript.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/js/interfaceCallbacks.js' %}"></script>
+    <script type="text/javascript" src="{% static 'carte_interactive/js/ajaxFormHandling.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/js/resultsScript.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/js/csrf.js' %}"></script>
-    <script type="text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>
+    
 	<!-- GOOGLE MAPS JAVASCRIPT API -->
 	{% block mapscript %} {% endblock %}
 

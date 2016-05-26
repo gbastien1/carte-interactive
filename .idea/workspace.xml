@@ -2,19 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b319b482-ae30-42e7-8849-c0431a2a00a8" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/resultsScript.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/data/data.xlsx" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/data/data.xlsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/db.sqlite3" afterPath="$PROJECT_DIR$/international/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/__init__.py" afterPath="$PROJECT_DIR$/international/carte_interactive/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/apps.py" afterPath="$PROJECT_DIR$/international/carte_interactive/apps.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/models.py" afterPath="$PROJECT_DIR$/international/carte_interactive/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/googleMap.js" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/googleMap.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/json/data.json" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/json/data.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/sass/style.scss" afterPath="$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/sass/style.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/_layout.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/_layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/ajouter_ecole.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/ajouter_ecole.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/editer_ecole.html" afterPath="$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/editer_ecole.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/international/carte_interactive/views.py" afterPath="$PROJECT_DIR$/international/carte_interactive/views.py" />
     </list>
     <ignored path="carte-interactive.iws" />
@@ -35,22 +31,12 @@
     <favorites_list name="carte-interactive" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="sidebarScript.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="66" column="35" selection-start-line="66" selection-start-column="35" selection-end-line="66" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="apps.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/international/carte_interactive/apps.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="22" column="64" selection-start-line="22" selection-start-column="64" selection-end-line="22" selection-end-column="64" />
+            <state relative-caret-position="491">
+              <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -61,8 +47,8 @@
       <file leaf-file-name="carte.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="172" column="23" selection-start-line="172" selection-start-column="23" selection-end-line="172" selection-end-column="23" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -152,8 +138,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -278,44 +264,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="carte-interactive" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="carte-interactive" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="international" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="carte_interactive" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="carte_interactive" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="editor.config.accepted" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -479,10 +436,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19196428" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19196428" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -797,9 +754,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
           <caret line="136" column="22" selection-start-line="136" selection-start-column="22" selection-end-line="136" selection-end-column="22" />
-          <folding>
-            <element signature="e#24#35#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -807,14 +761,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/international/carte_interactive/templates/carte_interactive/carte.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="172" column="23" selection-start-line="172" selection-start-column="23" selection-end-line="172" selection-end-column="23" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -823,13 +776,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-359">
           <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/international/carte_interactive/static/carte_interactive/js/sidebarScript.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
+        <state relative-caret-position="1122">
           <caret line="66" column="35" selection-start-line="66" selection-start-column="35" selection-end-line="66" selection-end-column="35" />
           <folding />
         </state>
@@ -837,8 +789,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/international/carte_interactive/apps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="22" column="64" selection-start-line="22" selection-start-column="64" selection-end-line="22" selection-end-column="64" />
+        <state relative-caret-position="491">
+          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
