@@ -86,7 +86,7 @@ input[type="checkbox"] {
   position: absolute;
   right: 0;
   height: 100%;
-  z-index: 7;
+  z-index: 10;
   padding: 1em;
   background-color: #fff;
   border-left: 1px solid #BBBBBB;
@@ -164,8 +164,7 @@ html, body {
 
 @media screen and (max-width: 400px) {
   #search-bar {
-    position: absolute;
-    left: 1em;
-    top: 1em; } }
+    left: 5px;
+    top: 5px; } }
 
 /*# sourceMappingURL=style.css.map */

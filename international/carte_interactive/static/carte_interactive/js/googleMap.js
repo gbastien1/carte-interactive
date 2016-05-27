@@ -84,7 +84,13 @@ function initMap() {
 	$.ajax({
 		url: "../../static/carte_interactive/json/data.json",
 		success: function (data) {
-			json_db_data = data;
+			try {
+				$.parseJSON(data);
+				json_db_data = JSON.parse(data);
+			}
+			catch(e) {
+				json_db_data = data;
+			}
 			json_db_data.forEach(function(ecole) {
 				createMarker(ecole.fields, ecole.pk);
 			});
