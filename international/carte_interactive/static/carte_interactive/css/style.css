@@ -126,7 +126,6 @@ html, body {
 
 #search-bar {
   position: absolute;
-  left: 2em;
   top: 3.5em; }
 
 #menu-toggler {
@@ -164,7 +163,10 @@ html, body {
 
 @media screen and (max-width: 400px) {
   #search-bar {
-    left: 5px;
-    top: 5px; } }
+    width: 100%; } }
+
+@media screen and (min-width: 400px) and (max-width: 600px) {
+  #search-bar {
+    width: 75%; } }
 
 /*# sourceMappingURL=style.css.map */
