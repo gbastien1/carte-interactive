@@ -187,6 +187,9 @@ function filterMarkers() {
             m.setVisible(true);
         });
 	}
+	// close sidebar
+	$("#sidebar-wrapper").removeClass("toggled");
+	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
 }
 
 /**
