@@ -60,7 +60,7 @@ def get_type(type_string):
 		return type_string
 
 
-# url: ajout/
+# url: carte/ajout/
 def AjouterEcole(request):
 
 	if request.method == 'POST':
@@ -121,9 +121,9 @@ def AjouterEcole(request):
 	)
 
 
-# url: edit/
+# url: carte/edit/
 def EditerEcole(request):
-
+	print("dans EditerEcole view")
 	if request.method == 'POST':
 		data = json.loads(request.POST.get('content'))
 		_pk = data["pk"]

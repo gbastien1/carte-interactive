@@ -21,9 +21,6 @@
     width: 40px;
     height: 40px;
     margin-top: 15px;
-    /*position: absolute;
-    top: 1em;
-    right: 1em;*/
 }
 
 /* Sidebar Styles */
@@ -63,10 +60,6 @@
 
 .sidebar-nav form input[type="submit"] {
     margin-left: 20px;
-}
-
-#sidebar-content-filtrer, #sidebar-content-ajouter, #sidebar-content-editer {
-    margin-bottom: 50px;
 }
 
 /*fix bootstrap*/
@@ -117,4 +110,10 @@ input[type="checkbox"] {
    #sidebar-title {
         font-size: 1.5em;
    }
+}
+
+@media screen and (max-width:400px) {
+    #sidebar-content-filtrer, #sidebar-content-ajouter, #sidebar-content-editer {
+        margin-bottom: 50px;
+    }
 }

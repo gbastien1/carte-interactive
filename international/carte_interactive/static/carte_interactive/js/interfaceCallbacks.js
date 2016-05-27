@@ -127,7 +127,7 @@ $("#search_input").keyup(function (e) {
 function openEditTab() {
 	// open tab, enable nav-pill...
 	$('#sidebar-wrapper').addClass("toggled");
-	$('#sidebar-wrapper').show("slide", { direction: "right" }, 500);
+	$('#sidebar-wrapper').show("slide", { direction: "left" }, 500);
 	$('.sidebar-tab').removeClass("active");
 	$('#nav-pill-editer').addClass("active").removeClass("disabled");
 	$('.sidebar-content').hide();

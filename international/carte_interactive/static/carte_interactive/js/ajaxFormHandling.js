@@ -77,6 +77,13 @@ function editer_ecole(form) {
             $('#sidebar-content-editer').hide();
             $('#sidebar-content-filtrer').show();
 
+            // update marker information with form data
+            var marker;
+            markers.forEach(function(m) {
+            	if(m.pk == data["pk"])
+            		marker = m;
+            });
+
             // get latitude and longitude from Ecole address,
             // update marker position accordingly. Might change or not.
             var adresse = data["adresse"];
@@ -88,8 +95,6 @@ function editer_ecole(form) {
                 else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");
             });
 
-            // update marker information with form data
-            var marker = markers[data["pk"] - 1];
             marker.nom = data["nom"];
             marker.ville = data["ville"];
             marker.adresse = data["adresse"];
