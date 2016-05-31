@@ -144,7 +144,9 @@ function openEditTab() {
 	$('#editer_form #c_adresse').val(ecole_to_edit.adresse); 
 	$('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').attr('selected','selected');
 	$('#editer_form #c_programmes').val(ecole_to_edit.programmes);  
-	$('#editer_form #c_particularites').val(ecole_to_edit.particularites);      
+	$('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
+	$('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
+	console.log("visite interface callback: " + ecole_to_edit.visite);
 }
 
 

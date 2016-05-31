@@ -11,7 +11,8 @@ var icons = { 		//icon urls depending on Ecole type
   U:    { icon: iconBase + 'U.png' },
   IUT:  { icon: iconBase + 'IUT.png' },
   EI:   { icon: iconBase + 'EI.png' },
-  EC:   { icon: iconBase + 'EC.png' }
+  EC:   { icon: iconBase + 'EC.png' },
+  visité: 	{ icon: iconBase + 'V.png '}
 };
 
 /**
@@ -116,13 +117,16 @@ function initMap() {
  * @param  {int} 	pk         primary key of created Ecole data
  */
 function createMarker(ecole_data, pk) {
-	// used to get the abbreviation type (eg. U, IUT, EC or EI),
-	// instead of Universite, Ecole de commerce etc.
-	// The format is either, for instance, 'U', or 'University (U)', and we only want 'U'
-    if(ecole_data.type.indexOf('(') == -1)
-        var marker_icon = icons[ecole_data.type].icon;
-    else
-        var marker_icon = icons[get_substring(ecole_data.type, '(', ')')].icon;
+	if (ecole_data.visite) 
+		var marker_icon = icons["visité"].icon;
+	else
+		// used to get the abbreviation type (eg. U, IUT, EC or EI),
+		// instead of Universite, Ecole de commerce etc.
+		// The format is either, for instance, 'U', or 'University (U)', and we only want 'U'
+	    if(ecole_data.type.indexOf('(') == -1)
+	        var marker_icon = icons[ecole_data.type].icon;
+	    else
+	        var marker_icon = icons[get_substring(ecole_data.type, '(', ')')].icon;
 
     // get latitude and longitude from address of newly created Ecole
     // if it succeeds, create a marker with the data sent in parameters
@@ -140,7 +144,8 @@ function createMarker(ecole_data, pk) {
                 type: ecole_data.type,
                 programmes: ecole_data.programmes,
                 particularites: ecole_data.particularites,
-                pk: pk
+                pk: pk,
+                visite: ecole_data.visite
             });
             marker.setMap(map);
             markers.push(marker);
@@ -171,13 +176,23 @@ function createMarker(ecole_data, pk) {
 function createInfoDiv(marker) {
     var div = $(".info-div");
     div.empty();
+    // Title with city in parenthesis
     div.append("<h4 id=\"info-title\">" + marker.nom + " (" + marker.ville + ")</h4>");
+    // Edit button at top-right corner of infowindow
     div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
+    // List of programs offered with this school
     div.append("<p id=\"info_programmes\">Programmes: " + marker.programmes + "</p>");
+    // Data to be used by Javascript, not displayed onscreen
     div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
+    // Particularities, if any, preceded my a green star
     if(marker.particularites) {
         div.append("<p id=\"info_particularites\"><span id=\"star-icon\" style=\"color: #0BE613\" class=\"glyphicon glyphicon-star-empty\"></span>" +
                     marker.particularites + "</p>");
+    }
+    // Toggle button to mark Ecole as visited or not
+    // div.append("<label class=\"switch pull-right\"><input type=\"checkbox\"><div class=\"slider round\"></div></label>");
+    if(marker.visite) {
+    	div.append("<span class=\"label label-danger pull-right\">Visitée</span>");
     }
     return div;
 }

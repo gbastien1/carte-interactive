@@ -73,6 +73,7 @@ def AjouterEcole(request):
 		_programmes = data["programmes"]
 		_adresse = data["adresse"]
 		_particularites = data["particularites"]
+		_visite = data["visite"]
 
 		# check if something was entered in the form
 		# There is a better way using class based views, but with AJAX this is easier
@@ -89,7 +90,8 @@ def AjouterEcole(request):
 			type=get_type(_type),
 			programmes=_programmes,
 			adresse=_adresse,
-			particularites=_particularites
+			particularites=_particularites,
+			visite=_visite
 		)
 		if created:
 			# add new Ecole object to data.json
@@ -123,7 +125,6 @@ def AjouterEcole(request):
 
 # url: carte/edit/
 def EditerEcole(request):
-	print("dans EditerEcole view")
 	if request.method == 'POST':
 		data = json.loads(request.POST.get('content'))
 		_pk = data["pk"]
@@ -133,6 +134,7 @@ def EditerEcole(request):
 		_programmes = data["programmes"]
 		_adresse = data["adresse"]
 		_particularites = data["particularites"]
+		_visite = data["visite"]
 
 		if not _pk and not _nom and not _ville and not _programmes and not _particularites:
 			return HttpResponse(
@@ -140,7 +142,6 @@ def EditerEcole(request):
 				content_type="application/json"
 			)
 
-		
 		ecole = Ecole.objects.get(pk=_pk)
 		ecole.nom = _nom
 		ecole.ville = _ville
@@ -148,6 +149,7 @@ def EditerEcole(request):
 		ecole.programmes = _programmes
 		ecole.adresse = _adresse
 		if _particularites: ecole.particularites = _particularites
+		ecole.visite = _visite
 		ecole.save()
 
 		# update Ecole object in data.json

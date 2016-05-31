@@ -42,6 +42,19 @@ function ajouter_ecole(form) {
                     }
                 }
             });
+            // Update Json_db_data content
+			$.ajax({
+				url: "../../static/carte_interactive/json/data.json",
+				success: function (data) {
+					try {
+						$.parseJSON(data);
+						json_db_data = JSON.parse(data);
+					}
+					catch(e) {
+						json_db_data = data;
+					}
+				}
+			});
         }
         else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");
     });
@@ -59,11 +72,17 @@ function editer_ecole(form) {
     $.each(form.elements, function(index, el){
         var input = $(el);
         data[input.attr("name")] = input.val();
+        // if Ecole was not visited, write nonVisite instead of visite
+        if(input.attr("name") == "visite") {
+        	data[input.attr("name")] = input.is(":checked");  
+        }
+
         delete data["undefined"];
     });
 
     // send ajax request to views.py at url edit/,
     // send form data to views.py to update the DB data
+    console.log("envoi d'une requête AJAX vers edit");
     $.ajax({
         url : "edit/", // the endpoint
         type : "POST", // http method
@@ -101,12 +120,32 @@ function editer_ecole(form) {
             marker.type = data["type"];
             marker.programmes = data["programmes"];
             marker.particularites = data["particularites"];
+            marker.visite = data["visite"];
+
+           	if(marker.visite)
+           		marker.setIcon('../../static/carte_interactive/img/marker_V.png');
+           	else
+           		marker.setIcon('../../static/carte_interactive/img/marker_' + get_substring(marker.type, '(', ')') + '.png');
 
             //create new updated info-div with the updated marker
             infowindow.close();
             var div = createInfoDiv(marker);
             infowindow.setContent(div.html());
             infowindow.open(map,marker);
+
+            // Update Json_db_data content
+			$.ajax({
+				url: "../../static/carte_interactive/json/data.json",
+				success: function (data) {
+					try {
+						$.parseJSON(data);
+						json_db_data = JSON.parse(data);
+					}
+					catch(e) {
+						json_db_data = data;
+					}
+				}
+			});
         }
     });
 };
