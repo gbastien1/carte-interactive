@@ -125,7 +125,8 @@ input[type="checkbox"] {
   position: relative;
   display: inline-block;
   width: 50px;
-  height: 25px; }
+  height: 25px;
+  margin-left: 30px; }
 
 /* Hide default HTML checkbox */
 .switch input {
@@ -171,6 +172,12 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%; }
+
+/* label placement */
+#visite-label {
+  position: absolute;
+  left: 50px;
+  top: 0; }
 
 /** general styles */
 a:hover {
