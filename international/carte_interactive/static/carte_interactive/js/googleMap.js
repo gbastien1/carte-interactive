@@ -8,35 +8,14 @@ var json_db_data;	// the Ecole json data retrieved from Django DB
 var markers = [];	// the google maps markers
 var iconBase = '../../static/carte_interactive/img/marker_'; // relative url to marker icons
 var icons = { 		//icon urls depending on Ecole type
-  U:    { icon: iconBase + 'U.png' },
-  IUT:  { icon: iconBase + 'IUT.png' },
-  EI:   { icon: iconBase + 'EI.png' },
-  EC:   { icon: iconBase + 'EC.png' },
+  U:    	{ icon: iconBase + 'U.png' },
+  IUT:  	{ icon: iconBase + 'IUT.png' },
+  EI:   	{ icon: iconBase + 'EI.png' },
+  EC:   	{ icon: iconBase + 'EC.png' },
   visité: 	{ icon: iconBase + 'V.png '}
 };
-
-/**
- * Callback to initialize the Google Maps map, 
- * called in body onload in layout.html
- */
-function initMap() {
-	geocoder = new google.maps.Geocoder();
-	var mapDiv = document.getElementById('map');
-	// set map variable and attributes
-	map = new google.maps.Map(mapDiv, {
-	  center: {lat: 47.081012, lng: 2.3522219},
-	  zoom: 6
-	});
-	// create empty infoWindow variable, fill it later
-	infowindow = new google.maps.InfoWindow({
-		content: ""
-	 });
-	// hide the infowindow div element
-	$(".info-div").hide();
-	// Google Map styling, 
-	// found at https://snazzymaps.com/style/25/blue-water
-	map.set('styles',
-	[
+// found at https://snazzymaps.com/style/25/blue-water
+var styleConfig = [
 		{
 			"featureType": "administrative",
 			"elementType": "labels.text.fill",
@@ -79,36 +58,49 @@ function initMap() {
 			"stylers": [{"color": "#46bcec"},
 						{"visibility": "on"} ]
 			}
-		]);
+		];
+
+/**
+ * Callback to initialize the Google Maps map, 
+ * called in body onload in layout.html
+ */
+function initMap() {
+	geocoder = new google.maps.Geocoder();
+	var mapDiv = document.getElementById('map');
+	// set map variable and attributes
+	map = new google.maps.Map(mapDiv, {
+	  center: {lat: 47.081012, lng: 2.3522219},
+	  zoom: 6
+	});
+	// create empty infoWindow variable, fill it later
+	infowindow = new google.maps.InfoWindow({
+		content: ""
+	 });
+	// hide the infowindow div element
+	$(".info-div").hide();
+	// Google Map styling, 
+	map.set('styles', styleConfig);
 
 	// fetch json data from url and create marker for each object found
-	$.ajax({
-		url: "../../static/carte_interactive/json/data.json",
-		success: function (data) {
-			try {
-				$.parseJSON(data);
-				json_db_data = JSON.parse(data);
-			}
-			catch(e) {
-				json_db_data = data;
-			}
-			json_db_data.forEach(function(ecole) {
-				createMarker(ecole.fields, ecole.pk);
-			});
-		}
+	setJsonDBData();
+	json_db_data.forEach(function(ecole) {
+		createMarker(ecole.fields, ecole.pk);
 	});
 
-	// create legend for each icon types used (see icons object above)
-	var legend = $("#legend");
+	createLegendWithIcons();
+}
+
+// create legend for each icon types used (see icons object above)
+function createLegendWithIcons() {
+	var legendDiv = $("#legend");
 	for (var type in icons) {
 		var type = type;
 		var icon = icons[type].icon;
 		var div = document.createElement('div');
 		div.innerHTML = '<img src="' + icon + '" style="width: 24px; height: 24px;"> ' + type;
-		legend.append(div);
+		legendDiv.append(div);
 	}
 }
-
 
 /**
  * Used to create a marker with ecole_data and pk,
@@ -167,6 +159,47 @@ function createMarker(ecole_data, pk) {
         }
         else alert("Impossible de trouver la position de l'école " + ecole_data.nom);
     });
+}
+
+function updateMarker(marker, data) {
+	marker.nom = data["nom"];
+    marker.ville = data["ville"];
+    marker.adresse = data["adresse"];
+    marker.type = data["type"];
+    marker.programmes = data["programmes"];
+    marker.particularites = data["particularites"];
+    marker.visite = data["visite"];
+
+   	if(marker.visite)
+   		marker.setIcon('../../static/carte_interactive/img/marker_V.png');
+   	else
+   		marker.setIcon('../../static/carte_interactive/img/marker_' + get_substring(marker.type, '(', ')') + '.png');
+
+   	// get latitude and longitude from Ecole address,
+    // update marker position accordingly. Might change or not.
+    var adresse = data["adresse"];
+    geocoder.geocode({'address': adresse}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var latLng = results[0].geometry.location;
+            marker.position = latLng;
+        }
+        else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");
+    });
+}
+
+function getMarkerFromId(pk) {
+	markers.forEach(function(m) {
+    	if(m.pk == pk)
+    		marker = m;
+    });
+}
+
+// create new updated info-div with the updated marker
+function updateInfoWindow(marker) {
+    infowindow.close();
+    var div = createInfoDiv(marker);
+    infowindow.setContent(div.html());
+    infowindow.open(map,marker);
 }
 
 /**

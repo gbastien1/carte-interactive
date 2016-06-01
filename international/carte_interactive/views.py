@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
 import json
-from django.contrib.auth import login, logout, authenticate
-from django.db.utils import OperationalError
 from django.http import HttpResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, FormView, RedirectView
-from django.contrib.auth.forms import AuthenticationForm
+from django.db.utils import OperationalError
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
@@ -38,14 +38,6 @@ class LogoutView(RedirectView):
 #url: carte/
 class CardView(LoginRequiredMixin, TemplateView):
 	template_name = "carte_interactive/carte.html"
-
-
-# todo: not used yet
-class SearchResultsView(TemplateView):
-	template_name = "carte_interactive/search_results.html"
-# get search input
-# get Ecole objects corresponding to input
-# display list of Ecoles with link to detailView
 
 
 # get string inbetween two characters in other string
