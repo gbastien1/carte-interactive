@@ -82,10 +82,22 @@ function initMap() {
 	map.set('styles', styleConfig);
 
 	// fetch json data from url and create marker for each object found
-	setJsonDBData();
-	json_db_data.forEach(function(ecole) {
-		createMarker(ecole.fields, ecole.pk);
+	$.ajax({
+		url: "../../static/carte_interactive/json/data.json",
+		success: function (data) {
+			try {
+				$.parseJSON(data);
+				json_db_data = JSON.parse(data);
+			}
+			catch(e) {
+				json_db_data = data;
+			}
+			json_db_data.forEach(function(ecole) {
+				createMarker(ecole.fields, ecole.pk);
+			});
+		}
 	});
+	
 
 	createLegendWithIcons();
 }
@@ -188,10 +200,12 @@ function updateMarker(marker, data) {
 }
 
 function getMarkerFromId(pk) {
+	var marker;
 	markers.forEach(function(m) {
-    	if(m.pk == pk)
+    	if (m.pk === parseInt(pk))
     		marker = m;
     });
+    return marker;
 }
 
 // create new updated info-div with the updated marker

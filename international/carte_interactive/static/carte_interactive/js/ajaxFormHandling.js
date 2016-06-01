@@ -10,8 +10,13 @@ function ajouter_ecole(form) {
 
     //get latitude and longitude of Ecole by address
     var adresse = form_data["adresse"];
-    geocoder.geocode(	{'address': adresse}, 
-    					sendAddAJAXRequest(results, status));
+    geocoder.geocode(	{'address': adresse}, function(results, status) {
+    	if (status == google.maps.GeocoderStatus.OK) {
+	        var latLng = results[0].geometry.location;
+	        sendAddAJAXRequest(form_data);
+	    }
+	    else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide."); 
+    });
 };
 
 /**
@@ -28,8 +33,7 @@ function editer_ecole(form) {
         url : "edit/", // the endpoint
         type : "POST", // http method
         data : {content: JSON.stringify(form_data)},
-
-        success : updateDataWithNewInfo(json);
+        success : updateDataWithNewInfo(form_data)
     });
 };
 
@@ -51,31 +55,25 @@ function getFormInputsAsObject(form) {
 }
 
 // send ajax request to ajout/ (AjouterEcole view) if latlng found from address
-function sendAddAJAXRequest(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-        var latLng = results[0].geometry.location;
+function sendAddAJAXRequest(form_data) {
+    // if could retrieve lat and lng, send post request to views.py at url ajout/
+    // send form data in order to create a DB object with them
+    $.ajax({
+        url : "ajout/", // the endpoint
+        type : "POST", // http method
+        data : { content: JSON.stringify(form_data) },
 
-        // if could retrieve lat and lng, send post request to views.py at url ajout/
-        // send form data in order to create a DB object with them
-        $.ajax({
-            url : "ajout/", // the endpoint
-            type : "POST", // http method
-            data : { content: JSON.stringify(form_data) },
-
-            // if object was successfully created by Django, 
-            // create a marker and show it on the map
-            // @param json: the data returned in response from views.py 
-            success : function(json) {
-                ecole_data = JSON.parse(json);
-                if(ecole_data[0] !== "already created" || ecole_data[0] != "incomplete data") {
-                    createMarker(ecole_data[0].fields, form_data["pk"]);
-                    setJsonDBData();
-                }
+        // if object was successfully created by Django, 
+        // create a marker and show it on the map
+        // @param json: the data returned in response from views.py 
+        success : function(json) {
+            ecole_data = JSON.parse(json);
+            if(ecole_data[0] !== "already created" || ecole_data[0] != "incomplete data") {
+                createMarker(ecole_data[0].fields, form_data["pk"]);
+                setJsonDBData();
             }
-        });
-
-    }
-    else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");  
+        }
+    }); 
 }
 
 // Update Json_db_data content
@@ -95,7 +93,7 @@ function setJsonDBData() {
 }
 
 // Update marker info, infowindow and json_db_data
-function updateDataWithNewInfo(json) {
+function updateDataWithNewInfo(data) {
     // disable and hide edit tab and content
     $('#nav-pill-filtrer').addClass("active");
     $('#nav-pill-editer').removeClass("active").addClass("disabled");
