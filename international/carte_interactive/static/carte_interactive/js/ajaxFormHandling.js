@@ -95,8 +95,8 @@ function setJsonDBData() {
 function updateDataWithNewInfo(data) {
     // disable and hide edit tab and content
     $('#nav-pill-filtrer').addClass("active");
-    $('#nav-pill-editer').removeClass("active").addClass("disabled");
-    $('#sidebar-content-editer').hide();
+    $('#nav-pill-editer').removeClass("active").addClass("hidden");
+    $('#sidebar-content-editer').hide().addClass("hidden");
     $('#sidebar-content-filtrer').show();
 
     var marker = getMarkerFromId(data["pk"]);

@@ -1,6 +1,7 @@
 /**
  * This auto-calling function allows the use of csrf tokens 
  * in forms submitted with javascript .on('submit',...)
+ * Otherwise Django throws errors
  */
 $(function () {
 	$.ajaxSetup({
@@ -28,6 +29,17 @@ $('#editer_form').on('submit', function(event){
 	this.reset();
 });
 
+// allows hiding the "editer" nav tab when closing the sidebar
+function hideEditTabAndContent() {
+	$('.sidebar-tab').show();
+	if($('#nav-pill-editer').hasClass("active")) {
+		$('#nav-pill-filtrer').addClass("active");
+		$('#nav-pill-editer').removeClass("active").addClass("hidden");
+		$('#sidebar-content-editer').hide().addClass("hidden");
+		$('#sidebar-content-filtrer').show();
+	}
+}
+
 /**
  * @jQuery $("#menu-toggler"): button used to open the sidebar
  */
@@ -44,17 +56,12 @@ $("#menu-toggler").click(function(e) {
  */
 $("#close-menu-btn").click(function(e) {
 	e.preventDefault();
-	// allows disabling the "editer" nav tab when closing the sidebar
-	if($('#nav-pill-editer').hasClass("active")) {
-		$('#nav-pill-filtrer').addClass("active");
-		$('#nav-pill-editer').removeClass("active").addClass("disabled");
-		$('#sidebar-content-editer').hide();
-		$('#sidebar-content-filtrer').show();
-	}
+	hideEditTabAndContent();
 	// actually close the sidebar
 	$("#sidebar-wrapper").removeClass("toggled");
 	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
 });
+
 
 /**
  * document click handler allowing the sidebar to close 
@@ -65,13 +72,7 @@ $(document).click(function (e){
 	// when the sidebar is actually open and when not clicking on the sidebar or its children
 	if($("#sidebar-wrapper.toggled").length > 0 & !$(e.target).is('#sidebar-wrapper *')) {
 		if(!($(e.target).is(':button') || $(e.target).is(".glyphicon-menu-hamburger"))) {
-			// allows disabling the "editer" nav tab when closing the sidebar
-			if($('#nav-pill-editer').hasClass("active")) {
-				$('#nav-pill-filtrer').addClass("active");
-				$('#nav-pill-editer').removeClass("active").addClass("disabled");
-				$('#sidebar-content-editer').hide();
-				$('#sidebar-content-filtrer').show();
-			}
+			hideEditTabAndContent();
 			// actually close the sidebar
 			$('#sidebar-wrapper').removeClass("toggled");
 			$('#sidebar-wrapper').hide("slide", { direction: "left" }, 500);
@@ -89,17 +90,15 @@ $(document).click(function (e){
  * allows user to change tabs when clicking on enabled tabs
  */
 $("#sidebar-nav-pills li").click(function(e) {
-	if(!$(this).hasClass("disabled")) {
-		e.preventDefault();
-		$("#sidebar-nav-pills li").removeClass("active");
-		$(".sidebar-content").hide();
+	e.preventDefault();
+	$("#sidebar-nav-pills li").removeClass("active");
+	$(".sidebar-content").hide();
 
-		$(this).addClass("active");
-		// same suffix for nav-pill title and sidebar-content title
-		var pillTitle = $(this).attr('id').split('-')[2];
-		var selector = "#sidebar-content-" + pillTitle;
-		$(selector).show();
-	}
+	$(this).addClass("active");
+	// same suffix for nav-pill title and sidebar-content title
+	var pillTitle = $(this).attr('id').split('-')[2];
+	var selector = "#sidebar-content-" + pillTitle;
+	$(selector).show();
 });
 
 /**
@@ -128,14 +127,13 @@ function openEditTab() {
 	// open tab, enable nav-pill...
 	$('#sidebar-wrapper').addClass("toggled");
 	$('#sidebar-wrapper').show("slide", { direction: "left" }, 500);
-	$('.sidebar-tab').removeClass("active");
-	$('#nav-pill-editer').addClass("active").removeClass("disabled");
+	$('.sidebar-tab').removeClass("active").hide();
+	$('#nav-pill-editer').addClass("active").removeClass("hidden").show();
 	$('.sidebar-content').hide();
-	$('#sidebar-content-editer').show();
+	$('#sidebar-content-editer').removeClass("hidden").show();
 
-	// put pk value in disabled text input (debug)
+	// get pk value from span data
 	var pk = $('#pk-data').attr("data-pk");
-	$('#c_pk').val(pk).prop('disabled', true);
 
 	// Prefill form with Ecole info
 	var ecole_to_edit = json_db_data[pk - 1].fields;
@@ -146,7 +144,6 @@ function openEditTab() {
 	$('#editer_form #c_programmes').val(ecole_to_edit.programmes);  
 	$('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
 	$('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
-	console.log("visite interface callback: " + ecole_to_edit.visite);
 }
 
 

@@ -9,9 +9,12 @@
         <hr />
 
         <ul id="sidebar-nav-pills" class="nav nav-tabs">
-          <li id="nav-pill-filtrer" role="presentation" class="sidebar-tab active"><a href="javascript:void(0)">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
-          <li id="nav-pill-ajouter" role="presentation" class="sidebar-tab"><a href="javascript:vois(0)">Ajouter<span class="glyphicon glyphicon-plus"></span></a></li>
-          <li id="nav-pill-editer" role="presentation" class="sidebar-tab disabled"><a href="javascript:void(0)">Éditer<span class="glyphicon glyphicon-pencil"></span></a></li>
+            <!-- Filtrer -->
+            <li id="nav-pill-filtrer" role="presentation" class="sidebar-tab active"><a href="javascript:void(0)">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
+            <!-- Ajouter -->
+            <li id="nav-pill-ajouter" role="presentation" class="sidebar-tab"><a href="javascript:vois(0)">Ajouter<span class="glyphicon glyphicon-plus"></span></a></li>
+            <!-- Éditer -->
+            <li id="nav-pill-editer" role="presentation" class="sidebar-tab hidden"><a href="javascript:void(0)">Éditer<span class="glyphicon glyphicon-pencil"></span></a></li>
         </ul>
 
         <!-- filter content -->
@@ -27,7 +30,7 @@
         
 
         <!-- edit Ecole content -->
-        <li id="sidebar-content-editer" class="sidebar-content">
+        <li id="sidebar-content-editer" class="sidebar-content hidden">
             {% include 'carte_interactive/editer_ecole.html' %}
         </li>
 
