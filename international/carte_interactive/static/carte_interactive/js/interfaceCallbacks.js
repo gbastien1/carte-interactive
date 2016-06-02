@@ -254,6 +254,6 @@ function showResultsList(results) {
         });
     }
     else {
-        $("#results-list").append("<li>Aucun résultat trouvé</li>");
+        $("#results-list").append("<li class=\"list-group-item\">Aucun résultat trouvé</li>");
     }
 }
