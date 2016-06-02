@@ -16,7 +16,8 @@ class CarteInteractiveConfig(AppConfig):
 			'type': 2,
 			'ville': 3,
 			'adresse': 4,
-			'programmes': 5
+			'programmes': 5,
+			'url': 6
 		}
 		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
@@ -33,7 +34,8 @@ class CarteInteractiveConfig(AppConfig):
 						'type': row[Attr['type']].value,
 						'ville': row[Attr['ville']].value,
 						'programmes': row[Attr['programmes']].value,
-						'adresse': row[Attr['adresse']].value
+						'adresse': row[Attr['adresse']].value,
+						'url': row[Attr['url']].value
 					}
 				)
 

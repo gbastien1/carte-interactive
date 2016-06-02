@@ -243,7 +243,8 @@ function showResultsList(results) {
     $("#results-container h1").html("Résultats...");
     if(results.length > 0) {
         results.forEach(function(r) {
-            $("#results-list").append("<li class=\"list-group-item\">" + r.nom + "</li>");
+            $("#results-list").append("<a href=\"" + r.url + "\" class=\"list-group-item\" target=\"_blank\">" + r.nom + "</a>");
+
         });
     }
     else {
