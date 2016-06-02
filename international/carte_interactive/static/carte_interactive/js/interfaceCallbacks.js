@@ -243,8 +243,14 @@ function showResultsList(results) {
     $("#results-container h1").html("Résultats...");
     if(results.length > 0) {
         results.forEach(function(r) {
-            $("#results-list").append("<a href=\"" + r.url + "\" class=\"list-group-item\" target=\"_blank\">" + r.nom + "</a>");
+        	if (!r.url) r.url = "javascript:void(0)";
+        	var liItem = "<a href=\"" + r.url + "\" class=\"list-group-item\" target=\"_blank\">" + r.nom;
+        	if (r.visite)
+        		liItem += "<span class=\"label label-success pull-right\"> Visitée</span></a>";
+        	else
+        		liItem += "</a>";
 
+            $("#results-list").append(liItem);
         });
     }
     else {
