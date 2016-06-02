@@ -8,11 +8,10 @@ function ajouter_ecole(form) {
     // add pk by hand, it is calculated
     form_data["pk"] = json_db_data.length + 1;
 
-    //get latitude and longitude of Ecole by address
+    // heck if address is valid. If so, send AJAX request to ajout/
     var adresse = form_data["adresse"];
     geocoder.geocode(	{'address': adresse}, function(results, status) {
     	if (status == google.maps.GeocoderStatus.OK) {
-	        var latLng = results[0].geometry.location;
 	        sendAddAJAXRequest(form_data);
 	    }
 	    else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide."); 
