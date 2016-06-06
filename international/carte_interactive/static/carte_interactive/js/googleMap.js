@@ -239,7 +239,7 @@ function createInfoDiv(marker) {
     // Toggle button to mark Ecole as visited or not
     // div.append("<label class=\"switch pull-right\"><input type=\"checkbox\"><div class=\"slider round\"></div></label>");
     if(marker.visite) {
-    	div.append("<span class=\"label label-danger pull-right\">Visitée</span>");
+    	div.append("<span class=\"label label-success pull-right\">Visitée</span>");
     }
     return div;
 }
