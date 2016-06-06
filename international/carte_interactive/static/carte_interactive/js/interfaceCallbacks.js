@@ -173,7 +173,7 @@ function filterMarkers() {
         markers.forEach(function(m) {
             m.setVisible(false);
             codes.forEach(function(c) {
-                if (m.codes.indexOf(c) != -1) m.setVisible(true);
+                if (m.programmes.indexOf(c) != -1) m.setVisible(true);
             });
             types.forEach(function(t) {
                 if (m.type == t) m.setVisible(true);
