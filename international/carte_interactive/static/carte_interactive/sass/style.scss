@@ -29,7 +29,9 @@ html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
     border-top: 1px solid #BBBBBB;
     border-left: 1px solid #BBBBBB;
 }
-
+.info-div {
+    position: relative;
+}
 .info-icon {
     width: 16px;
     height: 16px;
@@ -40,12 +42,16 @@ html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
     height: 20px;
 }
 #info-title {
-    float: left;
+    //float: left;
+    width: 96%
 }
 #edit-btn {
-    float: left;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    /*float: left;
     margin-top: 8px;
-    margin-left: 6px;
+    margin-left: 6px;*/
 }
 
 #star-icon, #info_particularites {
