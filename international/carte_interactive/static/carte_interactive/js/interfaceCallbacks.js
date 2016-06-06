@@ -120,6 +120,13 @@ $("#search_input").keyup(function (e) {
 });
 
 /**
+ * Detects any input entered in search bar. Call search on each input
+ */
+$('#search_input').on('input', function() {
+    search();
+});
+
+/**
  * Callback for click on orange edit button of info div
  * @jQuery $('#edit-btn'): the button's selector
  */
