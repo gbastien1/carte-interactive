@@ -231,6 +231,9 @@ html, body {
 #star-icon, #info_particularites {
   float: left; }
 
+#logout-btn {
+  color: black; }
+
 @media screen and (max-width: 400px) {
   #search-bar {
     width: 100%; } }

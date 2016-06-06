@@ -7,7 +7,6 @@ function ajouter_ecole(form) {
 	var form_data = getFormInputsAsObject(form);
     // add pk by hand, it is calculated
     form_data["pk"] = json_db_data.length + 1;
-
     // heck if address is valid. If so, send AJAX request to ajout/
     var adresse = form_data["adresse"];
     geocoder.geocode(	{'address': adresse}, function(results, status) {

@@ -10,14 +10,10 @@
       <input id="search_input" type="text" class="form-control" placeholder="Rechercher..." aria-label="search">
       <div class="input-group-btn">
          <button type="submit" class="btn btn-info" onclick="javascript:search()"><span class="glyphicon glyphicon-search"></span></button>
-         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-cog"></span>
+         <button type="button" class="btn btn-default">
+            <a id="logout-btn" href="{% url 'carte_interactive:logout' %}"><span class="glyphicon glyphicon-off"></span></a>
          </button>
-         <ul class="dropdown-menu">
-                <li><a href="{% url 'carte_interactive:logout' %}">Déconnexion</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Paramètres</a></li>
-         </ul>
+         
       </div>
     </div>
 </div>
