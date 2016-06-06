@@ -144,10 +144,13 @@ function openEditTab() {
 
 	// Prefill form with Ecole info
 	var ecole_to_edit = json_db_data[pk - 1].fields;
+	$('#editer_form #c_pk').val(pk); //hidden form input used by JS
 	$('#editer_form #c_nom').val(ecole_to_edit.nom);
 	$('#editer_form #c_ville').val(ecole_to_edit.ville); 
-	$('#editer_form #c_adresse').val(ecole_to_edit.adresse); 
-	$('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').attr('selected','selected');
+	$('#editer_form #c_adresse').val(ecole_to_edit.adresse);
+	if(ecole_to_edit.type.indexOf('(') != -1)
+		ecole_to_edit.type = get_substring(ecole_to_edit.type, '(', ')');
+	$('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').prop('selected','selected');
 	$('#editer_form #c_programmes').val(ecole_to_edit.programmes);  
 	$('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
 	$('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);

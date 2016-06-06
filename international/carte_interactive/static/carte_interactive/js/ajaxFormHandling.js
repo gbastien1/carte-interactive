@@ -26,7 +26,6 @@ function editer_ecole(form) {
 	form_data = getFormInputsAsObject(form);
     // send ajax request to views.py at url edit/,
     // send form data to views.py to update the DB data
-    console.log("envoi d'une requête AJAX vers edit");
     $.ajax({
         url : "edit/", // the endpoint
         type : "POST", // http method
@@ -80,7 +79,7 @@ function setJsonDBData() {
 		url: "../../static/carte_interactive/json/data.json",
 		success: function (data) {
 			try {
-				$.parseJSON(data);
+				$.parseJSON(data); //if this fails, data is already in json format
 				json_db_data = JSON.parse(data);
 			}
 			catch(e) {
@@ -99,10 +98,9 @@ function updateDataWithNewInfo(data) {
     $('#sidebar-content-filtrer').show();
 
     var marker = getMarkerFromId(data["pk"]);
-
     updateMarker(marker, data);
     updateInfoWindow(marker);
-    setJsonDBData();    
+    setJsonDBData();   
 }
 
 

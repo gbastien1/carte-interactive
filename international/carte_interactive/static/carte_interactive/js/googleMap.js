@@ -97,7 +97,6 @@ function initMap() {
 			});
 		}
 	});
-	
 
 	createLegendWithIcons();
 }
@@ -184,8 +183,13 @@ function updateMarker(marker, data) {
 
    	if(marker.visite)
    		marker.setIcon('../../static/carte_interactive/img/marker_V.png');
-   	else
-   		marker.setIcon('../../static/carte_interactive/img/marker_' + get_substring(marker.type, '(', ')') + '.png');
+   	else {
+   		if(marker.type.indexOf('(') != -1)
+   			var ecole_type = get_substring(marker.type, '(', ')');
+   		else
+   			var ecole_type = marker.type;
+   		marker.setIcon('../../static/carte_interactive/img/marker_' + ecole_type + '.png');
+   	}
 
    	// get latitude and longitude from Ecole address,
     // update marker position accordingly. Might change or not.
