@@ -229,10 +229,7 @@ html, body {
 #edit-btn {
   position: absolute;
   top: 8px;
-  right: 15px;
-  /*float: left;
-    margin-top: 8px;
-    margin-left: 6px;*/ }
+  right: 15px; }
 
 #star-icon, #info_particularites {
   float: left; }
