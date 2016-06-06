@@ -241,6 +241,9 @@ function createInfoDiv(marker) {
     if(marker.visite) {
     	div.append("<span class=\"label label-success pull-right\">Visitée</span>");
     }
+    else {
+    	div.append("<span class=\"label label-danger pull-right\">Non visitée</span>");
+    }
     return div;
 }
 
