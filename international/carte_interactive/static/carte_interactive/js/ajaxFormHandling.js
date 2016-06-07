@@ -7,7 +7,7 @@ function ajouter_ecole(form) {
 	var form_data = getFormInputsAsObject(form);
     // add pk by hand, it is calculated
     form_data["pk"] = json_db_data.length + 1;
-    // heck if address is valid. If so, send AJAX request to ajout/
+    // check if address is valid. If so, send AJAX request to ajout/
     var adresse = form_data["adresse"];
     geocoder.geocode(	{'address': adresse}, function(results, status) {
     	if (status == google.maps.GeocoderStatus.OK) {
@@ -30,7 +30,12 @@ function editer_ecole(form) {
         url : "edit/", // the endpoint
         type : "POST", // http method
         data : {content: JSON.stringify(form_data)},
-        success : updateDataWithNewInfo(form_data)
+        //received json is updated data from database
+        success : function(json) {
+        	var updated_data = json[0].fields;
+        	updated_data["pk"] = json[0].pk;
+        	updateDataWithNewInfo(updated_data)
+        }
     });
 };
 

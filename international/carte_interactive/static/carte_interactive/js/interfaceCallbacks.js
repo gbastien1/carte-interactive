@@ -131,6 +131,7 @@ $('#search_input').on('input', function() {
  * @jQuery $('#edit-btn'): the button's selector
  */
 function openEditTab() {
+
 	// open tab, enable nav-pill...
 	$('#sidebar-wrapper').addClass("toggled");
 	$('#sidebar-wrapper').show("slide", { direction: "left" }, 500);

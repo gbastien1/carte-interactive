@@ -152,11 +152,11 @@ def EditerEcole(request):
 		json_data_file.close()
 
 		# update Ecole object in data.xlsx
-		response_data = json.dumps(serializers.serialize('json', [ecole, ]))
+		response_data = serializers.serialize('json', [ecole, ])
 		data_url = static('carte_interactive/data/data.xlsx')
 		ecole_wb = openpyxl.load_workbook(app_name + data_url)
 		sheet = ecole_wb.get_sheet_by_name('data')
-		
+
 		row = int(_pk)
 		sheet.cell(row=row, column=2).value = _nom
 		sheet.cell(row=row, column=3).value = get_type(_type)
@@ -164,7 +164,7 @@ def EditerEcole(request):
 		sheet.cell(row=row, column=5).value = _adresse
 		sheet.cell(row=row, column=6).value = _programmes
 		ecole_wb.save(app_name + data_url)
-		
+
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
