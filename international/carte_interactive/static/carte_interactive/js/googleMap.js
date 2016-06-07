@@ -81,14 +81,17 @@ function initMap() {
 	// Google Map styling, 
 	map.set('styles', styleConfig);
 
-	//debug test
-	var address_input = document.getElementById('c_adresse');
-	var searchBox = new google.maps.places.SearchBox(address_input);
+	//Allows giving user suggestions based on address entered
+	var address_input_ajout = document.getElementsByClassName('addr_add')[0];
+	var address_input_edit = document.getElementsByClassName('addr_edit')[0];
+	var searchBoxAdd = new google.maps.places.SearchBox(address_input_ajout);
+	var searchBoxEdit = new google.maps.places.SearchBox(address_input_edit);
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
-		searchBox.setBounds(map.getBounds());
+		searchBoxAdd.setBounds(map.getBounds());
+		searchBoxEdit.setBounds(map.getBounds());
 	});
-	// end of debug test
+	
 
 	// fetch json data from url and create marker for each object found
 	$.ajax({
