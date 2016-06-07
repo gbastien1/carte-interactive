@@ -45,10 +45,22 @@ function getFormInputsAsObject(form) {
     var data = {};
     $.each(form.elements, function(index, el){
         var input = $(el);
+        // Different ways to get input values from html elements
+        // Select box:
         if (input.attr("name") === "type")
             data["type"] = input.find(":selected").text();
+        // Check box:
         else if (input.attr("name") == "visite")
-        	data[input.attr("name")] = input.is(":checked");  
+        	data[input.attr("name")] = input.is(":checked"); 
+        // If url does not start with http, make it 
+        // start with http otherwise the link won't work
+        else if (input.attr("name") == "url") {
+        	var ecole_url = input.val();
+        	var http_prefix_regex = /^(https?:\/\/)/i;
+			var match = http_prefix_regex.exec(ecole_url);
+			if(match) data[input.attr("name")] = input.val();
+			else data[input.attr("name")] = "http://" + input.val();
+		}
         else
             data[input.attr("name")] = input.val();
 

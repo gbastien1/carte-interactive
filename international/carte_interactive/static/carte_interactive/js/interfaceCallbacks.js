@@ -146,6 +146,7 @@ function openEditTab() {
 	var pk = $('#pk-data').attr("data-pk");
 
 	// Prefill form with Ecole info
+	
 	var ecole_to_edit = json_db_data[pk - 1].fields;
 	$('#editer_form #c_pk').val(pk); //hidden form input used by JS
 	$('#editer_form #c_nom').val(ecole_to_edit.nom);
@@ -154,8 +155,12 @@ function openEditTab() {
 	if(ecole_to_edit.type.indexOf('(') != -1)
 		ecole_to_edit.type = get_substring(ecole_to_edit.type, '(', ')');
 	$('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').prop('selected','selected');
-	$('#editer_form #c_programmes').val(ecole_to_edit.programmes); 
-	$('#editer_form #c_url').val(ecole_to_edit.url);  
+	$('#editer_form #c_programmes').val(ecole_to_edit.programmes);
+
+	var http_prefix_regex = /^(https?:\/\/)?(.*)$/i;
+	var match = http_prefix_regex.exec(ecole_to_edit.url);
+	var no_http_url = match[2]; 
+	$('#editer_form #c_url').val(no_http_url);  
 	$('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
 	$('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
 }
