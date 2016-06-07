@@ -79,7 +79,9 @@ $(document).click(function (e){
 		}
 	}
 	// when not clicking on the results sidebar nor the search bar
-    if(!$(e.target).is('#results-container *') && !$(e.target).is('#search_input *')) {
+    if(!$(e.target).is('#results-container *') 
+    	&& !$(e.target).is('#search_input *')
+    	&& !$(e.target).is('.pac-container')) {
         $('#results-container').hide("slide", { direction: "right" }, 500);
     }
     

@@ -81,6 +81,15 @@ function initMap() {
 	// Google Map styling, 
 	map.set('styles', styleConfig);
 
+	//debug test
+	var address_input = document.getElementById('c_adresse');
+	var searchBox = new google.maps.places.SearchBox(address_input);
+	// Bias the SearchBox results towards current map's viewport.
+	map.addListener('bounds_changed', function() {
+		searchBox.setBounds(map.getBounds());
+	});
+	// end of debug test
+
 	// fetch json data from url and create marker for each object found
 	$.ajax({
 		url: "../../static/carte_interactive/json/data.json",
