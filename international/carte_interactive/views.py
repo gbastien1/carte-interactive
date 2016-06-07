@@ -63,6 +63,7 @@ def AjouterEcole(request):
 		_ville = data["ville"]
 		_type = data["type"]
 		_programmes = data["programmes"]
+		_url = data["url"]
 		_adresse = data["adresse"]
 		_particularites = data["particularites"]
 		_visite = data["visite"]
@@ -81,6 +82,7 @@ def AjouterEcole(request):
 			ville=_ville,
 			type=get_type(_type),
 			programmes=_programmes,
+			url=_url,
 			adresse=_adresse,
 			particularites=_particularites,
 			visite=_visite
@@ -105,6 +107,7 @@ def AjouterEcole(request):
 			sheet.cell(row=row, column=4).value = _ville
 			sheet.cell(row=row, column=5).value = _adresse
 			sheet.cell(row=row, column=6).value = _programmes
+			sheet.cell(row=row, column=7).value = _url
 			ecole_wb.save(app_name + data_url)
 		else:
 			response_data = "already created"
@@ -124,6 +127,7 @@ def EditerEcole(request):
 		_ville = data["ville"]
 		_type = data["type"]
 		_programmes = data["programmes"]
+		_url = data["url"]
 		_adresse = data["adresse"]
 		_particularites = data["particularites"]
 		_visite = data["visite"]
@@ -139,6 +143,7 @@ def EditerEcole(request):
 		ecole.ville = _ville
 		ecole.type = _type
 		ecole.programmes = _programmes
+		ecole.url = _url
 		ecole.adresse = _adresse
 		if _particularites: ecole.particularites = _particularites
 		ecole.visite = _visite
@@ -163,6 +168,7 @@ def EditerEcole(request):
 		sheet.cell(row=row, column=4).value = _ville
 		sheet.cell(row=row, column=5).value = _adresse
 		sheet.cell(row=row, column=6).value = _programmes
+		sheet.cell(row=row, column=7).value = _url
 		ecole_wb.save(app_name + data_url)
 
 		return HttpResponse(

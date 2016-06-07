@@ -33,6 +33,7 @@ function editer_ecole(form) {
         //received json is updated data from database
         success : function(json) {
         	var updated_data = json[0].fields;
+        	console.log(updated_data.url);
         	updated_data["pk"] = json[0].pk;
         	updateDataWithNewInfo(updated_data)
         }
