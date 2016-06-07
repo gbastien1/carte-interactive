@@ -204,13 +204,13 @@ html, body {
 #legend {
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 30px;
   display: inline-block;
   background: #fff;
   padding: 8px;
   padding-left: 5px;
-  border-top: 1px solid #BBBBBB;
-  border-right: 1px solid #BBBBBB; }
+  border: 1px solid #BBBBBB;
+  border-left: 0; }
 
 .info-div {
   position: relative; }
