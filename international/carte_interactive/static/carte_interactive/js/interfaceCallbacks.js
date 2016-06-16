@@ -10,37 +10,6 @@ $(function () {
 });
 
 /**
- * Callback for submitting "ajouter_form", 
- * @location ajouter_ecole(form) => ajaxFormHandling.js
- */
-$('#ajouter_form').on('submit', function(event){
-	event.preventDefault();
-	ajouter_ecole(this);
-	this.reset();
-});
-
-/**
- * Callback for submitting "ajouter_form", 
- * @location editer_ecole(form) => ajaxFormHandling.js
- */
-$('#editer_form').on('submit', function(event){
-	event.preventDefault();
-	editer_ecole(this);
-	this.reset();
-});
-
-// allows hiding the "editer" nav tab when closing the sidebar
-function hideEditTabAndContent() {
-	$('.sidebar-tab').show();
-	if($('#nav-pill-editer').hasClass("active")) {
-		$('#nav-pill-filtrer').addClass("active");
-		$('#nav-pill-editer').removeClass("active").addClass("hidden");
-		$('#sidebar-content-editer').hide().addClass("hidden");
-		$('#sidebar-content-filtrer').show();
-	}
-}
-
-/**
  * @jQuery $("#menu-toggler"): button used to open the sidebar
  */
 $("#menu-toggler").click(function(e) {
@@ -56,7 +25,6 @@ $("#menu-toggler").click(function(e) {
  */
 $("#close-menu-btn").click(function(e) {
 	e.preventDefault();
-	hideEditTabAndContent();
 	// actually close the sidebar
 	$("#sidebar-wrapper").removeClass("toggled");
 	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
@@ -88,22 +56,6 @@ $(document).click(function (e){
 });
 
 /**
- * @jQuery $("#sidebar-nav-pills li") nav pills in sidebar,
- * allows user to change tabs when clicking on enabled tabs
- */
-$("#sidebar-nav-pills li").click(function(e) {
-	e.preventDefault();
-	$("#sidebar-nav-pills li").removeClass("active");
-	$(".sidebar-content").hide();
-
-	$(this).addClass("active");
-	// same suffix for nav-pill title and sidebar-content title
-	var pillTitle = $(this).attr('id').split('-')[2];
-	var selector = "#sidebar-content-" + pillTitle;
-	$(selector).show();
-});
-
-/**
  * @jQuery $("#close-results-btn"): button used to close the results sidebar
  */
 $("#close-results-btn").click(function(e) {
@@ -127,43 +79,6 @@ $("#search_input").keyup(function (e) {
 $('#search_input').on('input', function() {
     search();
 });
-
-/**
- * Callback for click on orange edit button of info div
- * @jQuery $('#edit-btn'): the button's selector
- */
-function openEditTab() {
-
-	// open tab, enable nav-pill...
-	$('#sidebar-wrapper').addClass("toggled");
-	$('#sidebar-wrapper').show("slide", { direction: "left" }, 500);
-	$('.sidebar-tab').removeClass("active").hide();
-	$('#nav-pill-editer').addClass("active").removeClass("hidden").show();
-	$('.sidebar-content').hide();
-	$('#sidebar-content-editer').removeClass("hidden").show();
-
-	// get pk value from span data
-	var pk = $('#pk-data').attr("data-pk");
-
-	// Prefill form with Ecole info
-	
-	var ecole_to_edit = json_db_data[pk - 1].fields;
-	$('#editer_form #c_pk').val(pk); //hidden form input used by JS
-	$('#editer_form #c_nom').val(ecole_to_edit.nom);
-	$('#editer_form #c_ville').val(ecole_to_edit.ville); 
-	$('#editer_form #c_adresse').val(ecole_to_edit.adresse);
-	if(ecole_to_edit.type.indexOf('(') != -1)
-		ecole_to_edit.type = get_substring(ecole_to_edit.type, '(', ')');
-	$('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').prop('selected','selected');
-	$('#editer_form #c_programmes').val(ecole_to_edit.programmes);
-
-	var http_prefix_regex = /^(https?:\/\/)?(.*)$/i;
-	var match = http_prefix_regex.exec(ecole_to_edit.url);
-	var no_http_url = match[2]; 
-	$('#editer_form #c_url').val(no_http_url);  
-	$('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
-	$('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
-}
 
 
 /**
