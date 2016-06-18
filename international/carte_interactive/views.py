@@ -40,6 +40,18 @@ class CardView(LoginRequiredMixin, TemplateView):
 	template_name = "carte_interactive/carte.html"
 
 
+# url: logout/
+class UploadExcelView(RedirectView):
+	url = reverse_lazy('carte_interactive:carte')
+
+	def post(self, request, *args, **kwargs):
+		uploaded_excel_file = request.FILES['input4']
+		app_name = 'carte_interactive'
+		data_url = static('carte_interactive/data/data.xlsx')
+		data_file_path = app_name + data_url
+		return super(UploadExcelView, self).post(request, *args, **kwargs)
+
+
 # get string inbetween two characters in other string
 def get_substring(str, start, end):
 	return str[str.find(start) + len(start):str.rfind(end)]

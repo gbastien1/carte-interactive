@@ -9,6 +9,9 @@ $(function () {
 	});
 });
 
+$(document).ready(function() {
+	 $("#input-4").fileinput({showCaption: false});
+});
 /**
  * @jQuery $("#menu-toggler"): button used to open the sidebar
  */
