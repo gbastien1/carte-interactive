@@ -8,6 +8,13 @@
         </li>
         <hr />
 
+        <!-- from Bootstrap file-input library -->
+        <form action="{% url 'carte_interactive:upload_excel' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="control-label">Charger un fichier Excel</label>
+            <input id="input-4" name="input4" type="file" multiple class="file-loading"> <br/>
+        </form>
+
         <ul id="sidebar-nav-pills" class="nav nav-tabs">
             <!-- Filtrer -->
             <li id="nav-pill-filtrer" role="presentation" class="sidebar-tab active"><a href="javascript:void(0)">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
