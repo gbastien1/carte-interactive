@@ -36,7 +36,7 @@ class CarteInteractiveConfig(AppConfig):
 				else:
 					address = ""
 				# create Ecole objects with content of Excel file
-				Ecole.objects.update_or_create(
+				ecole, created = Ecole.objects.update_or_create(
 					pk=row[Attr['pk']].value,
 					defaults={
 						'nom': row[Attr['ecole']].value,

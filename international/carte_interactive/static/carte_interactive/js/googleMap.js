@@ -184,9 +184,8 @@ function createMarker(ecole_data, pk) {
                         getCoordinatesFromGeocoder();
                     }, 400);
                 } else {
-                    if(ecole_data.adresse) console.log(ecole_data.nom);
-                    console.log("Geocoder n'a pas pu trouver l'adresse:" + ecole_data.adresse + " avec statut: " 
-                          + status);
+                    //if(ecole_data.adresse) console.log(ecole_data.nom);
+                    //console.log("Geocoder n'a pas pu trouver l'adresse:" + ecole_data.adresse + " avec statut: " + status);
                 }
             });
         }
@@ -209,7 +208,8 @@ function createMarker(ecole_data, pk) {
             ville: ecole_data.ville,
             adresse: ecole_data.adresse,
             type: ecole_data.type,
-            programmes: ecole_data.programmes,
+            programmes_uqac: ecole_data.programmes_uqac,
+            programmes_partenaires: ecole_data.programmes_partenaires,
             particularites: ecole_data.particularites,
             pk: pk,
             visite: ecole_data.visite,
@@ -303,7 +303,10 @@ function createInfoDiv(marker) {
     // Edit button at top-right corner of infowindow
     div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
     // List of programs offered with this school
-    div.append("<p id=\"info_programmes\">Programmes: " + marker.programmes + "</p>");
+    if(marker.programmes_uqac)
+        div.append("<p id=\"info_programmes_uqac\">Programmes UQAC: " + marker.programmes_uqac + "</p>");
+    if(marker.programmes_partenaires)
+        div.append("<p id=\"info_programmes_uqac\">Programmes partenaires: " + marker.programmes_partenaires + "</p>");
     // Data to be used by Javascript, not displayed onscreen
     div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
     // Particularities, if any, preceded my a green star
