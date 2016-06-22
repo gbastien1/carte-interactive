@@ -8,34 +8,46 @@ from django.db import OperationalError
 class CarteInteractiveConfig(AppConfig):
 	name = 'carte_interactive'
 
-	def ready(self): #startup code
+	def ready(self):  # startup code
 		Ecole = self.get_model('Ecole')
 		Attr = {
 			'pk': 0,
-			'ecole': 1,
-			'type': 2,
-			'ville': 3,
-			'adresse': 4,
-			'programmes': 5,
-			'url': 6
+			'type': 1,
+			'ecole': 2,
+			'nom_court': 3,
+			'rue': 4,
+			'ville': 5,
+			'pays': 6,
+			'code_postal': 7,
+			'url': 8,
+			'programmes_uqac': 9,
+			'programmes_partenaires': 10,
+			'particularites': 11
 		}
 		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
-		ecole_data = openpyxl.load_workbook(app_name + data_url)
+		ecole_data = openpyxl.load_workbook(app_name + data_url, data_only=True)
 		sheet = ecole_data.get_sheet_by_name('data')
 		ecoles = sheet.rows
 		try:
-			for row in ecoles:
+			for row in ecoles[1:]:
+				if row[Attr['rue']].value and row[Attr['ville']].value and row[Attr['pays']].value and row[Attr['code_postal']].value :
+					address = row[Attr['rue']].value + ', ' + str(row[Attr['code_postal']].value) + ' ' + row[Attr['ville']].value + ', ' + row[Attr['pays']].value
+				else:
+					address = ""
 				# create Ecole objects with content of Excel file
 				Ecole.objects.update_or_create(
 					pk=row[Attr['pk']].value,
-					defaults= {
+					defaults={
 						'nom': row[Attr['ecole']].value,
+						'nom_court': row[Attr['nom_court']].value,
 						'type': row[Attr['type']].value,
 						'ville': row[Attr['ville']].value,
-						'programmes': row[Attr['programmes']].value,
-						'adresse': row[Attr['adresse']].value,
-						'url': row[Attr['url']].value
+						'programmes_uqac': row[Attr['programmes_uqac']].value,
+						'programmes_partenaires': row[Attr['programmes_partenaires']].value,
+						'adresse': address,
+						'url': row[Attr['url']].value,
+						'particularites': row[Attr['particularites']].value
 					}
 				)
 
@@ -45,5 +57,6 @@ class CarteInteractiveConfig(AppConfig):
 			json_data_file = open(app_name + json_data_url, 'w')
 			json_data_file.write(json_data)
 			json_data_file.close()
+			
 		except OperationalError:
 			pass

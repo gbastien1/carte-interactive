@@ -1,6 +1,8 @@
 /**
  * Global variables
  */
+  var debug_counter = 0;
+
 var map; 			// the actual google map
 var infowindow; 	// the window that appears on marker hover
 var geocoder; 		// the API object that allows to finc latLng from address
@@ -135,6 +137,25 @@ function createMarker(ecole_data, pk) {
     // get latitude and longitude from address of newly created Ecole
     // if it succeeds, create a marker with the data sent in parameters
     var adresse = ecole_data.adresse;
+
+    /* PLACES API */
+    var requestByName = {
+        query: ecole_data.nom
+    };
+    serviceByName = new google.maps.places.PlacesService(map);
+    serviceByName.textSearch(requestByName, callbackByName);
+    
+    function callbackByName(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) 
+            createMarkerFromQuery(ecole_data, marker_icon, pk, results); 
+        else {
+            CreateMarkerFromGeocoder(adresse, ecole_data, pk, marker_icon);
+        }
+    }
+    /* PLACES API END */ 
+}
+
+function CreateMarkerFromGeocoder(adresse, ecole_data, pk, marker_icon) {
     geocoder.geocode({'address': adresse}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             var latLng = results[0].geometry.location;
@@ -169,7 +190,43 @@ function createMarker(ecole_data, pk) {
                     infowindow.close();
             });
         }
-        else alert("Impossible de trouver la position de l'école " + ecole_data.nom);
+        else
+            console.log(++debug_counter + " Impossible de trouver la position de l'école " + ecole_data.nom + "\n" + ecole_data.adresse);
+    });
+}
+
+function createMarkerFromQuery(ecole_data, marker_icon, pk, results) {
+    var place = results[0];
+    var latLng = place.geometry.location;
+    var marker = new google.maps.Marker({
+        position: latLng,
+        animation: google.maps.Animation.DROP,
+        icon: marker_icon,
+        nom: ecole_data.nom,
+        ville: ecole_data.ville,
+        adresse: ecole_data.adresse,
+        type: ecole_data.type,
+        programmes: ecole_data.programmes,
+        particularites: ecole_data.particularites,
+        pk: pk,
+        visite: ecole_data.visite
+    });
+    marker.setMap(map);
+    markers.push(marker);
+    var wasClicked = false;
+
+    google.maps.event.addListener(marker, 'mouseover', function(e) {
+        var div = createInfoDiv(marker);
+        infowindow.setContent(div.html());
+        infowindow.open(map,marker);
+    });
+
+    google.maps.event.addListener(marker, 'click', function(e) {
+        wasClicked = true;
+    });
+    google.maps.event.addListener(marker, 'mouseout', function(e) {
+        if(!wasClicked)
+            infowindow.close();
     });
 }
 
