@@ -14,6 +14,7 @@ var icons = { 		//icon urls depending on Ecole type
   IUT:  	{ icon: iconBase + 'IUT.png' },
   EI:   	{ icon: iconBase + 'EI.png' },
   EC:   	{ icon: iconBase + 'EC.png' },
+  A:        { icon: iconBase + 'A.png' },
   visité: 	{ icon: iconBase + 'V.png '}
 };
 // found at https://snazzymaps.com/style/25/blue-water
@@ -95,11 +96,13 @@ function initMap() {
 			catch(e) {
 				json_db_data = data;
 			}
-			json_db_data.forEach(function(ecole) {
+			json_db_data.forEach(function(ecole, index) {
+                //if(index == 150)
 				createMarker(ecole.fields, ecole.pk);
 			});
 		}
 	});
+    
 
 	createLegendWithIcons();
 }
@@ -136,108 +139,126 @@ function createMarker(ecole_data, pk) {
 
     // get latitude and longitude from address of newly created Ecole
     // if it succeeds, create a marker with the data sent in parameters
-    var adresse = ecole_data.adresse;
-
-    /* PLACES API */
-    var requestByName = {
-        query: ecole_data.nom
-    };
-    serviceByName = new google.maps.places.PlacesService(map);
-    serviceByName.textSearch(requestByName, callbackByName);
+    var newCoordinates = false;
+    var successful = false;
+    var latitude = ecole_data.latitude;
+    var longitude = ecole_data.longitude;
+    var coordinates;
+    if (!latitude || !longitude) {
+        newCoordinates = true;
+        var requestByName = {query: ecole_data.nom};
+        serviceByName = new google.maps.places.PlacesService(map);
+        serviceByName.textSearch(requestByName, callback);
+    }
+    else {
+        coordinates = new google.maps.LatLng(latitude, longitude);
+        setMarker();
+    }
     
-    function callbackByName(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) 
-            createMarkerFromQuery(ecole_data, marker_icon, pk, results); 
+    
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            coordinates = getCoordinatesFromQuery(results); 
+            setMarker();
+            successful = true;
+        }
         else {
-            CreateMarkerFromGeocoder(adresse, ecole_data, pk, marker_icon);
+            coordinates = getCoordinatesFromGeocoder();
         }
     }
-    /* PLACES API END */ 
-}
 
-function CreateMarkerFromGeocoder(adresse, ecole_data, pk, marker_icon) {
-    geocoder.geocode({'address': adresse}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var latLng = results[0].geometry.location;
-            var marker = new google.maps.Marker({
-                position: latLng,
-                animation: google.maps.Animation.DROP,
-                icon: marker_icon,
-                nom: ecole_data.nom,
-                ville: ecole_data.ville,
-                adresse: ecole_data.adresse,
-                type: ecole_data.type,
-                programmes: ecole_data.programmes,
-                particularites: ecole_data.particularites,
-                pk: pk,
-                visite: ecole_data.visite
-            });
-            marker.setMap(map);
-            markers.push(marker);
-            var wasClicked = false;
-
-            google.maps.event.addListener(marker, 'mouseover', function(e) {
-                var div = createInfoDiv(marker);
-                infowindow.setContent(div.html());
-                infowindow.open(map,marker);
-            });
-
-            google.maps.event.addListener(marker, 'click', function(e) {
-                wasClicked = true;
-            });
-            google.maps.event.addListener(marker, 'mouseout', function(e) {
-                if(!wasClicked)
-                    infowindow.close();
+    function getCoordinatesFromGeocoder() {
+        if(!latitude && !longitude) {
+            var adresse = ecole_data.adresse;
+            geocoder.geocode({'address': adresse}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latLng = results[0].geometry.location;
+                    latitude = latLng.lat();
+                    longitude = latLng.lng();
+                    successful = true;
+                    coordinates = new google.maps.LatLng(latitude, longitude);
+                    setMarker();
+                }
+                else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {    
+                    setTimeout(function() {
+                        getCoordinatesFromGeocoder();
+                    }, 400);
+                } else {
+                    if(ecole_data.adresse) console.log(ecole_data.nom);
+                    console.log("Geocoder n'a pas pu trouver l'adresse:" + ecole_data.adresse + " avec statut: " 
+                          + status);
+                }
             });
         }
-        else
-            console.log(++debug_counter + " Impossible de trouver la position de l'école " + ecole_data.nom + "\n" + ecole_data.adresse);
-    });
-}
+    }
+    
+    function getCoordinatesFromQuery(results) {
+        var place = results[0];
+        var latLng = place.geometry.location;
+        latitude = latLng.lat();
+        longitude = latLng.lng();
+        return new google.maps.LatLng(latitude, longitude);
+    }
 
-function createMarkerFromQuery(ecole_data, marker_icon, pk, results) {
-    var place = results[0];
-    var latLng = place.geometry.location;
-    var marker = new google.maps.Marker({
-        position: latLng,
-        animation: google.maps.Animation.DROP,
-        icon: marker_icon,
-        nom: ecole_data.nom,
-        ville: ecole_data.ville,
-        adresse: ecole_data.adresse,
-        type: ecole_data.type,
-        programmes: ecole_data.programmes,
-        particularites: ecole_data.particularites,
-        pk: pk,
-        visite: ecole_data.visite
-    });
-    marker.setMap(map);
-    markers.push(marker);
-    var wasClicked = false;
+    function setMarker() {
+        var marker = new google.maps.Marker({
+            position: coordinates,
+            animation: google.maps.Animation.DROP,
+            icon: marker_icon,
+            nom: ecole_data.nom,
+            ville: ecole_data.ville,
+            adresse: ecole_data.adresse,
+            type: ecole_data.type,
+            programmes: ecole_data.programmes,
+            particularites: ecole_data.particularites,
+            pk: pk,
+            visite: ecole_data.visite,
+            visite_date: ecole_data.visite_date
+        });
+        marker.setMap(map);
+        markers.push(marker);
+        var wasClicked = false;
 
-    google.maps.event.addListener(marker, 'mouseover', function(e) {
-        var div = createInfoDiv(marker);
-        infowindow.setContent(div.html());
-        infowindow.open(map,marker);
-    });
+        google.maps.event.addListener(marker, 'mouseover', function(e) {
+            var div = createInfoDiv(marker);
+            infowindow.setContent(div.html());
+            infowindow.open(map,marker);
+        });
 
-    google.maps.event.addListener(marker, 'click', function(e) {
-        wasClicked = true;
-    });
-    google.maps.event.addListener(marker, 'mouseout', function(e) {
-        if(!wasClicked)
-            infowindow.close();
-    });
+        google.maps.event.addListener(marker, 'click', function(e) {
+            wasClicked = true;
+        });
+        google.maps.event.addListener(marker, 'mouseout', function(e) {
+            if(!wasClicked)
+                infowindow.close();
+        });
+        if(successful && newCoordinates) {
+            savePositionInEcole(marker);
+        }
+    }
+
+    function savePositionInEcole(marker) {
+        var position = {
+            "pk": marker.pk,
+            "latitude": marker.position.lat(),
+            "longitude": marker.position.lng()
+        };
+
+        $.ajax({
+            url : "savePosition/", // the endpoint
+            type : "POST", // http method
+            data : {content: JSON.stringify(position)},
+            //received json as updated data from database
+            success : function(response) {
+                
+            }
+        });
+    }
 }
 
 function updateMarker(marker, data) {
-	marker.nom = data["nom"];
-    marker.ville = data["ville"];
-    marker.adresse = data["adresse"];
-    marker.type = data["type"];
-    marker.programmes = data["programmes"];
-    marker.particularites = data["particularites"];
     marker.visite = data["visite"];
+    marker.visite_date = data["visite_date"];
 
    	if(marker.visite)
    		marker.setIcon('../../static/carte_interactive/img/marker_V.png');
@@ -249,16 +270,6 @@ function updateMarker(marker, data) {
    		marker.setIcon('../../static/carte_interactive/img/marker_' + ecole_type + '.png');
    	}
 
-   	// get latitude and longitude from Ecole address,
-    // update marker position accordingly. Might change or not.
-    var adresse = data["adresse"];
-    geocoder.geocode({'address': adresse}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var latLng = results[0].geometry.location;
-            marker.position = latLng;
-        }
-        else alert("Impossible de trouver les coordonnées! L'adresse doit être invalide.");
-    });
 }
 
 function getMarkerFromId(pk) {
@@ -286,7 +297,9 @@ function createInfoDiv(marker) {
     var div = $(".info-div");
     div.empty();
     // Title with city in parenthesis
-    div.append("<h4 id=\"info-title\">" + marker.nom + " (" + marker.ville + ")</h4>");
+    if(marker.nom_court) var nom_court = " ( " + marker.nom_court + " )";
+    else nom_court = "";
+    div.append("<h4 id=\"info-title\">" + marker.nom + nom_court + "</h4>");
     // Edit button at top-right corner of infowindow
     div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
     // List of programs offered with this school
@@ -302,6 +315,8 @@ function createInfoDiv(marker) {
     // div.append("<label class=\"switch pull-right\"><input type=\"checkbox\"><div class=\"slider round\"></div></label>");
     if(marker.visite) {
     	div.append("<span class=\"label label-success pull-right\">Visitée</span>");
+        if(marker.visite_date)
+            div.append("<br/><p class=\"pull-right\">" + marker.visite_date + "</p>")
     }
     else {
     	div.append("<span class=\"label label-danger pull-right\">Non visitée</span>");

@@ -7,11 +7,38 @@ $(function () {
 	$.ajaxSetup({
 		headers: { "X-CSRFToken": getCookie("csrftoken") }
 	});
+    // for Bootstrap's DatePicker
+    $('#datePicker')
+        .datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
 });
 
 $(document).ready(function() {
 	 $("#input-4").fileinput({showCaption: false});
+
+     if( !$("#c_visite").checked ) $("#datepickerDiv").hide();
+     else $("#datepickerDiv").show();
 });
+
+/**
+* display datepicker only if "visite" is true
+*/
+$('#c_visite').change(function(){
+    this.checked ? $("#datepickerDiv").show(500) : $("#datepickerDiv").hide(500);
+});
+
+/**
+ * Callback for submitting "ajouter_form", 
+ * @location editer_ecole(form) => ajaxFormHandling.js
+ */
+$('#editer_form').on('submit', function(event){
+    event.preventDefault();
+    editer_ecole(this);
+    this.reset();
+});
+
 /**
  * @jQuery $("#menu-toggler"): button used to open the sidebar
  */
@@ -42,7 +69,8 @@ $(document).click(function (e){
 	// when not clicking on the menu toggler
 	// when the sidebar is actually open and when not clicking on the sidebar or its children
 	if($("#sidebar-wrapper.toggled").length > 0 & !$(e.target).is('#sidebar-wrapper *')) {
-		if(!($(e.target).is(':button') || $(e.target).is(".glyphicon-menu-hamburger"))) {
+		if(!($(e.target).is(':button') || $(e.target).is(".glyphicon-menu-hamburger") || 
+            !$(e.target).is("#datepickerDiv"))) {
 			hideEditTabAndContent();
 			// actually close the sidebar
 			$('#sidebar-wrapper').removeClass("toggled");
@@ -66,6 +94,22 @@ $("#close-results-btn").click(function(e) {
     $("#results-container").hide("slide", { direction: "right" }, 500);
 });
 
+/**
+ * @jQuery $("#sidebar-nav-pills li") nav pills in sidebar,
+ * allows user to change tabs when clicking on enabled tabs
+ */
+$("#sidebar-nav-pills li").click(function(e) {
+    e.preventDefault();
+    $("#sidebar-nav-pills li").removeClass("active");
+    $(".sidebar-content").hide();
+
+    $(this).addClass("active");
+    // same suffix for nav-pill title and sidebar-content title
+    var pillTitle = $(this).attr('id').split('-')[2];
+    var selector = "#sidebar-content-" + pillTitle;
+    $(selector).show();
+});
+
 
 /**
  * detect when 'enter' is pressed in search bar. If pressed, call search function
@@ -83,6 +127,54 @@ $('#search_input').on('input', function() {
     search();
 });
 
+
+// allows hiding the "editer" nav tab when closing the sidebar
+function hideEditTabAndContent() {
+    $('.sidebar-tab').show();
+    if($('#nav-pill-editer').hasClass("active")) {
+        $('#nav-pill-filtrer').addClass("active");
+        $('#nav-pill-editer').removeClass("active").addClass("hidden");
+        $('#sidebar-content-editer').hide().addClass("hidden");
+        $('#sidebar-content-filtrer').show();
+    }
+}
+
+/**
+ * Callback for click on orange edit button of info div
+ * @jQuery $('#edit-btn'): the button's selector
+ */
+function openEditTab() {
+
+    // open tab, enable nav-pill...
+    $('#sidebar-wrapper').addClass("toggled");
+    $('#sidebar-wrapper').show("slide", { direction: "left" }, 500);
+    $('.sidebar-tab').removeClass("active").hide();
+    $('#nav-pill-editer').addClass("active").removeClass("hidden").show();
+    $('.sidebar-content').hide();
+    $('#sidebar-content-editer').removeClass("hidden").show();
+
+    // get pk value from span data
+    var pk = $('#pk-data').attr("data-pk");
+
+    // Prefill form with Ecole info
+    
+    var ecole_to_edit = json_db_data[pk - 1].fields;
+    $('#editer_form #c_pk').val(pk); //hidden form input used by JS
+    $('#editer_form #c_nom').val(ecole_to_edit.nom);
+    $('#editer_form #c_ville').val(ecole_to_edit.ville); 
+    $('#editer_form #c_adresse').val(ecole_to_edit.adresse);
+    if(ecole_to_edit.type.indexOf('(') != -1)
+        ecole_to_edit.type = get_substring(ecole_to_edit.type, '(', ')');
+    $('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').prop('selected','selected');
+    $('#editer_form #c_programmes').val(ecole_to_edit.programmes);
+
+    var http_prefix_regex = /^(https?:\/\/)?(.*)$/i;
+    var match = http_prefix_regex.exec(ecole_to_edit.url);
+    var no_http_url = match[2]; 
+    $('#editer_form #c_url').val(no_http_url);  
+    $('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
+    $('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
+}
 
 /**
  * Called when 'filtrer' button is pressed in sidebar filter form
