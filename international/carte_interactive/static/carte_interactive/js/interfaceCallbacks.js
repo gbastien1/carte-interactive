@@ -182,31 +182,43 @@ function openEditTab() {
  * Here, we filter by program code and by school type
  */
 function filterMarkers() {
-	var code_checkboxes = $(".code_filtre");
+	var code_uqac_checkboxes = $(".code_uqac_filtre");
+    var code_partenaires_checkboxes = $(".code_partenaires_filtre");
 	var type_checkboxes = $(".type_filtre");
 
-	var codes = [];
+	var codesUQAC = [];
+    var codesPartenaires = [];
 	var types = [];
-	// retrieve checked code options
-	code_checkboxes.each(function() {
-		if ($(this).is(":checked")) codes.push($(this).val());
+	// retrieve checked UQAC code options
+	code_uqac_checkboxes.each(function() {
+		if ($(this).is(":checked")) codesUQAC.push($(this).val());
 	});
+    // retrieve checked partenaires code options
+    code_partenaires_checkboxes.each(function() {
+        if ($(this).is(":checked")) codesPartenaires.push($(this).val());
+    });
 	// retrieve checked type options
 	type_checkboxes.each(function() {
 		if ($(this).is(":checked")) types.push($(this).val());
 	});
 	// if at least one checkbox was checked
-	if (codes.length > 0 || types.length > 0) {
+	if (codesUQAC.length > 0 || codesPartenaires.length > 0 || types.length > 0) {
 		// go through all markers. If current marker 
 		// corresponds to one filter, set it visible
         markers.forEach(function(m) {
             m.setVisible(false);
-            codes.forEach(function(c) {
-                if (m.programmes.indexOf(c) != -1) m.setVisible(true);
-            });
-            types.forEach(function(t) {
-                if (m.type == t) m.setVisible(true);
-            });
+            if(m.programmes_uqac)
+                codesUQAC.forEach(function(c) {
+                    if (m.programmes_uqac.indexOf(c) != -1) m.setVisible(true);
+                });
+            if(m.programmes_partenaires)
+                codesPartenaires.forEach(function(c) {
+                    if (m.programmes_partenaires.indexOf(c) != -1) m.setVisible(true);
+                });
+            if(m.type)
+                types.forEach(function(t) {
+                    if (m.type == t) m.setVisible(true);
+                });
         });
 	}
 	// is nothing was checked, show all markers
