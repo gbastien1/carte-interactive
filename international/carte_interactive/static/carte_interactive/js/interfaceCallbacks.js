@@ -127,6 +127,13 @@ $('#search_input').on('input', function() {
     search();
 });
 
+/**
+ * Detects click on filter checkboxes to filter on every click
+ */
+$(".filtre").click(function() {
+    filterMarkers(false);
+});
+
 
 // allows hiding the "editer" nav tab when closing the sidebar
 function hideEditTabAndContent() {
@@ -181,7 +188,7 @@ function openEditTab() {
  * Used to filter the visible markers on the screen according to some parameters
  * Here, we filter by program code and by school type
  */
-function filterMarkers() {
+function filterMarkers(closeSidebar) {
 	var code_uqac_checkboxes = $(".code_uqac_filtre");
     var code_partenaires_checkboxes = $(".code_partenaires_filtre");
 	var type_checkboxes = $(".type_filtre");
@@ -229,9 +236,10 @@ function filterMarkers() {
             m.setVisible(true);
         });
 	}
-	// close sidebar
-	$("#sidebar-wrapper").removeClass("toggled");
-	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
+    if(closeSidebar) {
+    	$("#sidebar-wrapper").removeClass("toggled");
+    	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
+    }
 }
 
 /**
