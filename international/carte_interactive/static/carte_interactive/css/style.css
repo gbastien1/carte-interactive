@@ -21,8 +21,6 @@
 
 /* Sidebar Styles */
 .sidebar-nav {
-  position: absolute;
-  top: 0;
   margin: 0;
   padding: 0;
   list-style: none; }
@@ -101,7 +99,8 @@ input[type="checkbox"] {
   padding: 1em;
   background-color: #fff;
   border-left: 1px solid #BBBBBB;
-  display: none; }
+  display: none;
+  overflow-y: auto; }
 
 #close-results-btn {
   position: absolute;
@@ -248,5 +247,3 @@ html, body {
 @media screen and (min-width: 400px) and (max-width: 600px) {
   #search-bar {
     width: 75%; } }
-
-/*# sourceMappingURL=style.css.map */

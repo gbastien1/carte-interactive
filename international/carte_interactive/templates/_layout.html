@@ -8,8 +8,13 @@
 
 
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-3.3.6/css/bootstrap.min.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/lib/bootstrap-file-input/fileinput.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'carte_interactive/css/style.css' %}" />
+
+	<!-- Include Bootstrap Datepicker -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+
 	<!-- this script contains initMap which needs to be loaded at first -->
 	<script type="text/javascript" src="{% static 'carte_interactive/js/googleMap.js' %}"></script>
 </html>
@@ -23,8 +28,10 @@
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-1.12.3.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/jquery/jquery-ui.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/lib/bootstrap-file-input/fileinput.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/js/interfaceCallbacks.js' %}"></script>
+	<script type="text/javascript" src="{% static 'carte_interactive/js/ecoleEdit.js' %}"></script>
 	<script type="text/javascript" src="{% static 'carte_interactive/js/csrf.js' %}"></script>
     
 	<!-- GOOGLE MAPS JAVASCRIPT API -->

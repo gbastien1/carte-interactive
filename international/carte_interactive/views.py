@@ -57,6 +57,63 @@ class UploadExcelView(JSONResponseMixin, AjaxResponseMixin, RedirectView):
 		return self.render_json_response(json_data)
 
 
+# url: carte/SavePosition/
+def SavePositionView(request):
+	if request.method == 'POST':
+		data = json.loads(request.POST.get('content'))
+		_pk = data["pk"]
+		_latitude = data["latitude"]
+		_longitude = data["longitude"]
+
+		ecole = Ecole.objects.get(pk=_pk)
+		ecole.latitude = float(_latitude)
+		ecole.longitude = float(_longitude)
+		ecole.save()
+
+		# update Ecole object in data.json
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+
+		response_data = "success"
+		return HttpResponse(
+			response_data,
+			content_type="text/plain"
+		)
+
+
+# url: carte/edit/
+def EditerEcole(request):
+	if request.method == 'POST':
+		data = json.loads(request.POST.get('content'))
+		_pk = data["pk"]
+		_visite = data["visite"]
+		_visite_date = data["date"]
+
+		ecole = Ecole.objects.get(pk=_pk)
+		ecole.visite = _visite
+		if ecole.visite:
+			ecole.visite_date = _visite_date
+		else:
+			ecole.visite_date = ""
+		ecole.save()
+
+		# update Ecole object in data.json
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+
+		response_data = serializers.serialize('json', [ecole, ])
+		return HttpResponse(
+			response_data,
+			content_type="application/json"
+		)
+
+
 # get string inbetween two characters in other string
 def get_substring(str, start, end):
 	return str[str.find(start) + len(start):str.rfind(end)]

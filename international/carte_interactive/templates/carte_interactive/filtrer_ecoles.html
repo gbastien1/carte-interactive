@@ -1,22 +1,40 @@
 
 
-<form action="javascript:filterMarkers()" class="form">
-  <fieldset id="codePrograms">
-      <legend>Code de programme:</legend>
+<form action="javascript:filterMarkers(true)" class="form">
+  <fieldset id="codeProgramsUQAC">
+      <legend>Code de programme UQAC:</legend>
       <label class="checkbox-inline">
-          <input class="filtre code_filtre" type="checkbox" value="1709"> 1709
+          <input class="filtre code_uqac_filtre" type="checkbox" value="1709"> 1709
         </label>
         <label class="checkbox-inline">
-          <input class="filtre code_filtre" type="checkbox" value="3037"> 3037
+          <input class="filtre code_uqac_filtre" type="checkbox" value="3037"> 3037
         </label>
         <label class="checkbox-inline">
-          <input class="filtre code_filtre" type="checkbox" value="3754"> 3754
+          <input class="filtre code_uqac_filtre" type="checkbox" value="3754"> 3754
         </label>
         <label class="checkbox-inline">
-          <input class="filtre code_filtre" type="checkbox" value="6908"> 6908
+          <input class="filtre code_uqac_filtre" type="checkbox" value="6908"> 6908
         </label>
         <label class="checkbox-inline">
-          <input class="filtre code_filtre" type="checkbox" value="7764"> 7764
+          <input class="filtre code_uqac_filtre" type="checkbox" value="7764"> 7764
+        </label>
+  </fieldset>
+  <fieldset id="codeProgramsPartenaires">
+      <legend>Code de programme partenaires:</legend>
+      <label class="checkbox-inline">
+          <input class="filtre code_partenaires_filtre" type="checkbox" value="1709"> 1709
+        </label>
+        <label class="checkbox-inline">
+          <input class="filtre code_partenaires_filtre" type="checkbox" value="3037"> 3037
+        </label>
+        <label class="checkbox-inline">
+          <input class="filtre code_partenaires_filtre" type="checkbox" value="3754"> 3754
+        </label>
+        <label class="checkbox-inline">
+          <input class="filtre code_partenaires_filtre" type="checkbox" value="6908"> 6908
+        </label>
+        <label class="checkbox-inline">
+          <input class="filtre code_partenaires_filtre" type="checkbox" value="7764"> 7764
         </label>
   </fieldset>
   <fieldset id="schoolTypes">
@@ -32,6 +50,12 @@
         </label>
         <label class="checkbox">
           <input class="filtre type_filtre" type="checkbox" value="EC"> École de commerce
+        </label>
+        <label class="checkbox">
+          <input class="filtre type_filtre" type="checkbox" value="A"> Autres
+        </label>
+        <label class="checkbox">
+          <input class="filtre type_filtre" type="checkbox" value="V"> Visité
         </label>
   </fieldset>
   <input type="submit" class="btn btn-info" value="Filtrer">

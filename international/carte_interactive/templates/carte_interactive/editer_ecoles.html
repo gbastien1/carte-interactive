@@ -1,0 +1,43 @@
+{% load bootstrap3 %}
+
+<form action="" method="post" class="form form-horizontal col-xs-11" id="editer_form">
+    {% csrf_token %}
+
+            <div class="form-title-row">
+                <h4>Éditer l'école</h4>
+            </div>
+
+            <!-- numéro distinct par école -->
+            <div class="form-group" style="display: none">
+			    <label for="c_pk" class="col-xs-4 control-label"># ecole</label>
+			    <div class="col-xs-2">
+			      <input type="text" class="form-control" id="c_pk" name="pk">
+			    </div>
+			</div>
+
+			<div class="form-group">
+				<label class="switch control-label" style="margin-left: 30px; float: left;">
+				  	<input type="checkbox" id="c_visite" name="visite" value="visite">
+				  	<div class="slider round"></div>
+				  	<p id="visite-label">Visitée?</p>
+				</label>	
+			</div>
+
+
+            <div class="form-group" id="datepickerDiv">
+		        <label class="col-xs-3 control-label">Date: </label>
+		        <div class="col-xs-8 date">
+		            <div class="input-group input-append date" id="datePicker">
+		                <input type="text" class="form-control" name="date" />
+		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+		            </div>
+		        </div>
+		    </div>
+
+            <div class="form-row">
+                <button type="submit" class="btn btn-info">Éditer</button>
+            </div>
+
+        </form>
+    </div>
+</form>

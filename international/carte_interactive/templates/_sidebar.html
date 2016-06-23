@@ -18,12 +18,20 @@
         <ul id="sidebar-nav-pills" class="nav nav-tabs">
             <!-- Filtrer -->
             <li id="nav-pill-filtrer" role="presentation" class="sidebar-tab active"><a href="javascript:void(0)">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
+            <!-- Éditer -->
+            <li id="nav-pill-editer" role="presentation" class="sidebar-tab hidden"><a href="javascript:void(0)">Éditer<span class="glyphicon glyphicon-pencil"></span></a></li>
         </ul>
 
         <!-- filter content -->
         <li id="sidebar-content-filtrer" class="sidebar-content">
             {% include 'carte_interactive/filtrer_ecoles.html' %}
         </li>
+
+        <!-- edit Ecole content -->
+        <li id="sidebar-content-editer" class="sidebar-content hidden">
+            {% include 'carte_interactive/editer_ecoles.html' %}
+        </li>
+
     </ul>
 </div>
 <!-- /#sidebar-wrapper -->
