@@ -124,7 +124,11 @@ $("#search_input").keyup(function (e) {
  * Detects any input entered in search bar. Call search on each input
  */
 $('#search_input').on('input', function() {
-    search();
+    // if used on small viewport, search results hide 
+    // search bar and it is inconvenient
+    if ($(window).width() > 420){  
+        search();
+    }
 });
 
 /**
