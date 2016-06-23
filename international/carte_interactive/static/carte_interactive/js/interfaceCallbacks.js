@@ -46,7 +46,6 @@ $("#menu-toggler").click(function(e) {
 	e.preventDefault();
 	$("#sidebar-wrapper").addClass("toggled");
 	$("#sidebar-wrapper").show("slide", { direction: "left" }, 500);
-	$("#sidebar-content-ajouter").hide();
 	$("#sidebar-content-editer").hide();
 });
 
@@ -55,6 +54,7 @@ $("#menu-toggler").click(function(e) {
  */
 $("#close-menu-btn").click(function(e) {
 	e.preventDefault();
+    hideEditTabAndContent();
 	// actually close the sidebar
 	$("#sidebar-wrapper").removeClass("toggled");
 	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
