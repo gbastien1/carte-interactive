@@ -217,7 +217,9 @@ function filterMarkers() {
                 });
             if(m.type)
                 types.forEach(function(t) {
-                    if (m.type == t) m.setVisible(true);
+                    if(t === "V")
+                        if(m.visite == true) m.setVisible(true);
+                    else if (m.type == t) m.setVisible(true);
                 });
         });
 	}
