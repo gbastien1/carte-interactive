@@ -4,12 +4,13 @@ from django.http import HttpResponse
 from django.db.utils import OperationalError
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
+from .utils import *
 from .models import Ecole
 import openpyxl
 
@@ -40,16 +41,20 @@ class CardView(LoginRequiredMixin, TemplateView):
 	template_name = "carte_interactive/carte.html"
 
 
-# url: logout/
-class UploadExcelView(RedirectView):
+# url: carte/upload/
+class UploadExcelView(JSONResponseMixin, AjaxResponseMixin, RedirectView):
 	url = reverse_lazy('carte_interactive:carte')
 
-	def post(self, request, *args, **kwargs):
+	def post_ajax(self, request, *args, **kwargs):
 		uploaded_excel_file = request.FILES['input4']
 		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
 		data_file_path = app_name + data_url
-		return super(UploadExcelView, self).post(request, *args, **kwargs)
+		rewriteExcel(data_file_path, uploaded_excel_file)
+		load_data_from_excel(Ecole)
+
+		json_data = json.dumps(serializers.serialize('json', Ecole.objects.all()))
+		return self.render_json_response(json_data)
 
 
 # get string inbetween two characters in other string
