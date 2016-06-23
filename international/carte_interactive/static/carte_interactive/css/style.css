@@ -101,7 +101,8 @@ input[type="checkbox"] {
   padding: 1em;
   background-color: #fff;
   border-left: 1px solid #BBBBBB;
-  display: none; }
+  display: none;
+  overflow-y: auto; }
 
 #close-results-btn {
   position: absolute;
