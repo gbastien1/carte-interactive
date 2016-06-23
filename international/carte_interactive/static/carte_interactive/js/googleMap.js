@@ -303,10 +303,16 @@ function createInfoDiv(marker) {
     // Edit button at top-right corner of infowindow
     div.append('<button id="edit-btn" onclick="javascript:openEditTab()" type="button" class="info-btn btn btn-xs btn-warning">&#9998;</button>');
     // List of programs offered with this school
-    if(marker.programmes_uqac)
-        div.append("<p id=\"info_programmes_uqac\">Programmes UQAC: " + marker.programmes_uqac + "</p>");
+    if(marker.programmes_uqac) {
+        div.append("<ul class=\"list-group\">");
+        div.append("<li id=\"info_programmes_uqac\" class=\"list-group-item\" style=\"height: 30px; padding: 5px 15px;\"><b>Programmes UQAC:</b> " + marker.programmes_uqac + "</li>");
+    }
     if(marker.programmes_partenaires)
-        div.append("<p id=\"info_programmes_uqac\">Programmes partenaires: " + marker.programmes_partenaires + "</p>");
+        div.append("<li id=\"info_programmes_partenaires\" class=\"list-group-item\" style=\"height: 30px; padding: 5px 15px; margin-bottom: 5px;\"><b>Programmes partenaires:</b> " + marker.programmes_partenaires + "</li></ul>");
+    else {
+        $("#info_programmes_uqac").css({'margin-bottom': '5px'});
+        div.append("</ul>");
+    }
     // Data to be used by Javascript, not displayed onscreen
     div.append("<span id=\"pk-data\" data-pk=\"" + marker.pk + "\"></span>");
     // Particularities, if any, preceded my a green star
@@ -319,7 +325,7 @@ function createInfoDiv(marker) {
     if(marker.visite) {
     	div.append("<span class=\"label label-success pull-right\">Visitée</span>");
         if(marker.visite_date)
-            div.append("<br/><p class=\"pull-right\">" + marker.visite_date + "</p>")
+            div.append("<br/><small class=\"pull-right\">" + marker.visite_date + "</small>")
     }
     else {
     	div.append("<span class=\"label label-danger pull-right\">Non visitée</span>");
