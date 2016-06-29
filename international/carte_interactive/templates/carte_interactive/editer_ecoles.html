@@ -1,6 +1,6 @@
 {% load bootstrap3 %}
 
-<form action="" method="post" class="form form-horizontal col-xs-11" id="editer_form">
+<form action="" method="post" class="form form-horizontal" id="editer_form">
     {% csrf_token %}
 
             <div class="form-title-row">
@@ -15,6 +15,7 @@
 			    </div>
 			</div>
 
+			<!-- visité checkbox -->
 			<div class="form-group">
 				<label class="switch control-label" style="margin-left: 30px; float: left;">
 				  	<input type="checkbox" id="c_visite" name="visite" value="visite">
@@ -23,12 +24,12 @@
 				</label>	
 			</div>
 
-
+			<!-- datepicker enabled only when visité = true -->
             <div class="form-group" id="datepickerDiv">
 		        <label class="col-xs-3 control-label">Date: </label>
 		        <div class="col-xs-8 date">
 		            <div class="input-group input-append date" id="datePicker">
-		                <input type="text" class="form-control" name="date" />
+		                <input type="text" id="c_visite_date" class="form-control" name="date" />
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
 		        </div>
