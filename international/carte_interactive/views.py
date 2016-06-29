@@ -37,24 +37,63 @@ class LogoutView(RedirectView):
 
 
 #url: carte/
-class CardView(LoginRequiredMixin, TemplateView):
+class CardView(LoginRequiredMixin, FormView):
+	form_class = ExcelUploadForm
 	template_name = "carte_interactive/carte.html"
+
+	def get_success_url(self):
+		return reverse_lazy('carte_interactive:carte')
+
+	def form_valid(self, form):
+		print("THIS IS THE FILE: " + str(self.request.FILES['file']))
+		print("CardView FormValid")
+
+		return super(CardView, self).form_valid(form)
 
 
 # url: carte/upload/
-class UploadExcelView(JSONResponseMixin, AjaxResponseMixin, RedirectView):
-	url = reverse_lazy('carte_interactive:carte')
+"""def UploadExcelView(request):
+	if request.method == 'POST':
+		print("THIS IS THE FILE: " + str(request.FILES))
+		# utils_uploaded_excel_file = request.FILES['input4']
+		print("UploadExcelView")
 
-	def post_ajax(self, request, *args, **kwargs):
-		uploaded_excel_file = request.FILES['input4']
-		app_name = 'carte_interactive'
-		data_url = static('carte_interactive/data/data.xlsx')
-		data_file_path = app_name + data_url
-		rewriteExcel(data_file_path, uploaded_excel_file)
-		load_data_from_excel(Ecole)
+		return HttpResponse(json.dumps({"message": "File uploaded!"}))
+"""
 
-		json_data = json.dumps(serializers.serialize('json', Ecole.objects.all()))
-		return self.render_json_response(json_data)
+# url: carte/rewrite
+def RewriteExcelView(request):
+	print("RewriteExcelView")
+	"""app_name = 'carte_interactive'
+	data_url = static('carte_interactive/data/data.xlsx')
+	data_file_path = app_name + data_url
+	rewriteExcel(data_file_path, uploaded_excel_file)
+	load_data_from_excel(Ecole)"""
+
+	return HttpResponseRedirect(reverse_lazy('carte_interactive:carte'))
+
+
+# url: carte/reinit
+def ReinitVisitsView(request):
+	if request.method == 'POST':
+		ecoles = Ecole.objects.all()
+		for ecole in ecoles:
+			ecole.visite = False
+			ecole.visite_date = ""
+			ecole.save()
+
+		# update Ecole objects in data.json
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+		
+		response_data = json.dumps({"visite": False, "visite_date": ""})
+	return HttpResponse(
+			response_data,
+			content_type="text/plain"
+		)
 
 
 # url: carte/SavePosition/
