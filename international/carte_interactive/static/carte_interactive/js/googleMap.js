@@ -168,7 +168,7 @@ function createMarker(ecole_data, pk) {
     }
 
     function getCoordinatesFromGeocoder() {
-        if(!latitude && !longitude) {
+        if(!latitude && !longitude && ecole_data.adresse) {
             var adresse = ecole_data.adresse;
             geocoder.geocode({'address': adresse}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
@@ -184,8 +184,8 @@ function createMarker(ecole_data, pk) {
                         getCoordinatesFromGeocoder();
                     }, 400);
                 } else {
-                    //if(ecole_data.adresse) console.log(ecole_data.nom);
-                    //console.log("Geocoder n'a pas pu trouver l'adresse:" + ecole_data.adresse + " avec statut: " + status);
+                    if(ecole_data.adresse) console.log(ecole_data.nom);
+                    console.log("Geocoder n'a pas pu trouver l'adresse:" + ecole_data.adresse + " avec statut: " + status);
                 }
             });
         }
