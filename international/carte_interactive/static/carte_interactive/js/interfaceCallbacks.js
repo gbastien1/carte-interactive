@@ -39,6 +39,41 @@ $('#editer_form').on('submit', function(event){
     this.reset();
 });
 
+
+/**
+ * Used to rewrite data.xlsx file with Django and on success, update markers
+ */
+$("#upload_excel_btn").click(function(event) {
+    console.log("submitting upload form with UpdateExcelAndMarkers");
+    UpdateExcelAndMarkers();
+});
+
+/*$("#excel_upload_form").on('submit', function(event) {
+    event.preventDefault();
+    UpdateExcelAndMarkers();
+    $(this).submit();
+});*/
+
+$("#reinit-btn").click(function(event) {
+    if (confirm('Voulez-vous vraiment réinitialiser toutes les visites?')) {
+        $.ajax({
+            url : "reinit/",
+            type : "POST",
+            data : {content: ""},
+            success : function(data) {
+                data = JSON.parse(data);
+                markers.forEach(function(marker, index) {
+                    updateMarker(marker, data);
+                });
+                alert("Réinitialisation terminée!");
+            }
+        });
+    } else {
+        alert('Rien n\'a été modifié!');
+    }
+});
+
+
 /**
  * @jQuery $("#menu-toggler"): button used to open the sidebar
  */
@@ -171,20 +206,9 @@ function openEditTab() {
     
     var ecole_to_edit = json_db_data[pk - 1].fields;
     $('#editer_form #c_pk').val(pk); //hidden form input used by JS
-    $('#editer_form #c_nom').val(ecole_to_edit.nom);
-    $('#editer_form #c_ville').val(ecole_to_edit.ville); 
-    $('#editer_form #c_adresse').val(ecole_to_edit.adresse);
-    if(ecole_to_edit.type.indexOf('(') != -1)
-        ecole_to_edit.type = get_substring(ecole_to_edit.type, '(', ')');
-    $('#editer_form #c_type option[value=\"' + ecole_to_edit.type + '\"]').prop('selected','selected');
-    $('#editer_form #c_programmes').val(ecole_to_edit.programmes);
-
-    var http_prefix_regex = /^(https?:\/\/)?(.*)$/i;
-    var match = http_prefix_regex.exec(ecole_to_edit.url);
-    var no_http_url = match[2]; 
-    $('#editer_form #c_url').val(no_http_url);  
-    $('#editer_form #c_particularites').val(ecole_to_edit.particularites); 
     $('#editer_form #c_visite').prop("checked", ecole_to_edit.visite);
+    if(ecole_to_edit.visite)
+        $('#editer_form #c_visite_date').val(ecole_to_edit.visite_date);
 }
 
 /**
