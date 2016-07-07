@@ -9,15 +9,22 @@
         <hr />
 
         <!-- from Bootstrap file-input library -->
-        <form action="{% url 'carte_interactive:upload_excel' %}" method="post" enctype="multipart/form-data">
+        <!--<form id="excel_upload_form" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label class="control-label">Charger un fichier Excel</label>
             <input id="input-4" name="input4" type="file" multiple class="file-loading"> <br/>
+        </form>-->
+        <form id="excel_upload_form" method="post" class="form-inline" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <input id="upload_excel_btn" type="submit" value="Upload" />
         </form>
-
+        <br />
         <ul id="sidebar-nav-pills" class="nav nav-tabs">
             <!-- Filtrer -->
             <li id="nav-pill-filtrer" role="presentation" class="sidebar-tab active"><a href="javascript:void(0)">Filtrer<span class="glyphicon glyphicon-th-list"></span></a></li>
+            <!-- Reinitialiser -->
+            <li id="nav-pill-reinit" role="presentation" class="sidebar-tab"><a href="javascript:void(0)">Réinitialiser<span class="glyphicon glyphicon-floppy-remove"></span></a></li>
             <!-- Éditer -->
             <li id="nav-pill-editer" role="presentation" class="sidebar-tab hidden"><a href="javascript:void(0)">Éditer<span class="glyphicon glyphicon-pencil"></span></a></li>
         </ul>
@@ -25,6 +32,11 @@
         <!-- filter content -->
         <li id="sidebar-content-filtrer" class="sidebar-content">
             {% include 'carte_interactive/filtrer_ecoles.html' %}
+        </li>
+
+        <!-- filter content -->
+        <li id="sidebar-content-reinit" class="sidebar-content">
+            {% include 'carte_interactive/reinitialiser_ecoles.html' %}
         </li>
 
         <!-- edit Ecole content -->
