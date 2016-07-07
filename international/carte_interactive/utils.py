@@ -14,7 +14,7 @@ Attr = {
 	'programmes': 5,
 	'url': 6
 }
-
+"""
 def load_data_from_excel(Ecole) :
 	app_name = 'carte_interactive'
 	data_url = static('carte_interactive/data/data.xlsx')
@@ -84,3 +84,5 @@ def rewriteExcel(data_file_path, uploaded_file):
 		data_wb.save(data_file_path)
 	except OperationalError:
 		pass
+
+"""
