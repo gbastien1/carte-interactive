@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.db.utils import OperationalError
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -12,6 +12,7 @@ from django.core import serializers
 
 from .utils import *
 from .models import Ecole
+from .forms import ExcelUploadForm
 import openpyxl
 
 app_name = 'carte_interactive'
