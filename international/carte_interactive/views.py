@@ -1,17 +1,19 @@
 # -*- coding: UTF-8 -*-
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import OperationalError
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
 from .utils import *
-from .models import Ecole
+from .models import ExcelFile, Ecole
+from .forms import ExcelUploadForm
 import openpyxl
 
 app_name = 'carte_interactive'
@@ -45,37 +47,27 @@ class CardView(LoginRequiredMixin, FormView):
 		return reverse_lazy('carte_interactive:carte')
 
 	def form_valid(self, form):
-		print("THIS IS THE FILE: " + str(self.request.FILES['file']))
-		print("CardView FormValid")
+		uploaded_file = self.request.FILES['file']
+		if uploaded_file.name.split(".")[-1] == 'xlsx':
+			uploaded_file.name = "data.xlsx"
+			excelFile = ExcelFile()
+			excelFile.file = uploaded_file
+			excelFile.save()
 
+			# page will reload so set reload to true in json
+			json_data = json.dumps({'reload': True})
+			json_data_url = static('carte_interactive/json/reload.json')
+			json_data_file = open(app_name + json_data_url, 'w')
+			json_data_file.write(json_data)
+			json_data_file.close()
+					
 		return super(CardView, self).form_valid(form)
-
-
-# url: carte/upload/
-"""def UploadExcelView(request):
-	if request.method == 'POST':
-		print("THIS IS THE FILE: " + str(request.FILES))
-		# utils_uploaded_excel_file = request.FILES['input4']
-		print("UploadExcelView")
-
-		return HttpResponse(json.dumps({"message": "File uploaded!"}))
-"""
-
-# url: carte/rewrite
-def RewriteExcelView(request):
-	print("RewriteExcelView")
-	"""app_name = 'carte_interactive'
-	data_url = static('carte_interactive/data/data.xlsx')
-	data_file_path = app_name + data_url
-	rewriteExcel(data_file_path, uploaded_excel_file)
-	load_data_from_excel(Ecole)"""
-
-	return HttpResponseRedirect(reverse_lazy('carte_interactive:carte'))
 
 
 # url: carte/reinit
 def ReinitVisitsView(request):
 	if request.method == 'POST':
+		
 		ecoles = Ecole.objects.all()
 		for ecole in ecoles:
 			ecole.visite = False
@@ -103,11 +95,17 @@ def SavePositionView(request):
 		_pk = data["pk"]
 		_latitude = data["latitude"]
 		_longitude = data["longitude"]
-
-		ecole = Ecole.objects.get(pk=_pk)
-		ecole.latitude = float(_latitude)
-		ecole.longitude = float(_longitude)
-		ecole.save()
+		
+		try:
+			ecole = Ecole.objects.get(pk=_pk)
+			ecole.latitude = float(_latitude)
+			ecole.longitude = float(_longitude)
+			ecole.save()
+		except ObjectDoesNotExist:
+			print("Ecole with pk " + str(_pk) + " does not exist")
+		except OperationalError:
+			print("operational error occured")
+			
 
 		# update Ecole object in data.json
 		json_data = serializers.serialize('json', Ecole.objects.all())
@@ -115,13 +113,32 @@ def SavePositionView(request):
 		json_data_file = open(app_name + json_data_url, 'w')
 		json_data_file.write(json_data)
 		json_data_file.close()
-
+		
 		response_data = "success"
 		return HttpResponse(
 			response_data,
 			content_type="text/plain"
 		)
 
+
+def SaveCoordinatesView(request):
+	if request.method == 'POST':
+		
+		ecole_data = Ecole.objects.all()
+		coordinates_data = []
+		for ecole in ecole_data:
+			if ecole.latitude and ecole.longitude:
+				coordinates_data.append({"nom": ecole.nom, "lat": ecole.latitude, "lng": ecole.longitude})
+		json_coords_url = static('carte_interactive/json/coords.json')
+		json_data_file = open(app_name + json_coords_url, 'w')
+		json_data = json.dumps(coordinates_data)
+		json_data_file.write(json_data)
+		json_data_file.close()
+		
+		return HttpResponse(
+			"200 OK",
+			content_type="text/plain"
+		)
 
 # url: carte/edit/
 def EditerEcole(request):
@@ -130,7 +147,7 @@ def EditerEcole(request):
 		_pk = data["pk"]
 		_visite = data["visite"]
 		_visite_date = data["date"]
-
+		
 		ecole = Ecole.objects.get(pk=_pk)
 		ecole.visite = _visite
 		if ecole.visite:
@@ -147,8 +164,31 @@ def EditerEcole(request):
 		json_data_file.close()
 
 		response_data = serializers.serialize('json', [ecole, ])
+		
 		return HttpResponse(
 			response_data,
+			content_type="application/json"
+		)
+
+def SetReloadView(request):
+	if request.method == 'POST':
+		json_data = json.dumps({'reload': False})
+		json_data_url = static('carte_interactive/json/reload.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+
+		return HttpResponse(
+			"200 OK",
+			content_type="application/json"
+		)
+
+def UpdateEcolesView(request):
+	if request.method == 'POST':
+		# updates Ecole objects and data.json
+		#load_data_from_excel(Ecole)
+		return HttpResponse(
+			"200 OK",
 			content_type="application/json"
 		)
 
