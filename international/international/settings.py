@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'psycopg2',
     'carte_interactive'
 ]
 
@@ -83,7 +84,7 @@ DATABASES = {
         'USER': 'gbastien1',
         'PASSWORD': 'Basg20549403$',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
