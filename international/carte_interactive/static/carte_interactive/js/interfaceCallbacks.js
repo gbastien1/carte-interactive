@@ -16,6 +16,7 @@ $(function () {
 });
 
 $(document).ready(function() {
+    ReloadIfNeeded();
 	 $("#input-4").fileinput({showCaption: false});
 
      if( !$("#c_visite").checked ) $("#datepickerDiv").hide();
@@ -40,20 +41,6 @@ $('#editer_form').on('submit', function(event){
     hideEditTabAndContent();
 });
 
-
-/**
- * Used to rewrite data.xlsx file with Django and on success, update markers
- */
-$("#upload_excel_btn").click(function(event) {
-    console.log("submitting upload form with UpdateExcelAndMarkers");
-    UpdateExcelAndMarkers();
-});
-
-/*$("#excel_upload_form").on('submit', function(event) {
-    event.preventDefault();
-    UpdateExcelAndMarkers();
-    $(this).submit();
-});*/
 
 $("#reinit-btn").click(function(event) {
     if (confirm('Voulez-vous vraiment réinitialiser toutes les visites?')) {
@@ -336,4 +323,63 @@ function showResultsList(results) {
     else {
         $("#results-list").append("<li class=\"list-group-item\">Aucun résultat trouvé</li>");
     }
+}
+
+
+/*CODE FOR UPLOADING A NEW EXCEL FILE*/
+
+function ReloadIfNeeded() {
+    var json_url = "/static/carte_interactive/json/reload.json";
+    setTimeout(function() {
+        $.getJSON(json_url, function(data) {
+            console.log("reloaded? " + data.reload);
+            if(data.reload) {
+                console.log("saving coords to json");
+                saveCoordinatesToJson();
+            }
+        });
+    }, 1000);
+}
+
+function setReloadFalse() {
+    $.ajax({
+        url : "setReload/", // the endpoint
+        type : "POST", // http method
+        data : {content: false},
+        //received json is updated data from database
+        success : function(json) {
+            console.log("set reload to false success!");
+        }
+    });
+}
+
+function UpdateEcolesAndMarkers() {
+    console.log("updating Ecoles and Markers");
+    $.ajax({
+        url : "updateEcoles/", // the endpoint
+        type : "POST", // http method
+        data : {content: ""},
+        //received json is updated data from database
+        success : function(json) {
+            console.log("update Ecoles success!");
+            // remove references to markers on map
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+            InitMap();
+            setReloadFalse();
+        }
+    });
+}
+
+function saveCoordinatesToJson() {
+    $.ajax({
+        url : "saveCoordinates/", // the endpoint
+        type : "POST", // http method
+        data : {content: ""},
+        success : function(json) {
+            UpdateEcolesAndMarkers();
+        }
+    });
 }
