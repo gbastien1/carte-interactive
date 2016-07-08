@@ -11,7 +11,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
 from .utils import *
-#from .models import Ecole
+from .models import Ecole
 from .forms import ExcelUploadForm
 import openpyxl
 
@@ -77,7 +77,7 @@ def RewriteExcelView(request):
 # url: carte/reinit
 def ReinitVisitsView(request):
 	if request.method == 'POST':
-		"""
+		
 		ecoles = Ecole.objects.all()
 		for ecole in ecoles:
 			ecole.visite = False
@@ -90,7 +90,7 @@ def ReinitVisitsView(request):
 		json_data_file = open(app_name + json_data_url, 'w')
 		json_data_file.write(json_data)
 		json_data_file.close()
-		"""
+		
 		response_data = json.dumps({"visite": False, "visite_date": ""})
 	return HttpResponse(
 			response_data,
@@ -105,7 +105,7 @@ def SavePositionView(request):
 		_pk = data["pk"]
 		_latitude = data["latitude"]
 		_longitude = data["longitude"]
-		"""
+		
 		ecole = Ecole.objects.get(pk=_pk)
 		ecole.latitude = float(_latitude)
 		ecole.longitude = float(_longitude)
@@ -117,7 +117,7 @@ def SavePositionView(request):
 		json_data_file = open(app_name + json_data_url, 'w')
 		json_data_file.write(json_data)
 		json_data_file.close()
-		"""
+		
 		response_data = "success"
 		return HttpResponse(
 			response_data,
@@ -132,7 +132,7 @@ def EditerEcole(request):
 		_pk = data["pk"]
 		_visite = data["visite"]
 		_visite_date = data["date"]
-		"""
+		
 		ecole = Ecole.objects.get(pk=_pk)
 		ecole.visite = _visite
 		if ecole.visite:
@@ -147,7 +147,7 @@ def EditerEcole(request):
 		json_data_file = open(app_name + json_data_url, 'w')
 		json_data_file.write(json_data)
 		json_data_file.close()
-		"""
+		
 		response_data = serializers.serialize('json', [ecole, ])
 		return HttpResponse(
 			response_data,

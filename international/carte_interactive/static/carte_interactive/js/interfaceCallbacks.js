@@ -37,6 +37,7 @@ $('#editer_form').on('submit', function(event){
     event.preventDefault();
     editer_ecole(this);
     this.reset();
+    hideEditTabAndContent();
 });
 
 
