@@ -3,7 +3,9 @@ from django.apps import AppConfig
 from django.core import serializers
 from django.db import OperationalError
 
+import json
 import openpyxl
+from pprint import pprint
 
 Attr = {
 	'pk': 0,
@@ -21,15 +23,17 @@ Attr = {
 }
 
 def load_data_from_excel(Ecole) :
-	
 	app_name = 'carte_interactive'
 	data_url = static('carte_interactive/data/data.xlsx')
+	# data_only = True allows getting the data of the cell's formula instead of the formula itself
 	ecole_data = openpyxl.load_workbook(app_name + data_url, data_only=True)
-	sheet = ecole_data.get_sheet_by_name('data')
+	sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])#'data')
 	ecoles = sheet.rows
 	Ecole.objects.all().delete()
+
 	try:
 		for row in ecoles[1:]:
+			# set address if it's complete
 			if row[Attr['rue']].value and row[Attr['ville']].value and row[Attr['pays']].value and row[Attr['code_postal']].value :
 				address = row[Attr['rue']].value + ', ' + str(row[Attr['code_postal']].value) + ' ' + row[Attr['ville']].value + ', ' + row[Attr['pays']].value
 			else:
@@ -47,7 +51,7 @@ def load_data_from_excel(Ecole) :
 				url= row[Attr['url']].value,
 				particularites= row[Attr['particularites']].value
 			)
-
+			
 		# fill json file with Ecole data, for use with Google Javascript API
 		json_data = serializers.serialize('json', Ecole.objects.all())
 		json_data_url = static('carte_interactive/json/data.json')

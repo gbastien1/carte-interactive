@@ -28,7 +28,7 @@ class CarteInteractiveConfig(AppConfig):
 		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
 		ecole_data = openpyxl.load_workbook(app_name + data_url, data_only=True)
-		sheet = ecole_data.get_sheet_by_name('data')
+		sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])#'data')
 		ecoles = sheet.rows
 		try:
 			for row in ecoles[1:]:

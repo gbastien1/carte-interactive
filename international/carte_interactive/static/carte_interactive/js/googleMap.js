@@ -8,6 +8,8 @@ var infowindow; 	// the window that appears on marker hover
 var geocoder; 		// the API object that allows to finc latLng from address
 var json_db_data;	// the Ecole json data retrieved from Django DB
 var markers = [];	// the google maps markers
+var coordinates_array = [];
+var last_pk = "";
 var iconBase = '../../static/carte_interactive/img/marker_'; // relative url to marker icons
 var icons = { 		//icon urls depending on Ecole type
   U:    	{ icon: iconBase + 'U.png' },
@@ -87,6 +89,7 @@ function initMap() {
 
 	// fetch json data from url and create marker for each object found
 	$.ajax({
+        cache: false,
 		url: "../../static/carte_interactive/json/data.json",
 		success: function (data) {
 			try {
@@ -96,20 +99,19 @@ function initMap() {
 			catch(e) {
 				json_db_data = data;
 			}
+            last_pk = json_db_data[json_db_data.length-1];
 			json_db_data.forEach(function(ecole, index) {
-                //if(index == 150)
 				createMarker(ecole.fields, ecole.pk);
-			});
+			});            
 		}
 	});
-    
-
 	createLegendWithIcons();
 }
 
 // create legend for each icon types used (see icons object above)
 function createLegendWithIcons() {
 	var legendDiv = $("#legend");
+    legendDiv.empty();
 	for (var type in icons) {
 		var type = type;
 		var icon = icons[type].icon;
@@ -143,41 +145,25 @@ function createMarker(ecole_data, pk) {
     var successful = false;
     var json_coords_url = "/static/carte_interactive/json/coords.json";
     $.getJSON(json_coords_url, function(json) {
+        $.ajaxSetup({ cache: true});
         var lat_from_json;
         var lng_from_json;
         json.forEach(function(ecole) {
             if(ecole.nom === ecole_data.nom) {
                 lat_from_json = ecole.lat;
                 lng_from_json = ecole.lng;
-                //console.log("Found coords in json: " + lat_from_json + " " + lng_from_json);
             }
         });
-        var latitude = ecole_data.latitude || lat_from_json;
-        var longitude = ecole_data.longitude || lng_from_json;
-        // console.log("latitude found: " + latitude);
-        // console.log("longitude found: " + longitude);
+        var latitude = lat_from_json || ecole_data.latitude || null;
+        var longitude = lng_from_json || ecole_data.longitude || null;
         var coordinates;
         if (!latitude || !longitude) {
             newCoordinates = true;
-            var requestByName = {query: ecole_data.nom};
-            serviceByName = new google.maps.places.PlacesService(map);
-            serviceByName.textSearch(requestByName, callback);
+            coordinates = getCoordinatesFromGeocoder();
         }
         else {
             coordinates = new google.maps.LatLng(latitude, longitude);
             setMarker();
-        }
-        
-        
-        function callback(results, status) {
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                coordinates = getCoordinatesFromQuery(results); 
-                setMarker();
-                successful = true;
-            }
-            else {
-                coordinates = getCoordinatesFromGeocoder();
-            }
         }
 
         function getCoordinatesFromGeocoder() {
@@ -203,15 +189,7 @@ function createMarker(ecole_data, pk) {
                 });
             }
         }
-        
-        function getCoordinatesFromQuery(results) {
-            var place = results[0];
-            var latLng = place.geometry.location;
-            latitude = latLng.lat();
-            longitude = latLng.lng();
-            return new google.maps.LatLng(latitude, longitude);
-        }
-
+    
         function setMarker() {
             var marker = new google.maps.Marker({
                 position: coordinates,
@@ -252,9 +230,9 @@ function createMarker(ecole_data, pk) {
 
         function savePositionInEcole(marker) {
             var position = {
-                "pk": marker.pk,
-                "latitude": marker.position.lat(),
-                "longitude": marker.position.lng()
+                pk: marker.pk,
+                latitude: marker.position.lat(),
+                longitude: marker.position.lng()
             };
             $.ajax({
                 url : "savePosition/", // the endpoint
@@ -265,6 +243,7 @@ function createMarker(ecole_data, pk) {
                 }
             });
         }
+        
     });
 }
 

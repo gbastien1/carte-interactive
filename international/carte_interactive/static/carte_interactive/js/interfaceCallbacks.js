@@ -330,15 +330,17 @@ function showResultsList(results) {
 
 function ReloadIfNeeded() {
     var json_url = "/static/carte_interactive/json/reload.json";
-    setTimeout(function() {
-        $.getJSON(json_url, function(data) {
+    $.ajax({
+        cache: false,
+        url: json_url,
+        dataType: "json",
+        success: function(data) {
             console.log("reloaded? " + data.reload);
             if(data.reload) {
-                console.log("saving coords to json");
-                saveCoordinatesToJson();
+                setReloadFalse(); 
             }
-        });
-    }, 1000);
+        }
+    });
 }
 
 function setReloadFalse() {
@@ -347,39 +349,57 @@ function setReloadFalse() {
         type : "POST", // http method
         data : {content: false},
         //received json is updated data from database
-        success : function(json) {
+        success : function(response) {
             console.log("set reload to false success!");
+            UpdateEcolesAndMarkers();
+        },
+        error( jqXHR, status, err) {
+            console.log("set reload to false failed with status: " + status);
+            console.log("ERROR: " + err);
         }
     });
 }
-
+// needed to update data.json file for initMap()
 function UpdateEcolesAndMarkers() {
-    console.log("updating Ecoles and Markers");
     $.ajax({
         url : "updateEcoles/", // the endpoint
         type : "POST", // http method
         data : {content: ""},
-        //received json is updated data from database
         success : function(json) {
-            console.log("update Ecoles success!");
+            console.log("update ecoles success!");
             // remove references to markers on map
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
             markers = [];
-            InitMap();
-            setReloadFalse();
+            // recreate the markers with the new data
+            reloadMarkers();
+        },
+        error( jqXHR, status, err) {
+            console.log("supdate Ecoles failed with status: " + status);
+            console.log("ERROR: " + err);
         }
     });
 }
 
-function saveCoordinatesToJson() {
+
+function reloadMarkers() {
     $.ajax({
-        url : "saveCoordinates/", // the endpoint
-        type : "POST", // http method
-        data : {content: ""},
-        success : function(json) {
-            UpdateEcolesAndMarkers();
+        cache: false,
+        url: "../../static/carte_interactive/json/data.json",
+        success: function (data) {
+            try {
+                $.parseJSON(data);
+                json_db_data = JSON.parse(data);
+            }
+            catch(e) {
+                json_db_data = data;
+            }
+            json_db_data.forEach(function(ecole, index) {
+                createMarker(ecole.fields, ecole.pk);
+            });            
         }
     });
 }
+
+

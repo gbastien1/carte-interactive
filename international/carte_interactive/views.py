@@ -2,6 +2,7 @@
 import json
 from django.http import HttpResponse
 from django.db.utils import OperationalError
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -64,75 +65,6 @@ class CardView(LoginRequiredMixin, FormView):
 		return super(CardView, self).form_valid(form)
 
 
-# url: carte/reinit
-def ReinitVisitsView(request):
-	if request.method == 'POST':
-		
-		ecoles = Ecole.objects.all()
-		for ecole in ecoles:
-			ecole.visite = False
-			ecole.visite_date = ""
-			ecole.save()
-
-		# update Ecole objects in data.json
-		json_data = serializers.serialize('json', Ecole.objects.all())
-		json_data_url = static('carte_interactive/json/data.json')
-		json_data_file = open(app_name + json_data_url, 'w')
-		json_data_file.write(json_data)
-		json_data_file.close()
-		
-		response_data = json.dumps({"visite": False, "visite_date": ""})
-	return HttpResponse(
-			response_data,
-			content_type="text/plain"
-		)
-
-
-# url: carte/SavePosition/
-def SavePositionView(request):
-	if request.method == 'POST':
-		data = json.loads(request.POST.get('content'))
-		_pk = data["pk"]
-		_latitude = data["latitude"]
-		_longitude = data["longitude"]
-		
-		ecole = Ecole.objects.get(pk=_pk)
-		ecole.latitude = float(_latitude)
-		ecole.longitude = float(_longitude)
-		ecole.save()
-
-		# update Ecole object in data.json
-		json_data = serializers.serialize('json', Ecole.objects.all())
-		json_data_url = static('carte_interactive/json/data.json')
-		json_data_file = open(app_name + json_data_url, 'w')
-		json_data_file.write(json_data)
-		json_data_file.close()
-		
-		response_data = "success"
-		return HttpResponse(
-			response_data,
-			content_type="text/plain"
-		)
-
-
-def SaveCoordinatesView(request):
-	if request.method == 'POST':
-		
-		ecole_data = Ecole.objects.all()
-		coordinates_data = []
-		for ecole in ecole_data:
-			if ecole.latitude and ecole.longitude:
-				coordinates_data.append({"nom": ecole.nom, "lat": ecole.latitude, "lng": ecole.longitude})
-		json_coords_url = static('carte_interactive/json/coords.json')
-		json_data_file = open(app_name + json_coords_url, 'w')
-		json_data = json.dumps(coordinates_data)
-		json_data_file.write(json_data)
-		json_data_file.close()
-		
-		return HttpResponse(
-			"200 OK",
-			content_type="text/plain"
-		)
 
 
 # url: carte/edit/
@@ -165,8 +97,66 @@ def EditerEcole(request):
 		)
 
 
+# url: carte/reinit
+def ReinitVisitsView(request):
+	if request.method == 'POST':
+		
+		ecoles = Ecole.objects.all()
+		for ecole in ecoles:
+			ecole.visite = False
+			ecole.visite_date = ""
+			ecole.save()
+
+		# update Ecole objects in data.json
+		json_data = serializers.serialize('json', Ecole.objects.all())
+		json_data_url = static('carte_interactive/json/data.json')
+		json_data_file = open(app_name + json_data_url, 'w')
+		json_data_file.write(json_data)
+		json_data_file.close()
+		
+		response_data = json.dumps({"visite": False, "visite_date": ""})
+	return HttpResponse(
+			response_data,
+			content_type="text/plain"
+		)
+
+
+# url: carte/SavePosition/
+def SavePositionView(request):
+	if request.method == 'POST':
+		data = json.loads(request.POST.get('content'))
+
+		_pk = data["pk"]
+		_latitude = data["latitude"]
+		_longitude = data["longitude"]
+
+		try:
+			ecole = Ecole.objects.get(pk=_pk)
+			ecole.latitude = float(_latitude)
+			ecole.longitude = float(_longitude)
+			ecole.save()
+
+			# update Ecole object in data.json
+			json_data = serializers.serialize('json', Ecole.objects.all())
+			json_data_url = static('carte_interactive/json/data.json')
+			json_data_file = open(app_name + json_data_url, 'w')
+			json_data_file.write(json_data)
+			json_data_file.close()
+			
+			response_data = serializers.serialize('json', [ecole,])
+		except ObjectDoesNotExist:
+			pass
+        	
+		return HttpResponse(
+			response_data,
+			content_type="application/json"
+		)
+
+
+
 def SetReloadView(request):
 	if request.method == 'POST':
+		print("Setting RELOAD to FALSE")
 		json_data = json.dumps({'reload': False})
 		json_data_url = static('carte_interactive/json/reload.json')
 		json_data_file = open(app_name + json_data_url, 'w')
@@ -175,16 +165,17 @@ def SetReloadView(request):
 
 		return HttpResponse(
 			"200 OK",
-			content_type="application/json"
+			content_type="text/plain"
 		)
 
 def UpdateEcolesView(request):
 	if request.method == 'POST':
+		# SaveCoordinates()
 		# updates Ecole objects and data.json
 		load_data_from_excel(Ecole)
 		return HttpResponse(
 			"200 OK",
-			content_type="application/json"
+			content_type="text/plain"
 		)
 
 
