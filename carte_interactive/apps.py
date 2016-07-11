@@ -9,7 +9,7 @@ class CarteInteractiveConfig(AppConfig):
 	name = 'carte_interactive'
 
 	def ready(self):  # startup code
-		
+		"""
 		Ecole = self.get_model('Ecole')
 		Attr = {
 			'pk': 0,
@@ -61,4 +61,4 @@ class CarteInteractiveConfig(AppConfig):
 		
 		except OperationalError:
 			pass
-		
+		"""
