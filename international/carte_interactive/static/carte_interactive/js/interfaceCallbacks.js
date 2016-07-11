@@ -211,7 +211,7 @@ function filterMarkers(closeSidebar) {
 
 	var codesUQAC = [];
     var codesPartenaires = [];
-	var types = [];
+	var ecole_types = [];
 	// retrieve checked UQAC code options
 	code_uqac_checkboxes.each(function() {
 		if ($(this).is(":checked")) codesUQAC.push($(this).val());
@@ -222,10 +222,10 @@ function filterMarkers(closeSidebar) {
     });
 	// retrieve checked type options
 	type_checkboxes.each(function() {
-		if ($(this).is(":checked")) types.push($(this).val());
+		if ($(this).is(":checked")) ecole_types.push($(this).val());
 	});
 	// if at least one checkbox was checked
-	if (codesUQAC.length > 0 || codesPartenaires.length > 0 || types.length > 0) {
+	if (codesUQAC.length > 0 || codesPartenaires.length > 0 || ecole_types.length > 0) {
 		// go through all markers. If current marker 
 		// corresponds to one filter, set it visible
         markers.forEach(function(m) {
@@ -239,10 +239,11 @@ function filterMarkers(closeSidebar) {
                     if (m.programmes_partenaires.indexOf(c) != -1) m.setVisible(true);
                 });
             if(m.type)
-                types.forEach(function(t) {
+                ecole_types.forEach(function(t) {
+                    console.log(t + " == " + m.type);
                     if(t === "V")
-                        if(m.visite == true) m.setVisible(true);
-                    else if (m.type == t) m.setVisible(true);
+                        if(m.visite === true) m.setVisible(true);
+                    if (t === m.type) m.setVisible(true);
                 });
         });
 	}
