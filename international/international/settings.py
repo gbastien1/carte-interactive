@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ekrs4_fqn-h%$vdiyv25rs8ja78!dz5g#t-y9xrh8p1=m)@j2w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -129,3 +129,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'carte_interactive', 'static', 'carte_interactive', 'data')
+
+
+
+# Heroku specific settings
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

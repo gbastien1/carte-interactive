@@ -1,3 +1,9 @@
-django==1.9.x
-openpyxl
+dj-database-url==0.4.1
+Django==1.9.7
 django-bootstrap3==7.0.1
+et-xmlfile==1.0.1
+gunicorn==19.6.0
+jdcal==1.2
+openpyxl==2.3.5
+psycopg2==2.6.1
+whitenoise==3.2
