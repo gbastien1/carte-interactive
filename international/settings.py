@@ -25,7 +25,7 @@ SECRET_KEY = 'ekrs4_fqn-h%$vdiyv25rs8ja78!dz5g#t-y9xrh8p1=m)@j2w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -136,8 +136,6 @@ import dj_database_url
 DATABASES['default'] = dj_database_url.config()
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-ALLOWED_HOSTS = ['*']
 
 try:
     from .local_settings import *

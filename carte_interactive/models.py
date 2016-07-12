@@ -20,5 +20,6 @@ class Ecole(models.Model):
 	def __str__(self):
 		return self.nom
 
+
 class ExcelFile(models.Model):
 	file = models.FileField(storage=OverwriteStorage(), upload_to=".", default="")

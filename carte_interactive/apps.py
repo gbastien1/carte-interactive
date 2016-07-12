@@ -9,7 +9,7 @@ class CarteInteractiveConfig(AppConfig):
 	name = 'carte_interactive'
 
 	def ready(self):  # startup code
-		
+
 		Ecole = self.get_model('Ecole')
 		Attr = {
 			'pk': 0,
@@ -28,12 +28,14 @@ class CarteInteractiveConfig(AppConfig):
 		app_name = 'carte_interactive'
 		data_url = static('carte_interactive/data/data.xlsx')
 		ecole_data = openpyxl.load_workbook(app_name + data_url, data_only=True)
-		sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])#'data')
+		sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])
 		ecoles = sheet.rows
 		try:
 			for row in ecoles[1:]:
-				if row[Attr['rue']].value and row[Attr['ville']].value and row[Attr['pays']].value and row[Attr['code_postal']].value :
-					address = row[Attr['rue']].value + ', ' + str(row[Attr['code_postal']].value) + ' ' + row[Attr['ville']].value + ', ' + row[Attr['pays']].value
+				if row[Attr['rue']].value and row[Attr['ville']].value and row[Attr['pays']].value and row[
+					Attr['code_postal']].value:
+					address = row[Attr['rue']].value + ', ' + str(row[Attr['code_postal']].value) + ' ' + row[
+						Attr['ville']].value + ', ' + row[Attr['pays']].value
 				else:
 					address = ""
 				# create Ecole objects with content of Excel file
@@ -58,7 +60,6 @@ class CarteInteractiveConfig(AppConfig):
 			json_data_file = open(app_name + json_data_url, 'w')
 			json_data_file.write(json_data)
 			json_data_file.close()
-		
+
 		except OperationalError:
 			pass
-		
