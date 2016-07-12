@@ -266,12 +266,13 @@ function filterMarkers(closeSidebar) {
 function search() {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
-        var json_url = "/static/carte_interactive/json/data.json";
+        //var json_url = "/static/carte_interactive/json/data.json";
         var ecole_data = [];
         // get Json data
-        $.getJSON(json_url, function(ecoles) {
+        //$.getJSON(json_url, function(ecoles) {
             // create a string containing all the information that could be searched
             // make array from every Ecole treated
+            ecoles = JSON.parse(json_db_data);
             ecoles.forEach(function(e) {
                 var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
@@ -294,7 +295,7 @@ function search() {
             });
             // show a result list with the gathered corresponding markers
             showResultsList(ecole_results);
-        });
+        //});
     }
     //if nothing was entered in search bar, show all markers
     else {
@@ -380,6 +381,7 @@ function UpdateEcolesAndMarkers() {
             markers = [];
             // recreate the markers with the new data
             reloadMarkers();
+            setJsonDBData();
         },
         error( jqXHR, status, err) {
             console.log("update Ecoles failed with status: " + status);
