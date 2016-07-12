@@ -406,7 +406,7 @@ function reloadMarkers() {
         },
         error( jqXHR, status, err) {
             console.log("getting data.json failed with status: " + status);
-            console.log("ERROR: " + err);
+            console.log(JSON.parse(jqXHR.responseText));
         }
     });
 }
