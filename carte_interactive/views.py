@@ -179,7 +179,7 @@ def UpdateEcolesView(request):
 	if request.method == 'POST':
 		updateCoordinates()
 		# updates Ecole objects and data.json
-		load_data_from_excel(Ecole)
+		load_data_from_excel(Ecole, getVisits())
 		return HttpResponse(
 			"200 OK",
 			content_type="text/plain"
@@ -198,6 +198,15 @@ def updateCoordinates():
 	json_coords_file = open(app_name + json_coords_url, 'w')
 	json_coords_file.write(coordinates_json_data)
 	json_coords_file.close()
+
+
+def getVisits():
+	ecole_visits = []
+	ecoles = Ecole.objects.all()
+	for ecole in ecoles:
+		ecole_visits.append({"nom": ecole.nom, "visite": ecole.visite, "visite_date": ecole.visite_date})
+	return json.dumps(ecole_visits)
+
 
 # get string inbetween two characters in other string
 def get_substring(str, start, end):
