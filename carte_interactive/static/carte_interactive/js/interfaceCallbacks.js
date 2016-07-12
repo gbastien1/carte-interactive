@@ -240,7 +240,6 @@ function filterMarkers(closeSidebar) {
                 });
             if(m.type)
                 ecole_types.forEach(function(t) {
-                    console.log(t + " == " + m.type);
                     if(t === "V")
                         if(m.visite === true) m.setVisible(true);
                     if (t === m.type) m.setVisible(true);
@@ -267,7 +266,7 @@ function filterMarkers(closeSidebar) {
 function search() {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
-        var json_url = "/static/carte_interactive/json/data.json";
+        var json_url = "../../static/carte_interactive/json/data.json";
         var ecole_data = [];
         // get Json data
         $.getJSON(json_url, function(ecoles) {
