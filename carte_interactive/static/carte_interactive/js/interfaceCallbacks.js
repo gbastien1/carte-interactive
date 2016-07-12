@@ -272,7 +272,7 @@ function search() {
         //$.getJSON(json_url, function(ecoles) {
             // create a string containing all the information that could be searched
             // make array from every Ecole treated
-            ecoles = JSON.parse(json_db_data);
+            ecoles = json_db_data;
             ecoles.forEach(function(e) {
                 var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
