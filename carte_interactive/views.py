@@ -65,7 +65,7 @@ class CardView(LoginRequiredMixin, CookieMixin, FormView):
 			json_data_file.write(json_data)
 			json_data_file.close()
 			"""
-			
+
 			self.add_cookie('reload', True, max_age=3600)
 
 		return super(CardView, self).form_valid(form)

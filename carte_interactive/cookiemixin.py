@@ -24,7 +24,7 @@ class CookieMixin(object):
         """
         Al given arguments will be passed to response.set_cookie later on.
         """
-        self.cookies.append((args, kwargs))
+        self._cookies.append((args, kwargs))
 
     def dispatch(self, request, *args, **kwargs):
         """
