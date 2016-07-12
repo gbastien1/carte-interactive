@@ -40,7 +40,7 @@ class LogoutView(RedirectView):
 
 
 # url: carte/
-class CardView(LoginRequiredMixin, CookieMixin, FormView):
+class CardView(LoginRequiredMixin, FormView):
 	form_class = ExcelUploadForm
 	template_name = "carte_interactive/carte.html"
 
