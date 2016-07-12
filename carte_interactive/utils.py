@@ -5,7 +5,6 @@ from django.db import OperationalError
 
 import json
 import openpyxl
-from pprint import pprint
 
 Attr = {
 	'pk': 0,

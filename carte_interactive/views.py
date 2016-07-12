@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import TemplateView, FormView, RedirectView
+from django.views.generic import FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
@@ -156,7 +156,6 @@ def SavePositionView(request):
 
 def SetReloadView(request):
 	if request.method == 'POST':
-		print("Setting RELOAD to FALSE")
 		json_data = json.dumps({'reload': False})
 		json_data_url = static('carte_interactive/json/reload.json')
 		json_data_file = open(app_name + json_data_url, 'w')

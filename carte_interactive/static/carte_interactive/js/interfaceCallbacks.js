@@ -335,7 +335,6 @@ function ReloadIfNeeded() {
         url: json_url,
         dataType: "json",
         success: function(data) {
-            console.log("reloaded? " + data.reload);
             if(data.reload) {
                 setReloadFalse(); 
             }
@@ -350,7 +349,6 @@ function setReloadFalse() {
         data : {content: false},
         //received json is updated data from database
         success : function(response) {
-            console.log("set reload to false success!");
             UpdateEcolesAndMarkers();
         },
         error( jqXHR, status, err) {
@@ -366,7 +364,6 @@ function UpdateEcolesAndMarkers() {
         type : "POST", // http method
         data : {content: ""},
         success : function(json) {
-            console.log("update ecoles success!");
             // remove references to markers on map
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);

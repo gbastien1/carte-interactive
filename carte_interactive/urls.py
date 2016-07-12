@@ -12,5 +12,4 @@ urlpatterns = [
 	url(r'^carte/reinit/$', views.ReinitVisitsView, name='reinit_visits'),
 	url(r'^carte/edit/$', views.EditerEcole, name='edit_ecole'),
 	url(r'^carte/savePosition/$', views.SavePositionView, name='save_position')
-	#url(r'^carte/saveCoordinates/$', views.SaveCoordinatesView, name='save_coordinates')
 ]
