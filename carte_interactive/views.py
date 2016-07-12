@@ -17,6 +17,7 @@ from .forms import ExcelUploadForm
 import openpyxl
 
 app_name = 'carte_interactive'
+reload_value = False
 
 
 # url: /
@@ -159,14 +160,25 @@ def SavePositionView(request):
 		)
 
 
+def GetReloadView(request):
+	if request.method == 'POST':
+		response_data = json.dumps({"reload": reload_value})
+		return HttpResponse(
+			response_data,
+			content_type="application/json"
+		)
+
+
 def SetReloadView(request):
 	if request.method == 'POST':
+		"""
 		json_data = json.dumps({'reload': False})
 		json_data_url = static('carte_interactive/json/reload.json')
 		json_data_file = open(app_name + json_data_url, 'w')
 		json_data_file.write(json_data)
 		json_data_file.close()
-
+		"""
+		reload_value = False
 		return HttpResponse(
 			"200 OK",
 			content_type="text/plain"

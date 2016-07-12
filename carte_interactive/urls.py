@@ -8,6 +8,7 @@ urlpatterns = [
 	url(r'^carte/logout/$', views.LogoutView.as_view(), name='logout'),
 	url(r'^carte/$', views.CardView.as_view(), name='carte'),
 	url(r'^carte/setReload/$', views.SetReloadView, name='set_reload'),
+	url(r'^carte/getReload/$', views.GetReloadView, name='get_reload'),
 	url(r'^carte/updateEcoles/$', views.UpdateEcolesView, name='update_ecoles'),
 	url(r'^carte/reinit/$', views.ReinitVisitsView, name='reinit_visits'),
 	url(r'^carte/edit/$', views.EditerEcole, name='edit_ecole'),

@@ -334,8 +334,8 @@ function showResultsList(results) {
 /*CODE FOR UPLOADING A NEW EXCEL FILE*/
 
 function ReloadIfNeeded() {
-    /*var json_url = "/static/carte_interactive/json/reload.json";
-    $.ajax({
+    //var json_url = "/static/carte_interactive/json/reload.json";
+    /*$.ajax({
         cache: false,
         url: json_url,
         dataType: "json",
@@ -345,7 +345,15 @@ function ReloadIfNeeded() {
             }
         }
     });*/
-    console.log(document.cookies);
+    $.ajax({
+        url: "getReload/",
+        type: "POST",
+        success: function(response) {
+            if(response.reload) {
+                setReloadFalse(); 
+            }
+        }
+    });
 }
 
 function setReloadFalse() {
