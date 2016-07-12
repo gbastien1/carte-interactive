@@ -11,7 +11,6 @@ from django.views.generic import FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
-from .cookiemixin import CookieMixin
 from .utils import *
 from .models import Ecole, ExcelFile
 from .forms import ExcelUploadForm
@@ -48,6 +47,11 @@ class CardView(LoginRequiredMixin, CookieMixin, FormView):
 	def get_success_url(self):
 		return reverse_lazy('carte_interactive:carte')
 
+	def render_to_response(self, context, **response_kwargs):
+        response = super(CardView, self).render_to_response(context, **response_kwargs)
+        response.set_cookie("reload",True)
+        return response
+
 	def form_valid(self, form):
 		uploaded_file = self.request.FILES['file']
 		if uploaded_file.name.split(".")[-1] == 'xlsx':
@@ -65,8 +69,6 @@ class CardView(LoginRequiredMixin, CookieMixin, FormView):
 			json_data_file.write(json_data)
 			json_data_file.close()
 			"""
-
-			self.add_cookie('reload', True, max_age=3600)
 
 		return super(CardView, self).form_valid(form)
 
