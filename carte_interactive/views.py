@@ -195,7 +195,7 @@ def updateCoordinates():
 	coordinates_json_data = json.dumps(coordinates_data)
 	# rewrite coordinates in coords.json
 	json_coords_url = static('carte_interactive/json/coords.json')
-	json_coords_file = open(app_name + json_data_url, 'w')
+	json_coords_file = open(app_name + json_coords_url, 'w')
 	json_coords_file.write(coordinates_json_data)
 	json_coords_file.close()
 
