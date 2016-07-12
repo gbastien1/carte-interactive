@@ -58,9 +58,9 @@ class CardView(LoginRequiredMixin, FormView):
 			excelFile.save()
 
 			print("setting reload to TRUE***********")
-			print(reload_value)
+			print(str(reload_value))
 			reload_value = True
-			print(reload_value)
+			print(str(reload_value))
 			# page will reload so set reload to true in json
 			"""
 			json_data = json.dumps({'reload': True})
