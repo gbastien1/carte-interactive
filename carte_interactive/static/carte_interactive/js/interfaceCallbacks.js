@@ -349,7 +349,9 @@ function ReloadIfNeeded() {
         url: "getReload/",
         type: "GET",
         success: function(response) {
-            console.log("getReload worked, got " + response);
+            console.log("getReload worked");
+            console.log(response);
+            console.log(response.reload);
             if(response.reload) {
                 setReloadFalse(); 
             }
