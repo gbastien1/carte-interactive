@@ -48,11 +48,6 @@ class CardView(LoginRequiredMixin, FormView):
 	def get_success_url(self):
 		return reverse_lazy('carte_interactive:carte')
 
-	def render_to_response(self, context, **response_kwargs):
-		response = super(CardView, self).render_to_response(context, **response_kwargs)
-		response.set_cookie("reload",True)
-		return response
-
 	def form_valid(self, form):
 		uploaded_file = self.request.FILES['file']
 		if uploaded_file.name.split(".")[-1] == 'xlsx':
