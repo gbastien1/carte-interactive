@@ -60,15 +60,6 @@ class CardView(LoginRequiredMixin, FormView):
 			global reload_value
 			reload_value = True
 
-			# page will reload so set reload to true in json
-			"""
-			json_data = json.dumps({'reload': True})
-			json_data_url = static('carte_interactive/json/reload.json')
-			json_data_file = open(app_name + json_data_url, 'w')
-			json_data_file.write(json_data)
-			json_data_file.close()
-			"""
-
 		return super(CardView, self).form_valid(form)
 
 
@@ -169,13 +160,6 @@ def GetReloadView(request):
 
 def SetReloadView(request):
 	if request.method == 'POST':
-		"""
-		json_data = json.dumps({'reload': False})
-		json_data_url = static('carte_interactive/json/reload.json')
-		json_data_file = open(app_name + json_data_url, 'w')
-		json_data_file.write(json_data)
-		json_data_file.close()
-		"""
 		reload_value = False
 		return HttpResponse(
 			"200 OK",

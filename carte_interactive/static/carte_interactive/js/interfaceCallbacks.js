@@ -334,24 +334,10 @@ function showResultsList(results) {
 /*CODE FOR UPLOADING A NEW EXCEL FILE*/
 
 function ReloadIfNeeded() {
-    //var json_url = "/static/carte_interactive/json/reload.json";
-    /*$.ajax({
-        cache: false,
-        url: json_url,
-        dataType: "json",
-        success: function(data) {
-            if(data.reload) {
-                setReloadFalse(); 
-            }
-        }
-    });*/
     $.ajax({
         url: "getReload/",
         type: "GET",
         success: function(response) {
-            console.log("getReload worked");
-            console.log(response);
-            console.log(response.reload);
             if(response.reload) {
                 setReloadFalse(); 
             }
@@ -404,6 +390,20 @@ function UpdateEcolesAndMarkers() {
 
 
 function reloadMarkers() {
+    var json_url = "/static/carte_interactive/json/data.json";
+    $.getJSON(json_url, function(data) {
+        try {
+            $.parseJSON(data);
+            json_db_data = JSON.parse(data);
+        }
+        catch(e) {
+            json_db_data = data;
+        }
+        json_db_data.forEach(function(ecole, index) {
+            createMarker(ecole.fields, ecole.pk);
+        });
+    });
+/*
     $.ajax({
         cache: false,
         url: "/static/carte_interactive/json/data.json",
@@ -423,9 +423,9 @@ function reloadMarkers() {
         },
         error( jqXHR, status, err) {
             console.log("getting data.json failed with status: " + status);
-            console.log(JSON.parse(jqXHR.responseText));
+            console.log($.parseJSON(jqXHR.responseText));
         }
-    });
+    });*/
 }
 
 function getCookie(cookie_name) {
