@@ -59,7 +59,6 @@ def load_data_from_excel(Ecole):
 			)
 			# keep visits and visit dates even after new file upload
 			for data_ecole in data_json:
-				print(str(data_ecole))
 				if data_ecole["fields"]["nom"] == ecole.nom:
 					ecole.visite = data_ecole["fields"]["visite"]
 					ecole.visite_date = data_ecole["fields"]["visite_date"]
