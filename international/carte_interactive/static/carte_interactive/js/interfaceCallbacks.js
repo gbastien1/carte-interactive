@@ -240,7 +240,6 @@ function filterMarkers(closeSidebar) {
                 });
             if(m.type)
                 ecole_types.forEach(function(t) {
-                    console.log(t + " == " + m.type);
                     if(t === "V")
                         if(m.visite === true) m.setVisible(true);
                     if (t === m.type) m.setVisible(true);
@@ -267,25 +266,31 @@ function filterMarkers(closeSidebar) {
 function search() {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
-        var json_url = "/static/carte_interactive/json/data.json";
+        var json_url = "../../static/carte_interactive/json/data.json";
         var ecole_data = [];
         // get Json data
         $.getJSON(json_url, function(ecoles) {
         	// create a string containing all the information that could be searched
         	// make array from every Ecole treated
             ecoles.forEach(function(e) {
-                var string_data = e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
+                var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
                 ecole_data.push(string_data);
             });
             var ecole_results = [];
             // go through each marker, if one marker has the typed information, set it visible
-            markers.forEach(function(m, index) {
+            markers.forEach(function(m) {
+                ecole_data.forEach(function(e, index) {
+                    if (e.split(',')[0] == m.pk) {
+                        ecole_from_json = e;
+                        ecole_index = index;
+                    }
+                });
+                console.log("marker: " + m.pk + " -- ecole_data: " +ecole_from_json.split(',')[0]);
                 m.setVisible(false);
-                var e = ecole_data[index];
-                if (e.indexOf(input_text) != -1) {
+                if (ecole_from_json.indexOf(input_text) != -1) {
                     m.setVisible(true);
-                    ecole_results.push(ecoles[index].fields);
+                    ecole_results.push(ecoles[ecole_index].fields);
                 }
             });
             // show a result list with the gathered corresponding markers
@@ -336,7 +341,6 @@ function ReloadIfNeeded() {
         url: json_url,
         dataType: "json",
         success: function(data) {
-            console.log("reloaded? " + data.reload);
             if(data.reload) {
                 setReloadFalse(); 
             }
@@ -351,7 +355,6 @@ function setReloadFalse() {
         data : {content: false},
         //received json is updated data from database
         success : function(response) {
-            console.log("set reload to false success!");
             UpdateEcolesAndMarkers();
         },
         error( jqXHR, status, err) {
@@ -367,7 +370,6 @@ function UpdateEcolesAndMarkers() {
         type : "POST", // http method
         data : {content: ""},
         success : function(json) {
-            console.log("update ecoles success!");
             // remove references to markers on map
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
@@ -377,7 +379,7 @@ function UpdateEcolesAndMarkers() {
             reloadMarkers();
         },
         error( jqXHR, status, err) {
-            console.log("supdate Ecoles failed with status: " + status);
+            console.log("update Ecoles failed with status: " + status);
             console.log("ERROR: " + err);
         }
     });
