@@ -1,1 +1,1 @@
-web: gunicorn international.wsgi
+web: gunicorn international.wsgi --log-level debug
