@@ -62,6 +62,7 @@ class CardView(LoginRequiredMixin, FormView):
 			excelFile.file = uploaded_file
 			excelFile.save()
 
+			reload_value = True
 			# page will reload so set reload to true in json
 			"""
 			json_data = json.dumps({'reload': True})
