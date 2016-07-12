@@ -266,7 +266,7 @@ function filterMarkers(closeSidebar) {
 function search() {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
-        var json_url = "../../static/carte_interactive/json/data.json";
+        var json_url = "/static/carte_interactive/json/data.json";
         var ecole_data = [];
         // get Json data
         $.getJSON(json_url, function(ecoles) {
@@ -334,7 +334,7 @@ function showResultsList(results) {
 /*CODE FOR UPLOADING A NEW EXCEL FILE*/
 
 function ReloadIfNeeded() {
-    var json_url = "../../static/carte_interactive/json/reload.json";
+    var json_url = "/static/carte_interactive/json/reload.json";
     $.ajax({
         cache: false,
         url: json_url,
@@ -390,7 +390,7 @@ function UpdateEcolesAndMarkers() {
 function reloadMarkers() {
     $.ajax({
         cache: false,
-        url: "../../static/carte_interactive/json/data.json",
+        url: "/static/carte_interactive/json/data.json",
         success: function (data) {
             try {
                 $.parseJSON(data);

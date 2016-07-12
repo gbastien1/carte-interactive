@@ -89,7 +89,7 @@ function initMap() {
 	// fetch json data from url and create marker for each object found
 	$.ajax({
         cache: false,
-		url: "../../static/carte_interactive/json/data.json",
+		url: "/static/carte_interactive/json/data.json",
 		success: function (data) {
 			try {
 				$.parseJSON(data);
@@ -100,7 +100,7 @@ function initMap() {
 			}
             $.ajax({
                 cache: true,
-                url: "../../static/carte_interactive/json/coords.json",
+                url: "/static/carte_interactive/json/coords.json",
                 success: function (data) {
                     try {
                         $.parseJSON(data);
