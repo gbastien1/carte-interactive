@@ -17,7 +17,7 @@ from .forms import ExcelUploadForm
 import openpyxl
 
 app_name = 'carte_interactive'
-reload_value = False
+global reload_value = False
 
 
 # url: /
@@ -57,10 +57,8 @@ class CardView(LoginRequiredMixin, FormView):
 			excelFile.file = uploaded_file
 			excelFile.save()
 
-			print("setting reload to TRUE***********")
-			print(str(reload_value))
 			reload_value = True
-			print(str(reload_value))
+			
 			# page will reload so set reload to true in json
 			"""
 			json_data = json.dumps({'reload': True})
