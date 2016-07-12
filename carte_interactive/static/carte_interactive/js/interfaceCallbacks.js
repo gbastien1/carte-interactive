@@ -273,13 +273,14 @@ function search() {
         	// create a string containing all the information that could be searched
         	// make array from every Ecole treated
             ecoles.forEach(function(e) {
-                var string_data = e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
+                var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
                 ecole_data.push(string_data);
             });
             var ecole_results = [];
             // go through each marker, if one marker has the typed information, set it visible
             markers.forEach(function(m, index) {
+                console.log("marker: " + m.pk + " -- ecole_data: " + ecole_data[index]);
                 m.setVisible(false);
                 var e = ecole_data[index];
                 if (e.indexOf(input_text) != -1) {
