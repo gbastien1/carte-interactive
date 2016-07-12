@@ -34,6 +34,7 @@ def load_data_from_excel(Ecole):
 	data_json_url = static('carte_interactive/json/data.json')
 	with open(app_name + data_json_url) as data_json_file:
 		data_json = json.load(data_json_file)
+		print(str(data_json[0]))
 
 	try:
 		for row in ecoles[1:]:
