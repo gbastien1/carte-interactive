@@ -99,7 +99,10 @@ function initMap() {
 			catch(e) {
 				json_db_data = data;
 			}
-            $.ajax({
+            json_db_data.forEach(function(ecole, index) {
+                createMarker(ecole.fields, ecole.pk);
+            });
+            /*$.ajax({
                 cache: true,
                 url: "/static/carte_interactive/json/coords.json",
                 dataType: 'json',
@@ -115,7 +118,7 @@ function initMap() {
                         createMarker(ecole.fields, ecole.pk);
                     }); 
                 }
-            });           
+            }); */          
 		}
 	});
 	createLegendWithIcons();
@@ -158,14 +161,14 @@ function createMarker(ecole_data, pk) {
     var successful = false;
     var lat_from_json;
     var lng_from_json;
-    coordinates_json.forEach(function(ecole) {
+    /*coordinates_json.forEach(function(ecole) {
         if(ecole.nom === ecole_data.nom) {
             lat_from_json = ecole.lat;
             lng_from_json = ecole.lng;
         }
-    });
-    var latitude = lat_from_json || ecole_data.latitude || null;
-    var longitude = lng_from_json || ecole_data.longitude || null;
+    });*/
+    var latitude = /*lat_from_json ||*/ ecole_data.latitude || null;
+    var longitude = /*lng_from_json ||*/ ecole_data.longitude || null;
     var coordinates;
     if (!latitude || !longitude) {
         newCoordinates = true;
