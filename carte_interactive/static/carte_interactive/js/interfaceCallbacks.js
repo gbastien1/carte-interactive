@@ -390,7 +390,7 @@ function UpdateEcolesAndMarkers() {
 function reloadMarkers() {
     $.ajax({
         cache: false,
-        url: "/static/carte_interactive/json/data.json";
+        url: "/static/carte_interactive/json/data.json",
         success: function (data) {
             try {
                 $.parseJSON(data);
