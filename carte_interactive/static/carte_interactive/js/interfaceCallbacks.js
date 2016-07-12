@@ -391,6 +391,7 @@ function reloadMarkers() {
     $.ajax({
         cache: false,
         url: "/static/carte_interactive/json/data.json",
+        dataType: 'json',
         success: function (data) {
             try {
                 $.parseJSON(data);

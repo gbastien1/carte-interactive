@@ -90,6 +90,7 @@ function initMap() {
 	$.ajax({
         cache: false,
 		url: "/static/carte_interactive/json/data.json",
+        dataType: 'json',
 		success: function (data) {
 			try {
 				$.parseJSON(data);
@@ -101,6 +102,7 @@ function initMap() {
             $.ajax({
                 cache: true,
                 url: "/static/carte_interactive/json/coords.json",
+                dataType: 'json',
                 success: function (data) {
                     try {
                         $.parseJSON(data);
