@@ -270,8 +270,8 @@ function search() {
         var ecole_data = [];
         // get Json data
         $.getJSON(json_url, function(ecoles) {
-        	// create a string containing all the information that could be searched
-        	// make array from every Ecole treated
+            // create a string containing all the information that could be searched
+            // make array from every Ecole treated
             ecoles.forEach(function(e) {
                 var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
                 string_data = string_data.toLowerCase();
@@ -279,13 +279,17 @@ function search() {
             });
             var ecole_results = [];
             // go through each marker, if one marker has the typed information, set it visible
-            markers.forEach(function(m, index) {
-                console.log("marker: " + m.pk + " -- ecole_data: " + ecole_data[index]);
+            markers.forEach(function(m) {
+                ecole_data.forEach(function(e, index) {
+                    if (e.split(',')[0] == m.pk) {
+                        ecole_from_json = e;
+                        ecole_index = index;
+                    }
+                });
                 m.setVisible(false);
-                var e = ecole_data[index];
-                if (e.indexOf(input_text) != -1) {
+                if (ecole_from_json.indexOf(input_text) != -1) {
                     m.setVisible(true);
-                    ecole_results.push(ecoles[index].fields);
+                    ecole_results.push(ecoles[ecole_index].fields);
                 }
             });
             // show a result list with the gathered corresponding markers
