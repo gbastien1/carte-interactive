@@ -30,11 +30,11 @@ def load_data_from_excel(Ecole):
 	sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])
 	ecoles = sheet.rows
 	Ecole.objects.all().delete()
-
+	"""
 	data_json_url = static('carte_interactive/json/data.json')
 	with open(app_name + data_json_url) as data_json_file:
 		data_json = json.load(data_json_file)
-
+	"""
 	try:
 		for row in ecoles[1:]:
 			# set address if it's complete
@@ -58,10 +58,12 @@ def load_data_from_excel(Ecole):
 				particularites=row[Attr['particularites']].value
 			)
 			# keep visits and visit dates even after new file upload
+			"""
 			for data_ecole in data_json:
 				if data_ecole["fields"]["nom"] == ecole.nom:
 					ecole.visite = data_ecole["fields"]["visite"]
 					ecole.visite_date = data_ecole["fields"]["visite_date"]
+			"""
 
 		# rewrite data.json with new data
 		json_data = serializers.serialize('json', Ecole.objects.all())
