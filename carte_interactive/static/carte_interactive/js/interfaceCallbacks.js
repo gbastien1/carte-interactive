@@ -347,11 +347,16 @@ function ReloadIfNeeded() {
     });*/
     $.ajax({
         url: "getReload/",
-        type: "POST",
+        type: "GET",
         success: function(response) {
+            console.log("getReload worked, got " + response);
             if(response.reload) {
                 setReloadFalse(); 
             }
+        },
+        error: function(xhr, status, err) {
+            console.log("failed to getReload with status " + status);
+            console.log(err);
         }
     });
 }

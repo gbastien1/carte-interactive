@@ -162,7 +162,7 @@ def SavePositionView(request):
 
 
 def GetReloadView(request):
-	if request.method == 'POST':
+	if request.method == 'GET':
 		response_data = json.dumps({"reload": reload_value})
 		return HttpResponse(
 			response_data,
