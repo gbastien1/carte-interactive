@@ -88,9 +88,9 @@ function initMap() {
 
 	// fetch json data from url and create marker for each object found
 	$.ajax({
-        cache: false,
-		url: "/static/carte_interactive/json/data.json",
-        dataType: 'json',
+		 url: "getData/",
+        type: 'GET',
+        data : {content: ""},
 		success: function (data) {
 			try {
 				$.parseJSON(data);
