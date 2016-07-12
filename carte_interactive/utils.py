@@ -29,7 +29,6 @@ def load_data_from_excel(Ecole, visits):
 	sheet = ecole_data.get_sheet_by_name(ecole_data.sheetnames[0])
 	ecoles = sheet.rows
 	Ecole.objects.all().delete()
-	visits = json.loads(visits)
 
 	try:
 		for row in ecoles[1:]:
@@ -55,9 +54,10 @@ def load_data_from_excel(Ecole, visits):
 			)
 			# keep visits and visit dates even after new file upload
 			for ecole_visit in visits:
-				if ecole_visit.nom == ecole.nom:
-					ecole.visite = ecole_visit.visite
-					ecole.visite_date = ecole_visit.visite_date
+				if ecole_visit["nom"] == ecole.nom:
+					ecole.visite = ecole_visit["visite"]
+					ecole.visite_date = ecole_visit["visite_date"]
+					ecole.save()
 		
 		# rewrite data.json with new data
 		json_data = serializers.serialize('json', Ecole.objects.all())

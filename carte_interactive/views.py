@@ -206,7 +206,7 @@ def getVisits():
 	ecoles = Ecole.objects.all()
 	for ecole in ecoles:
 		ecole_visits.append({"nom": ecole.nom, "visite": ecole.visite, "visite_date": ecole.visite_date})
-	return json.dumps(ecole_visits)
+	return ecole_visits
 
 
 # get string inbetween two characters in other string
