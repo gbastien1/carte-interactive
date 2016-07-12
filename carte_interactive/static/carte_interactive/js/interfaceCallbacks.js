@@ -373,7 +373,7 @@ function UpdateEcolesAndMarkers() {
             reloadMarkers();
         },
         error( jqXHR, status, err) {
-            console.log("supdate Ecoles failed with status: " + status);
+            console.log("update Ecoles failed with status: " + status);
             console.log("ERROR: " + err);
         }
     });
