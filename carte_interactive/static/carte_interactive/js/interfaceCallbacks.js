@@ -334,7 +334,7 @@ function showResultsList(results) {
 /*CODE FOR UPLOADING A NEW EXCEL FILE*/
 
 function ReloadIfNeeded() {
-    var json_url = "/static/carte_interactive/json/reload.json";
+    var json_url = "carte_interactive/static/carte_interactive/json/reload.json";
     $.ajax({
         cache: false,
         url: json_url,
@@ -390,7 +390,7 @@ function UpdateEcolesAndMarkers() {
 function reloadMarkers() {
     $.ajax({
         cache: false,
-        url: "/static/carte_interactive/json/data.json",
+        url: "carte_interactive/static/carte_interactive/json/data.json",
         success: function (data) {
             try {
                 $.parseJSON(data);
