@@ -11,6 +11,7 @@ from django.views.generic import FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import serializers
 
+from .cookiemixin import CookieMixin
 from .utils import *
 from .models import Ecole, ExcelFile
 from .forms import ExcelUploadForm
@@ -40,7 +41,7 @@ class LogoutView(RedirectView):
 
 
 # url: carte/
-class CardView(LoginRequiredMixin, FormView):
+class CardView(LoginRequiredMixin, CookieMixin, FormView):
 	form_class = ExcelUploadForm
 	template_name = "carte_interactive/carte.html"
 
@@ -57,11 +58,15 @@ class CardView(LoginRequiredMixin, FormView):
 			excelFile.save()
 
 			# page will reload so set reload to true in json
+			"""
 			json_data = json.dumps({'reload': True})
 			json_data_url = static('carte_interactive/json/reload.json')
 			json_data_file = open(app_name + json_data_url, 'w')
 			json_data_file.write(json_data)
 			json_data_file.close()
+			"""
+			
+			self.add_cookie('reload', True, max_age=3600)
 
 		return super(CardView, self).form_valid(form)
 

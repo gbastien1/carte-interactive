@@ -334,7 +334,7 @@ function showResultsList(results) {
 /*CODE FOR UPLOADING A NEW EXCEL FILE*/
 
 function ReloadIfNeeded() {
-    var json_url = "/static/carte_interactive/json/reload.json";
+    /*var json_url = "/static/carte_interactive/json/reload.json";
     $.ajax({
         cache: false,
         url: json_url,
@@ -344,7 +344,8 @@ function ReloadIfNeeded() {
                 setReloadFalse(); 
             }
         }
-    });
+    });*/
+    console.log(document.cookies);
 }
 
 function setReloadFalse() {
@@ -412,4 +413,17 @@ function reloadMarkers() {
     });
 }
 
-
+function getCookie(cookie_name) {
+    var name = cookie_name + "=";
+    var cookies = document.cookie.split(';');
+    for(var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        while (cookie.charAt(0)==' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length,cookie.length);
+        }
+    }
+    return "";
+}
