@@ -56,8 +56,8 @@ def load_data_from_excel(Ecole, visits):
 			# keep visits and visit dates even after new file upload
 			for ecole_visit in visits:
 				if ecole_visit.nom == ecole.nom:
-					ecole.visite = ecole_visit.visit
-					ecole.visite_date = ecole_visit.visit_date
+					ecole.visite = ecole_visit.visite
+					ecole.visite_date = ecole_visit.visite_date
 		
 		# rewrite data.json with new data
 		json_data = serializers.serialize('json', Ecole.objects.all())

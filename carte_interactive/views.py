@@ -179,7 +179,8 @@ def UpdateEcolesView(request):
 	if request.method == 'POST':
 		updateCoordinates()
 		# updates Ecole objects and data.json
-		load_data_from_excel(Ecole, getVisits())
+		visits = getVisits()
+		load_data_from_excel(Ecole, visits)
 		return HttpResponse(
 			"200 OK",
 			content_type="text/plain"
