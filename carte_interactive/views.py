@@ -177,6 +177,7 @@ def SetReloadView(request):
 
 def UpdateEcolesView(request):
 	if request.method == 'POST':
+		updateCoordinates()
 		# updates Ecole objects and data.json
 		load_data_from_excel(Ecole)
 		return HttpResponse(
@@ -184,6 +185,19 @@ def UpdateEcolesView(request):
 			content_type="text/plain"
 		)
 
+
+def updateCoordinates():
+	coordinates_data = []
+	ecoles = Ecole.objects.all()
+	for ecole in ecoles:
+		if ecole.latitude and ecole.longitude:
+			coordinates_data.append({"nom": ecole.nom, "lat": ecole.latitude, "lng": ecole.longitude})
+	coordinates_json_data = json.dumps(coordinates_data)
+	# rewrite coordinates in coords.json
+	json_coords_url = static('carte_interactive/json/coords.json')
+	json_coords_file = open(app_name + json_data_url, 'w')
+	json_coords_file.write(coordinates_json_data)
+	json_coords_file.close()
 
 # get string inbetween two characters in other string
 def get_substring(str, start, end):

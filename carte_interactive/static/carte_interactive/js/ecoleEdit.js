@@ -41,7 +41,9 @@ function getFormInputsAsObject(form) {
 // Update Json_db_data content
 function setJsonDBData() {
     $.ajax({
-        url: "../../static/carte_interactive/json/data.json",
+        url: "getData/",
+        type: 'GET',
+        data : {content: ""},
         success: function (data) {
             try {
                 $.parseJSON(data); //if this fails, data is already in json format
