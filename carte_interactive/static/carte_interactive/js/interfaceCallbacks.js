@@ -286,7 +286,6 @@ function search() {
                         ecole_index = index;
                     }
                 });
-                console.log("marker: " + m.pk + " -- ecole_data: " +ecole_from_json.split(',')[0]);
                 m.setVisible(false);
                 if (ecole_from_json.indexOf(input_text) != -1) {
                     m.setVisible(true);
