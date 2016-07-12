@@ -146,7 +146,7 @@ def SavePositionView(request):
 			response_data = serializers.serialize('json', [ecole,])
 		except ObjectDoesNotExist:
 			pass
-        	
+			
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
