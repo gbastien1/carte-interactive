@@ -149,6 +149,14 @@ def SavePositionView(request):
 		)
 
 
+def GetDataView(request):
+	if request.method == 'GET':
+		response_data = serializers.serialize('json', Ecole.objects.all())
+		return HttpResponse(
+			response_data,
+			content_type="application/json"
+		)
+
 def GetReloadView(request):
 	if request.method == 'GET':
 		response_data = json.dumps({"reload": reload_value})

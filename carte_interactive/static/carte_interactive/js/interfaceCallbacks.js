@@ -390,24 +390,10 @@ function UpdateEcolesAndMarkers() {
 
 
 function reloadMarkers() {
-    var json_url = "/static/carte_interactive/json/data.json";
-    $.getJSON(json_url, function(data) {
-        try {
-            $.parseJSON(data);
-            json_db_data = JSON.parse(data);
-        }
-        catch(e) {
-            json_db_data = data;
-        }
-        json_db_data.forEach(function(ecole, index) {
-            createMarker(ecole.fields, ecole.pk);
-        });
-    });
-/*
     $.ajax({
-        cache: false,
-        url: "/static/carte_interactive/json/data.json",
-        dataType: 'json',
+        url: "getData/",
+        type: 'GET',
+        data : {content: ""},
         success: function (data) {
             try {
                 $.parseJSON(data);
@@ -425,7 +411,7 @@ function reloadMarkers() {
             console.log("getting data.json failed with status: " + status);
             console.log($.parseJSON(jqXHR.responseText));
         }
-    });*/
+    });
 }
 
 function getCookie(cookie_name) {
