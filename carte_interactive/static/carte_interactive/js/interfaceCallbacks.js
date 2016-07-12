@@ -403,6 +403,10 @@ function reloadMarkers() {
             json_db_data.forEach(function(ecole, index) {
                 createMarker(ecole.fields, ecole.pk);
             });            
+        },
+        error( jqXHR, status, err) {
+            console.log("getting data.json failed with status: " + status);
+            console.log("ERROR: " + err);
         }
     });
 }
