@@ -269,7 +269,7 @@ function filterMarkers(closeSidebar) {
  * Used to filter the shown markers on the map and create 
  * a results list of corresponding Ecoles
  */
-function search() {
+function search(ecoles) {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
         var json_url = "../../static/carte_interactive/json/data.json";
