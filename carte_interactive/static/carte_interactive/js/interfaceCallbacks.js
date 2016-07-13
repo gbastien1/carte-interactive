@@ -143,14 +143,21 @@ $("#search_input").keyup(function (e) {
     }
 });
 
+var data_json;
 /**
  * Detects any input entered in search bar. Call search on each input
  */
 $('#search_input').on('input', function() {
     // if used on small viewport, search results hide 
     // search bar and it is inconvenient
-    if ($(window).width() > 420){  
-        search();
+    if ($(window).width() > 420){ 
+        if (!data_json) {
+            var json_url = "../../static/carte_interactive/json/data.json";
+            $.getJSON(json_url, function(ecoles) {
+                data_json = ecoles;
+                search(data_json);
+            });
+        } else search(data_json);
     }
 });
 
@@ -263,38 +270,35 @@ function filterMarkers(closeSidebar) {
  * Used to filter the shown markers on the map and create 
  * a results list of corresponding Ecoles
  */
-function search() {
+function search(ecoles) {
     var input_text = $("#search_input").val().toLowerCase();
     if(input_text) {
         var json_url = "../../static/carte_interactive/json/data.json";
         var ecole_data = [];
-        // get Json data
-        $.getJSON(json_url, function(ecoles) {
-        	// create a string containing all the information that could be searched
-        	// make array from every Ecole treated
-            ecoles.forEach(function(e) {
-                var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
-                string_data = string_data.toLowerCase();
-                ecole_data.push(string_data);
-            });
-            var ecole_results = [];
-            // go through each marker, if one marker has the typed information, set it visible
-            markers.forEach(function(m) {
-                ecole_data.forEach(function(e, index) {
-                    if (e.split(',')[0] == m.pk) {
-                        ecole_from_json = e;
-                        ecole_index = index;
-                    }
-                });
-                m.setVisible(false);
-                if (ecole_from_json.indexOf(input_text) != -1) {
-                    m.setVisible(true);
-                    ecole_results.push(ecoles[ecole_index].fields);
+    	// create a string containing all the information that could be searched
+    	// make array from every Ecole treated
+        ecoles.forEach(function(e) {
+            var string_data = e.pk + ',' + e.fields.nom + ',' + e.fields.programmes + ',' + e.fields.type + ',' + e.fields.ville;
+            string_data = string_data.toLowerCase();
+            ecole_data.push(string_data);
+        });
+        var ecole_results = [];
+        // go through each marker, if one marker has the typed information, set it visible
+        markers.forEach(function(m) {
+            ecole_data.forEach(function(e, index) {
+                if (e.split(',')[0] == m.pk) {
+                    ecole_from_json = e;
+                    ecole_index = index;
                 }
             });
-            // show a result list with the gathered corresponding markers
-            showResultsList(ecole_results);
+            m.setVisible(false);
+            if (ecole_from_json.indexOf(input_text) != -1) {
+                m.setVisible(true);
+                ecole_results.push(ecoles[ecole_index].fields);
+            }
         });
+        // show a result list with the gathered corresponding markers
+        showResultsList(ecole_results);
     }
     //if nothing was entered in search bar, show all markers
     else {
