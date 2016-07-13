@@ -164,6 +164,7 @@ def GetDataView(request):
 
 def GetReloadView(request):
 	if request.method == 'GET':
+		global reload_value
 		response_data = json.dumps({"reload": reload_value})
 		return HttpResponse(
 			response_data,
@@ -173,6 +174,7 @@ def GetReloadView(request):
 
 def SetReloadView(request):
 	if request.method == 'POST':
+		global reload_value
 		reload_value = False
 		return HttpResponse(
 			"200 OK",
