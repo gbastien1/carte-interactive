@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.http import HttpResponseRedirect
 from django.core import serializers
 
 from .utils import *
@@ -28,6 +29,11 @@ class LoginView(FormView):
 		login(self.request, form.get_user())
 		return super(LoginView, self).form_valid(form)
 
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			return HttpResponseRedirect(reverse_lazy('carte_interactive:carte'))
+		else:
+			return super(LoginView, self).dispatch(request, *args, **kwargs)
 
 # url: logout/
 class LogoutView(RedirectView):
