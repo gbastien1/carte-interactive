@@ -350,7 +350,6 @@ function ReloadIfNeeded() {
         error: function(xhr, status, err) {
             console.log("failed to getReload with status " + status);
             console.log(err);
-            console.log($.parseJSON(xhr.responseText));
         }
     });
 }
