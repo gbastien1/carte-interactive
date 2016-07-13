@@ -301,6 +301,7 @@ function search(ecoles) {
     }
     //if nothing was entered in search bar, show all markers
     else {
+        $("#results-container").hide("slide", { direction: "right" }, 500);
         data_json = null;
         markers.forEach(function(m) {
             m.setVisible(true);
