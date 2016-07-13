@@ -350,6 +350,7 @@ function ReloadIfNeeded() {
         error: function(xhr, status, err) {
             console.log("failed to getReload with status " + status);
             console.log(err);
+            console.log($.parseJSON(xhr.responseText));
         }
     });
 }
@@ -418,19 +419,4 @@ function reloadMarkers() {
             console.log($.parseJSON(jqXHR.responseText));
         }
     });
-}
-
-function getCookie(cookie_name) {
-    var name = cookie_name + "=";
-    var cookies = document.cookie.split(';');
-    for(var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        while (cookie.charAt(0)==' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(name) == 0) {
-            return cookie.substring(name.length,cookie.length);
-        }
-    }
-    return "";
 }

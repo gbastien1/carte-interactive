@@ -164,8 +164,11 @@ def GetDataView(request):
 
 def GetReloadView(request):
 	if request.method == 'GET':
+		print("GET RELOAD VIEW IS GET REQUEST")
 		global reload_value
+		print("SETTING RESPONSE_DATA TO RELOAD: VAL")
 		response_data = json.dumps({"reload": reload_value})
+		print("RESPONSE_DATA: " + str(response_data))
 		return HttpResponse(
 			response_data,
 			content_type="application/json"
