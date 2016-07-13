@@ -146,6 +146,7 @@ $("#search_input").keyup(function (e) {
 /**
  * Detects any input entered in search bar. Call search on each input
  */
+var data_json;
 $('#search_input').on('input', function() {
     // if used on small viewport, search results hide 
     // search bar and it is inconvenient
@@ -263,7 +264,6 @@ function filterMarkers(closeSidebar) {
     	$("#sidebar-wrapper").hide("slide", { direction: "left" }, 600);
     }
 }
-
 /**
  * Called when search button from search bar is pressed
  * Used to filter the shown markers on the map and create 
@@ -301,6 +301,7 @@ function search() {
     }
     //if nothing was entered in search bar, show all markers
     else {
+        data_json = null;
         markers.forEach(function(m) {
             m.setVisible(true);
         });
