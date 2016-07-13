@@ -7,8 +7,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import FormView, RedirectView
+from django.views.generic import TemplateView, FormView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.http import HttpResponseRedirect
 from django.core import serializers
 
 from .utils import *
@@ -17,8 +18,6 @@ from .forms import ExcelUploadForm
 import openpyxl
 
 app_name = 'carte_interactive'
-reload_value = False
-
 
 # url: /
 class LoginView(FormView):
@@ -29,6 +28,12 @@ class LoginView(FormView):
 	def form_valid(self, form):
 		login(self.request, form.get_user())
 		return super(LoginView, self).form_valid(form)
+
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			return HttpResponseRedirect(reverse_lazy('carte_interactive:carte'))
+		else:
+			return super(LoginView, self).dispatch(request, *args, **kwargs)
 
 
 # url: logout/
